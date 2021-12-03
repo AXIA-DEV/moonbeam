@@ -665,7 +665,7 @@
 					<span class="kw">async</span> <span class="kw">move</span> {
 						<span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
-						<span class="kw">let</span> <span class="ident">mocked_parachain</span> <span class="op">=</span> <span class="ident">MockValidationDataInherentDataProvider</span> {
+						<span class="kw">let</span> <span class="ident">mocked_allychain</span> <span class="op">=</span> <span class="ident">MockValidationDataInherentDataProvider</span> {
 							<span class="ident">current_para_block</span>,
 							<span class="ident">relay_offset</span>: <span class="number">1000</span>,
 							<span class="ident">relay_blocks_per_para_block</span>: <span class="number">2</span>,
@@ -673,7 +673,7 @@
 
 						<span class="kw">let</span> <span class="ident">author</span> <span class="op">=</span> <span class="ident">nimbus_primitives::InherentDataProvider</span>::<span class="op">&lt;</span><span class="ident">NimbusId</span><span class="op">&gt;</span>(<span class="ident">author_id</span>);
 
-						<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">mocked_parachain</span>, <span class="ident">author</span>))
+						<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">mocked_allychain</span>, <span class="ident">author</span>))
 					}
 				},
 			}),

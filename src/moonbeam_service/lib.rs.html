@@ -1001,7 +1001,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module can assemble:</span>
 <span class="doccomment">//! PartialComponents: For maintence tasks without a complete node (eg import/export blocks, purge)</span>
-<span class="doccomment">//! Full Service: A complete parachain node including the pool, rpc, network, embedded relay chain</span>
+<span class="doccomment">//! Full Service: A complete allychain node including the pool, rpc, network, embedded relay chain</span>
 <span class="doccomment">//! Dev Service: A leaner service without the relay chain backing.</span>
 
 <span class="kw">use</span> <span class="ident">cli_opt</span>::{<span class="ident">EthApi</span> <span class="kw">as</span> <span class="ident">EthApiCmd</span>, <span class="ident">RpcConfig</span>};
@@ -1252,7 +1252,7 @@
 	))
 }
 
-<span class="doccomment">/// Builds the PartialComponents for a parachain or development service</span>
+<span class="doccomment">/// Builds the PartialComponents for a allychain or development service</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Use this function if you don&#39;t actually need the full service, but just the partial in order to</span>
 <span class="doccomment">/// be able to perform chain operations.</span>
@@ -1455,12 +1455,12 @@
 	}
 }
 
-<span class="doccomment">/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.</span>
+<span class="doccomment">/// Start a node with the given allychain `Configuration` and relay chain `Configuration`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This is the actual implementation that is abstract over the executor and the runtime api.</span>
 <span class="attribute">#[<span class="ident">sc_tracing::logging::prefix_logs_with</span>(<span class="string">&quot;🌗&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_node_impl</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">Executor</span><span class="op">&gt;</span>(
-	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
+	<span class="ident">allychain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">axia_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">id</span>: <span class="ident">polkadot_primitives::v0::Id</span>,
 	<span class="ident">rpc_config</span>: <span class="ident">RpcConfig</span>,
@@ -1472,13 +1472,13 @@
 		<span class="ident">RuntimeApiCollection</span><span class="op">&lt;</span><span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">FullBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">Executor</span>: <span class="ident">NativeExecutionDispatch</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-	<span class="kw">if</span> <span class="macro">matches!</span>(<span class="ident">parachain_config</span>.<span class="ident">role</span>, <span class="ident">Role::Light</span>) {
+	<span class="kw">if</span> <span class="macro">matches!</span>(<span class="ident">allychain_config</span>.<span class="ident">role</span>, <span class="ident">Role::Light</span>) {
 		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Light client not supported!&quot;</span>.<span class="ident">into</span>());
 	}
 
-	<span class="kw">let</span> <span class="ident">parachain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">parachain_config</span>);
+	<span class="kw">let</span> <span class="ident">allychain_config</span> <span class="op">=</span> <span class="ident">prepare_node_config</span>(<span class="ident">allychain_config</span>);
 
-	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>(<span class="kw-2">&amp;</span><span class="ident">parachain_config</span>, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
+	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">new_partial</span>(<span class="kw-2">&amp;</span><span class="ident">allychain_config</span>, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> (<span class="ident">block_import</span>, <span class="ident">filter_pool</span>, <span class="kw-2">mut</span> <span class="ident">telemetry</span>, <span class="ident">telemetry_worker_handle</span>, <span class="ident">frontier_backend</span>) <span class="op">=</span>
 		<span class="ident">params</span>.<span class="ident">other</span>;
 
@@ -1498,14 +1498,14 @@
 		<span class="ident">relay_chain_full_node</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(),
 	);
 
-	<span class="kw">let</span> <span class="ident">collator</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>();
-	<span class="kw">let</span> <span class="ident">prometheus_registry</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">prometheus_registry</span>().<span class="ident">cloned</span>();
+	<span class="kw">let</span> <span class="ident">collator</span> <span class="op">=</span> <span class="ident">allychain_config</span>.<span class="ident">role</span>.<span class="ident">is_authority</span>();
+	<span class="kw">let</span> <span class="ident">prometheus_registry</span> <span class="op">=</span> <span class="ident">allychain_config</span>.<span class="ident">prometheus_registry</span>().<span class="ident">cloned</span>();
 	<span class="kw">let</span> <span class="ident">transaction_pool</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">transaction_pool</span>.<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_manager</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">task_manager</span>;
 	<span class="kw">let</span> <span class="ident">import_queue</span> <span class="op">=</span> <span class="ident">cumulus_client_service::SharedImportQueue::new</span>(<span class="ident">params</span>.<span class="ident">import_queue</span>);
 	<span class="kw">let</span> (<span class="ident">network</span>, <span class="ident">system_rpc_tx</span>, <span class="ident">start_network</span>) <span class="op">=</span>
 		<span class="ident">sc_service::build_network</span>(<span class="ident">sc_service::BuildNetworkParams</span> {
-			<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">parachain_config</span>,
+			<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">allychain_config</span>,
 			<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 			<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 			<span class="ident">spawn_handle</span>: <span class="ident">task_manager</span>.<span class="ident">spawn_handle</span>(),
@@ -1556,8 +1556,8 @@
 		<span class="kw">let</span> <span class="ident">ethapi_cmd</span> <span class="op">=</span> <span class="ident">ethapi_cmd</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">max_past_logs</span> <span class="op">=</span> <span class="ident">rpc_config</span>.<span class="ident">max_past_logs</span>;
 
-		<span class="kw">let</span> <span class="ident">is_moonbeam</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_moonbeam</span>();
-		<span class="kw">let</span> <span class="ident">is_moonriver</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_moonriver</span>();
+		<span class="kw">let</span> <span class="ident">is_moonbeam</span> <span class="op">=</span> <span class="ident">allychain_config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_moonbeam</span>();
+		<span class="kw">let</span> <span class="ident">is_moonriver</span> <span class="op">=</span> <span class="ident">allychain_config</span>.<span class="ident">chain_spec</span>.<span class="ident">is_moonriver</span>();
 
 		<span class="ident">Box::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">deny_unsafe</span>, <span class="kw">_</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">transaction_converter</span>: <span class="ident">TransactionConverters</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_moonbeam</span> {
@@ -1598,7 +1598,7 @@
 		})
 	};
 
-	<span class="kw">let</span> <span class="ident">skip_prediction</span> <span class="op">=</span> <span class="ident">parachain_config</span>.<span class="ident">force_authoring</span>;
+	<span class="kw">let</span> <span class="ident">skip_prediction</span> <span class="op">=</span> <span class="ident">allychain_config</span>.<span class="ident">force_authoring</span>;
 
 	<span class="ident">sc_service::spawn_tasks</span>(<span class="ident">sc_service::SpawnTasksParams</span> {
 		<span class="ident">on_demand</span>: <span class="prelude-val">None</span>,
@@ -1607,7 +1607,7 @@
 		<span class="ident">client</span>: <span class="ident">client</span>.<span class="ident">clone</span>(),
 		<span class="ident">transaction_pool</span>: <span class="ident">transaction_pool</span>.<span class="ident">clone</span>(),
 		<span class="ident">task_manager</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task_manager</span>,
-		<span class="ident">config</span>: <span class="ident">parachain_config</span>,
+		<span class="ident">config</span>: <span class="ident">allychain_config</span>,
 		<span class="ident">keystore</span>: <span class="ident">params</span>.<span class="ident">keystore_container</span>.<span class="ident">sync_keystore</span>(),
 		<span class="ident">backend</span>: <span class="ident">backend</span>.<span class="ident">clone</span>(),
 		<span class="ident">network</span>: <span class="ident">network</span>.<span class="ident">clone</span>(),
@@ -1642,7 +1642,7 @@
 			<span class="ident">keystore</span>: <span class="ident">params</span>.<span class="ident">keystore_container</span>.<span class="ident">sync_keystore</span>(),
 			<span class="ident">skip_prediction</span>,
 			<span class="ident">create_inherent_data_providers</span>: <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, (<span class="ident">relay_parent</span>, <span class="ident">validation_data</span>, <span class="ident">author_id</span>)<span class="op">|</span> {
-				<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span> <span class="ident">ParachainInherentData::create_at_with_client</span>(
+				<span class="kw">let</span> <span class="ident">allychain_inherent</span> <span class="op">=</span> <span class="ident">ParachainInherentData::create_at_with_client</span>(
 					<span class="ident">relay_parent</span>,
 					<span class="kw-2">&amp;</span><span class="ident">relay_chain_client</span>,
 					<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">relay_chain_backend</span>,
@@ -1652,15 +1652,15 @@
 				<span class="kw">async</span> <span class="kw">move</span> {
 					<span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
-					<span class="kw">let</span> <span class="ident">parachain_inherent</span> <span class="op">=</span> <span class="ident">parachain_inherent</span>.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+					<span class="kw">let</span> <span class="ident">allychain_inherent</span> <span class="op">=</span> <span class="ident">allychain_inherent</span>.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
 						<span class="ident">Box</span>::<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="ident">::from</span>(
-							<span class="string">&quot;Failed to create parachain inherent&quot;</span>,
+							<span class="string">&quot;Failed to create allychain inherent&quot;</span>,
 						)
 					})<span class="question-mark">?</span>;
 
 					<span class="kw">let</span> <span class="ident">author</span> <span class="op">=</span> <span class="ident">nimbus_primitives::InherentDataProvider</span>::<span class="op">&lt;</span><span class="ident">NimbusId</span><span class="op">&gt;</span>(<span class="ident">author_id</span>);
 
-					<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">parachain_inherent</span>, <span class="ident">author</span>))
+					<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">allychain_inherent</span>, <span class="ident">author</span>))
 				}
 			},
 		});
@@ -1697,9 +1697,9 @@
 	<span class="prelude-val">Ok</span>((<span class="ident">task_manager</span>, <span class="ident">client</span>))
 }
 
-<span class="doccomment">/// Start a normal parachain node.</span>
+<span class="doccomment">/// Start a normal allychain node.</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_node</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">Executor</span><span class="op">&gt;</span>(
-	<span class="ident">parachain_config</span>: <span class="ident">Configuration</span>,
+	<span class="ident">allychain_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">axia_config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">id</span>: <span class="ident">polkadot_primitives::v0::Id</span>,
 	<span class="ident">rpc_config</span>: <span class="ident">RpcConfig</span>,
@@ -1711,11 +1711,11 @@
 		<span class="ident">RuntimeApiCollection</span><span class="op">&lt;</span><span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">FullBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">Executor</span>: <span class="ident">NativeExecutionDispatch</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-	<span class="ident">start_node_impl</span>(<span class="ident">parachain_config</span>, <span class="ident">axia_config</span>, <span class="ident">id</span>, <span class="ident">rpc_config</span>).<span class="kw">await</span>
+	<span class="ident">start_node_impl</span>(<span class="ident">allychain_config</span>, <span class="ident">axia_config</span>, <span class="ident">id</span>, <span class="ident">rpc_config</span>).<span class="kw">await</span>
 }
 
 <span class="doccomment">/// Builds a new development service. This service uses manual seal, and mocks</span>
-<span class="doccomment">/// the parachain inherent.</span>
+<span class="doccomment">/// the allychain inherent.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_dev</span><span class="op">&lt;</span><span class="ident">RuntimeApi</span>, <span class="ident">Executor</span><span class="op">&gt;</span>(
 	<span class="ident">config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">_author_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">nimbus_primitives::NimbusId</span><span class="op">&gt;</span>,
@@ -1777,7 +1777,7 @@
 		<span class="comment">// This could and perhaps should be made more flexible. Here are some options:</span>
 		<span class="comment">// 1. a dedicated `--dev-author-id` flag that only works with the dev service</span>
 		<span class="comment">// 2. restore the old --author-id` and also allow it to force a secific key</span>
-		<span class="comment">//    in the parachain context</span>
+		<span class="comment">//    in the allychain context</span>
 		<span class="comment">// 3. check the keystore like we do in nimbus. Actually, maybe the keystore-checking could</span>
 		<span class="comment">//    be exported as a helper function from nimbus.</span>
 		<span class="kw">let</span> <span class="ident">author_id</span> <span class="op">=</span> <span class="ident">chain_spec::get_from_seed</span>::<span class="op">&lt;</span><span class="ident">NimbusId</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>);
@@ -1851,7 +1851,7 @@
 					<span class="kw">async</span> <span class="kw">move</span> {
 						<span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
-						<span class="kw">let</span> <span class="ident">mocked_parachain</span> <span class="op">=</span> <span class="ident">MockValidationDataInherentDataProvider</span> {
+						<span class="kw">let</span> <span class="ident">mocked_allychain</span> <span class="op">=</span> <span class="ident">MockValidationDataInherentDataProvider</span> {
 							<span class="ident">current_para_block</span>,
 							<span class="ident">relay_offset</span>: <span class="number">1000</span>,
 							<span class="ident">relay_blocks_per_para_block</span>: <span class="number">2</span>,
@@ -1859,7 +1859,7 @@
 
 						<span class="kw">let</span> <span class="ident">author</span> <span class="op">=</span> <span class="ident">nimbus_primitives::InherentDataProvider</span>::<span class="op">&lt;</span><span class="ident">NimbusId</span><span class="op">&gt;</span>(<span class="ident">author_id</span>);
 
-						<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">mocked_parachain</span>, <span class="ident">author</span>))
+						<span class="prelude-val">Ok</span>((<span class="ident">time</span>, <span class="ident">mocked_allychain</span>, <span class="ident">author</span>))
 					}
 				},
 			}),

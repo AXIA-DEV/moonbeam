@@ -897,7 +897,7 @@
 	<span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">id</span> {
 		<span class="comment">// Moonbase networks</span>
 		<span class="string">&quot;moonbase-alpha&quot;</span> <span class="op">|</span> <span class="string">&quot;alphanet&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::RawChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/alphanet/parachain-embedded-specs-v8.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/alphanet/allychain-embedded-specs-v8.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;moonbase-native&quot;</span>)]</span>
 		<span class="string">&quot;moonbase-local&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::moonbase::get_chain_spec</span>(<span class="ident">para_id</span>)),
@@ -909,7 +909,7 @@
 		<span class="string">&quot;staking&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::test_spec::staking_spec</span>(<span class="ident">para_id</span>)),
 		<span class="comment">// Moonriver networks</span>
 		<span class="string">&quot;moonriver&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::RawChainSpec::from_json_bytes</span>(
-			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/moonriver/parachain-embedded-specs.json&quot;</span>)[..],
+			<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/moonriver/allychain-embedded-specs.json&quot;</span>)[..],
 		)<span class="question-mark">?</span>),
 		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;moonriver-native&quot;</span>)]</span>
 		<span class="string">&quot;moonriver-dev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Box::new</span>(<span class="ident">chain_spec::moonriver::development_chain_spec</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>)),
@@ -968,9 +968,9 @@
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
 		<span class="macro">format!</span>(
 			<span class="string">&quot;Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
-		{} [parachain-args] -- [relaychain-args]&quot;</span>,
+		{} [allychain-args] -- [relaychain-args]&quot;</span>,
 			<span class="ident"><span class="self">Self</span>::executable_name</span>()
 		)
 	}
@@ -1016,9 +1016,9 @@
 
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
 		<span class="string">&quot;Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
-		parachain-collator [parachain-args] -- [relaychain-args]&quot;</span>
+		allychain-collator [allychain-args] -- [relaychain-args]&quot;</span>
 			.<span class="ident">into</span>()
 	}
 
@@ -1038,7 +1038,7 @@
 		<span class="kw">match</span> <span class="ident">id</span> {
 			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
 			<span class="string">&quot;westend_moonbase_relay_testnet&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">WestendChainSpec::from_json_bytes</span>(
-				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/alphanet/rococo-embedded-specs-v8.json&quot;</span>)[..],
+				<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../../../specs/alphanet/betanet-embedded-specs-v8.json&quot;</span>)[..],
 			)<span class="question-mark">?</span>)),
 			<span class="comment">// If we are not using a moonbeam-centric pre-baked relay spec, then fall back to the</span>
 			<span class="comment">// AXIA service to interpret the id.</span>
@@ -1212,7 +1212,7 @@
 			<span class="comment">// Cumulus approach here, we directly call the generic load_spec func</span>
 			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="ident">load_spec</span>(
 				<span class="kw-2">&amp;</span><span class="ident">params</span>.<span class="ident">chain</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
-				<span class="ident">params</span>.<span class="ident">parachain_id</span>.<span class="ident">unwrap_or</span>(<span class="number">1000</span>).<span class="ident">into</span>(),
+				<span class="ident">params</span>.<span class="ident">allychain_id</span>.<span class="ident">unwrap_or</span>(<span class="number">1000</span>).<span class="ident">into</span>(),
 				<span class="kw-2">&amp;</span><span class="ident">cli</span>.<span class="ident">run</span>,
 			)<span class="question-mark">?</span>;
 			<span class="kw">let</span> <span class="ident">output_buf</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">chain_spec</span> {
@@ -1463,7 +1463,7 @@
 				};
 
 				<span class="comment">// If dev service was requested, start up manual or instant seal.</span>
-				<span class="comment">// Otherwise continue with the normal parachain node.</span>
+				<span class="comment">// Otherwise continue with the normal allychain node.</span>
 				<span class="comment">// Dev service can be requested in two ways.</span>
 				<span class="comment">// 1. by providing the --dev-service flag to the CLI</span>
 				<span class="comment">// 2. by specifying &quot;dev-service&quot; in the chain spec&#39;s &quot;relay-chain&quot; field.</span>

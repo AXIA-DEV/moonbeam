@@ -336,7 +336,7 @@
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Currently there is no way to migrate across blocks, so this method must (1) perform its full</span>
 	<span class="doccomment">/// migration and (2) not produce a block that has gone over-weight. Not meeting these strict</span>
-	<span class="doccomment">/// constraints will lead to a bricked chain upon a runtime upgrade because the parachain will</span>
+	<span class="doccomment">/// constraints will lead to a bricked chain upon a runtime upgrade because the allychain will</span>
 	<span class="doccomment">/// not be able to produce a block that the relay chain will accept.</span>
 	<span class="kw">fn</span> <span class="ident">migrate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">available_weight</span>: <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
 

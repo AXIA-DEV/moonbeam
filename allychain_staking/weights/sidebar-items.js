@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SubstrateWeight","Weights for allychain_staking using the Substrate node and recommended hardware."]],"trait":[["WeightInfo","Weight functions needed for allychain_staking."]]});

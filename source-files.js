@@ -1,5 +1,7 @@
 var N = null;var sourcesIndex = {};
 sourcesIndex["account"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["allychain_staking"] = {"name":"","files":["inflation.rs","lib.rs","migrations.rs","set.rs","weights.rs"]};
+sourcesIndex["allychain_staking_precompiles"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["crowdloan_rewards_precompiles"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["evm_tracing_events"] = {"name":"","files":["evm.rs","gasometer.rs","lib.rs","runtime.rs"]};
 sourcesIndex["moonbase_runtime"] = {"name":"","files":["lib.rs","precompiles.rs"]};
@@ -33,8 +35,6 @@ sourcesIndex["pallet_evm_precompile_balances_erc20"] = {"name":"","files":["lib.
 sourcesIndex["pallet_maintenance_mode"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["pallet_migrations"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["pallet_proxy_genesis_companion"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["parachain_staking"] = {"name":"","files":["inflation.rs","lib.rs","migrations.rs","set.rs","weights.rs"]};
-sourcesIndex["parachain_staking_precompiles"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["perf_test"] = {"name":"","dirs":[{"name":"tests","files":["block_creation.rs","fibonacci.rs","mod.rs","storage.rs"]}],"files":["command.rs","lib.rs","sysinfo.rs","txn_signer.rs"]};
 sourcesIndex["precompile_utils"] = {"name":"","dirs":[{"name":"data","files":["xcm.rs"]}],"files":["data.rs","lib.rs"]};
 sourcesIndex["precompile_utils_macro"] = {"name":"","files":["lib.rs"]};

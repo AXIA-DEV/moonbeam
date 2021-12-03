@@ -2,7 +2,7 @@
 between them. This is the backbone of the client-side node implementation.</p>
 <p>This module can assemble:
 PartialComponents: For maintence tasks without a complete node (eg import/export blocks, purge)
-Full Service: A complete parachain node including the pool, rpc, network, embedded relay chain
+Full Service: A complete allychain node including the pool, rpc, network, embedded relay chain
 Dev Service: A leaner service without the relay chain backing.</p>
 </div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
 <div class="item-table"><div class="item-left import-item"><code>pub use <a class="mod" href="../moonbase_runtime/index.html" title="mod moonbase_runtime">moonbase_runtime</a>;</code></div><div class="item-right docblock-short"></div><div class="item-left import-item"><code>pub use <a class="mod" href="../moonbeam_runtime/index.html" title="mod moonbeam_runtime">moonbeam_runtime</a>;</code></div><div class="item-right docblock-short"></div><div class="item-left import-item"><code>pub use <a class="mod" href="../moonriver_runtime/index.html" title="mod moonriver_runtime">moonriver_runtime</a>;</code></div><div class="item-right docblock-short"></div></div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
@@ -24,9 +24,9 @@ the <code>Moonbeam</code> network.</p>
 </div></div><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="fn" href="fn.frontier_database_dir.html" title="moonbeam_service::frontier_database_dir fn">frontier_database_dir</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.new_chain_ops.html" title="moonbeam_service::new_chain_ops fn">new_chain_ops</a></div><div class="item-right docblock-short"><p>Builds a new object suitable for chain operations.</p>
 </div><div class="item-left module-item"><a class="fn" href="fn.new_dev.html" title="moonbeam_service::new_dev fn">new_dev</a></div><div class="item-right docblock-short"><p>Builds a new development service. This service uses manual seal, and mocks
-the parachain inherent.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.new_partial.html" title="moonbeam_service::new_partial fn">new_partial</a></div><div class="item-right docblock-short"><p>Builds the PartialComponents for a parachain or development service</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.open_frontier_backend.html" title="moonbeam_service::open_frontier_backend fn">open_frontier_backend</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.start_node.html" title="moonbeam_service::start_node fn">start_node</a></div><div class="item-right docblock-short"><p>Start a normal parachain node.</p>
+the allychain inherent.</p>
+</div><div class="item-left module-item"><a class="fn" href="fn.new_partial.html" title="moonbeam_service::new_partial fn">new_partial</a></div><div class="item-right docblock-short"><p>Builds the PartialComponents for a allychain or development service</p>
+</div><div class="item-left module-item"><a class="fn" href="fn.open_frontier_backend.html" title="moonbeam_service::open_frontier_backend fn">open_frontier_backend</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="fn" href="fn.start_node.html" title="moonbeam_service::start_node fn">start_node</a></div><div class="item-right docblock-short"><p>Start a normal allychain node.</p>
 </div></div><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="type" href="type.AccountId.html" title="moonbeam_service::AccountId type">AccountId</a></div><div class="item-right docblock-short"><p>Some way of identifying an account on the chain. We intentionally make it equivalent
 to the public key of our transaction signing scheme.</p>

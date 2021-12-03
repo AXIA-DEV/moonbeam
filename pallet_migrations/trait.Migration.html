@@ -6,7 +6,7 @@
 </div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.migrate" class="method has-srclink"><div class="rightside"><a class="srclink" href="../src/pallet_migrations/lib.rs.html#46" title="goto source code">[src]</a></div><h4 class="code-header">fn <a href="#tymethod.migrate" class="fnname">migrate</a>(&amp;self, available_weight: Weight) -&gt; Weight</h4></div></summary><div class="docblock"><p>Perform the required migration and return the weight consumed.</p>
 <p>Currently there is no way to migrate across blocks, so this method must (1) perform its full
 migration and (2) not produce a block that has gone over-weight. Not meeting these strict
-constraints will lead to a bricked chain upon a runtime upgrade because the parachain will
+constraints will lead to a bricked chain upon a runtime upgrade because the allychain will
 not be able to produce a block that the relay chain will accept.</p>
 </div></details></div><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor"></a></h2><div class="item-list" id="implementors-list"></div><script type="text/javascript" src="../implementors/pallet_migrations/trait.Migration.js" async></script></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="pallet_migrations" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script>

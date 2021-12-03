@@ -299,11 +299,11 @@
 <span class="doccomment">/// Sub-commands supported by the collator.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Subcommand</span> {
-	<span class="doccomment">/// Export the genesis state of the parachain.</span>
+	<span class="doccomment">/// Export the genesis state of the allychain.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;export-genesis-state&quot;</span>)]</span>
 	<span class="ident">ExportGenesisState</span>(<span class="ident">ExportGenesisStateCommand</span>),
 
-	<span class="doccomment">/// Export the genesis wasm of the parachain.</span>
+	<span class="doccomment">/// Export the genesis wasm of the allychain.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;export-genesis-wasm&quot;</span>)]</span>
 	<span class="ident">ExportGenesisWasm</span>(<span class="ident">ExportGenesisWasmCommand</span>),
 
@@ -363,16 +363,16 @@
 	<span class="kw">pub</span> <span class="ident">mnemonic</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
-<span class="doccomment">/// Command for exporting the genesis state of the parachain</span>
+<span class="doccomment">/// Command for exporting the genesis state of the allychain</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportGenesisStateCommand</span> {
 	<span class="doccomment">/// Output file name or stdout if unspecified.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">parse</span>(<span class="ident">from_os_str</span>))]</span>
 	<span class="kw">pub</span> <span class="ident">output</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 
-	<span class="doccomment">/// Id of the parachain this state is for.</span>
+	<span class="doccomment">/// Id of the allychain this state is for.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">parachain_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">allychain_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Write output in binary. Default is to write in hex.</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
