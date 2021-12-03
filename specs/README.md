@@ -15,7 +15,7 @@ it is convenient to "bake" specs for popular networks into the node.
 
 - Moonbase Stage V6 - internal
 - Moonbase Alpha V6 - live
-- MoonRock - Potential future deployment to Rococo
+- MoonRock - Potential future deployment to BetaNet
 - MoonRiver - Future Kusama Deployment
 - Moonbeam - Future AXIA deployment
 

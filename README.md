@@ -151,7 +151,7 @@ Moonbeam nodes support multiple public chains and testnets, with the following C
 | Reserved for other TestNets        | 1282 - 1283 |
 | Moonbeam (AXIA)                | 1284        |
 | Moonriver (Kusama)                 | 1285        |
-| Moonrock (Rococo)                  | 1286        |
+| Moonrock (BetaNet)                  | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
 | Reserved for other public networks | 1288 - 1289 |
 
