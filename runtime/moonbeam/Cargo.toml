@@ -86,13 +86,13 @@ pallet-evm-precompile-sha3fips = { git = "https://github.com/purestake/frontier"
 pallet-evm-precompile-simple = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # Cumulus / Nimbus
-cumulus-pallet-allychain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+cumulus-pallet-parachain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-primitives-timestamp = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 nimbus-primitives = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-author-inherent = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-author-slot-filter = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-allychain-info = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+parachain-info = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # Benchmarking
 frame-benchmarking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", optional = true, default-features = false }
@@ -103,7 +103,7 @@ hex = "0.4"
 rlp = "0.5"
 sha3 = "0.9"
 
-cumulus-primitives-allychain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 [build-dependencies]
@@ -113,7 +113,7 @@ substrate-wasm-builder = { git = "https://github.com/purestake/substrate", branc
 default = [ "std" ]
 std = [
 	"account/std",
-	"cumulus-pallet-allychain-system/std",
+	"cumulus-pallet-parachain-system/std",
 	"cumulus-primitives-core/std",
 	"cumulus-primitives-timestamp/std",
 	"evm-tracing-events/std",
@@ -153,7 +153,7 @@ std = [
 	"pallet-transaction-payment/std",
 	"pallet-treasury/std",
 	"pallet-utility/std",
-	"allychain-info/std",
+	"parachain-info/std",
 	"allychain-staking-precompiles/std",
 	"allychain-staking/std",
 	"parity-scale-codec/std",

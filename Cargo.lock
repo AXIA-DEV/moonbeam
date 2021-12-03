@@ -103,6 +103,53 @@ dependencies = [
 ]
 
 [[package]]
+name = "allychain-staking"
+version = "3.0.0"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "nimbus-primitives",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "similar-asserts",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "substrate-fixed",
+]
+
+[[package]]
+name = "allychain-staking-precompiles"
+version = "1.0.0"
+dependencies = [
+ "allychain-staking",
+ "derive_more",
+ "fp-evm",
+ "frame-support",
+ "frame-system",
+ "log",
+ "num_enum",
+ "pallet-balances",
+ "pallet-evm",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "precompile-utils",
+ "rustc-hex",
+ "scale-info",
+ "serde",
+ "sha3 0.9.1",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "always-assert"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1416,9 +1463,9 @@ dependencies = [
 name = "crowdloan-rewards-precompiles"
 version = "0.6.0"
 dependencies = [
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "cumulus-test-relay-sproof-builder",
  "derive_more",
  "fp-evm",
@@ -1619,7 +1666,7 @@ dependencies = [
  "parking_lot 0.10.2",
  "polkadot-client",
  "polkadot-node-primitives",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "sc-client-api",
  "sp-api",
@@ -1701,20 +1748,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-pallet-allychain-system"
+name = "cumulus-pallet-parachain-system"
 version = "0.1.0"
 source = "git+https://github.com/purestake/cumulus?branch=moonbeam-polkadot-v0.9.12#ea2b71e0f6030abdb5dfc67bb53af111d336b6f2"
 dependencies = [
- "cumulus-pallet-allychain-system-proc-macro",
+ "cumulus-pallet-parachain-system-proc-macro",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "environmental",
  "frame-support",
  "frame-system",
  "log",
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-allychain",
+ "polkadot-parachain",
  "scale-info",
  "serde",
  "sp-core",
@@ -1730,7 +1777,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-pallet-allychain-system-proc-macro"
+name = "cumulus-pallet-parachain-system-proc-macro"
 version = "0.1.0"
 source = "git+https://github.com/purestake/cumulus?branch=moonbeam-polkadot-v0.9.12#ea2b71e0f6030abdb5dfc67bb53af111d336b6f2"
 dependencies = [
@@ -1784,7 +1831,7 @@ dependencies = [
  "impl-trait-for-tuples 0.2.1",
  "parity-scale-codec",
  "polkadot-core-primitives",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "sp-api",
  "sp-runtime",
@@ -1793,7 +1840,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-primitives-allychain-inherent"
+name = "cumulus-primitives-parachain-inherent"
 version = "0.1.0"
 source = "git+https://github.com/purestake/cumulus?branch=moonbeam-polkadot-v0.9.12#ea2b71e0f6030abdb5dfc67bb53af111d336b6f2"
 dependencies = [
@@ -1834,7 +1881,7 @@ dependencies = [
  "frame-support",
  "parity-scale-codec",
  "polkadot-core-primitives",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "sp-runtime",
  "sp-std",
@@ -3914,7 +3961,7 @@ dependencies = [
  "parity-scale-codec",
  "polkadot-primitives",
  "polkadot-runtime-common",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "rustc-hex",
  "scale-info",
  "serde",
@@ -4976,13 +5023,15 @@ name = "moonbase-runtime"
 version = "0.8.4"
 dependencies = [
  "account",
+ "allychain-staking",
+ "allychain-staking-precompiles",
  "crowdloan-rewards-precompiles",
  "cumulus-pallet-dmp-queue",
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "cumulus-primitives-timestamp",
  "cumulus-primitives-utility",
  "cumulus-test-relay-sproof-builder",
@@ -5042,13 +5091,11 @@ dependencies = [
  "pallet-treasury",
  "pallet-utility",
  "pallet-xcm",
- "allychain-info",
- "allychain-staking",
- "allychain-staking-precompiles",
+ "parachain-info",
  "parity-scale-codec",
  "polkadot-core-primitives",
- "polkadot-allychain",
- "polkadot-runtime-allychains",
+ "polkadot-parachain",
+ "polkadot-runtime-parachains",
  "precompile-utils",
  "relay-encoder-precompiles",
  "rlp",
@@ -5111,7 +5158,7 @@ dependencies = [
  "parity-scale-codec",
  "perf-test",
  "polkadot-cli",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "polkadot-service",
  "sc-cli",
@@ -5385,10 +5432,12 @@ name = "moonbeam-runtime"
 version = "0.8.4"
 dependencies = [
  "account",
+ "allychain-staking",
+ "allychain-staking-precompiles",
  "crowdloan-rewards-precompiles",
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "cumulus-primitives-timestamp",
  "cumulus-test-relay-sproof-builder",
  "evm-tracing-events",
@@ -5438,9 +5487,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-treasury",
  "pallet-utility",
- "allychain-info",
- "allychain-staking",
- "allychain-staking-precompiles",
+ "parachain-info",
  "parity-scale-codec",
  "precompile-utils",
  "rlp",
@@ -5477,7 +5524,7 @@ dependencies = [
  "cumulus-client-network",
  "cumulus-client-service",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "cumulus-test-relay-sproof-builder",
  "derive_more",
  "ethereum",
@@ -5519,7 +5566,7 @@ dependencies = [
  "parity-scale-codec",
  "parking_lot 0.9.0",
  "polkadot-cli",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "polkadot-runtime-common",
  "polkadot-service",
@@ -5583,10 +5630,12 @@ name = "moonriver-runtime"
 version = "0.8.4"
 dependencies = [
  "account",
+ "allychain-staking",
+ "allychain-staking-precompiles",
  "crowdloan-rewards-precompiles",
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "cumulus-primitives-timestamp",
  "cumulus-test-relay-sproof-builder",
  "evm-tracing-events",
@@ -5636,9 +5685,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-treasury",
  "pallet-utility",
- "allychain-info",
- "allychain-staking",
- "allychain-staking-precompiles",
+ "parachain-info",
  "parity-scale-codec",
  "precompile-utils",
  "rlp",
@@ -5817,7 +5864,7 @@ dependencies = [
  "async-trait",
  "cumulus-client-consensus-common",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "futures 0.3.17",
  "log",
  "nimbus-primitives",
@@ -6491,9 +6538,9 @@ name = "pallet-crowdloan-rewards"
 version = "0.6.0"
 source = "git+https://github.com/purestake/crowdloan-rewards?branch=moonbeam-polkadot-v0.9.12#8e4625df25ebd7ce914fc5c0e82b256663d78572"
 dependencies = [
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-primitives-core",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "ed25519-dalek",
  "frame-benchmarking",
  "frame-support",
@@ -7317,7 +7364,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "allychain-info"
+name = "parachain-info"
 version = "0.1.0"
 source = "git+https://github.com/purestake/cumulus?branch=moonbeam-polkadot-v0.9.12#ea2b71e0f6030abdb5dfc67bb53af111d336b6f2"
 dependencies = [
@@ -7327,53 +7374,6 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
-]
-
-[[package]]
-name = "allychain-staking"
-version = "3.0.0"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "log",
- "nimbus-primitives",
- "pallet-balances",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "similar-asserts",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "substrate-fixed",
-]
-
-[[package]]
-name = "allychain-staking-precompiles"
-version = "1.0.0"
-dependencies = [
- "derive_more",
- "fp-evm",
- "frame-support",
- "frame-system",
- "log",
- "num_enum",
- "pallet-balances",
- "pallet-evm",
- "pallet-timestamp",
- "allychain-staking",
- "parity-scale-codec",
- "precompile-utils",
- "rustc-hex",
- "scale-info",
- "serde",
- "sha3 0.9.1",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
 ]
 
 [[package]]
@@ -7656,7 +7656,7 @@ version = "0.1.0"
 dependencies = [
  "async-io",
  "cli-table",
- "cumulus-primitives-allychain-inherent",
+ "cumulus-primitives-parachain-inherent",
  "ethereum",
  "fc-consensus",
  "fp-evm",
@@ -8171,7 +8171,7 @@ dependencies = [
  "polkadot-node-primitives",
  "polkadot-node-subsystem",
  "polkadot-node-subsystem-util",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "sp-maybe-compressed-blob",
  "tracing",
@@ -8242,7 +8242,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-node-core-allychains-inherent"
+name = "polkadot-node-core-parachains-inherent"
 version = "0.9.12"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
@@ -8289,7 +8289,7 @@ dependencies = [
  "pin-project 1.0.8",
  "polkadot-core-primitives",
  "polkadot-node-subsystem-util",
- "polkadot-allychain",
+ "polkadot-parachain",
  "rand 0.8.4",
  "sc-executor",
  "sc-executor-common",
@@ -8377,7 +8377,7 @@ dependencies = [
  "bounded-vec",
  "futures 0.3.17",
  "parity-scale-codec",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "schnorrkel",
  "serde",
@@ -8497,7 +8497,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-allychain"
+name = "polkadot-parachain"
 version = "0.9.12"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
@@ -8524,7 +8524,7 @@ dependencies = [
  "parity-scale-codec",
  "parity-util-mem",
  "polkadot-core-primitives",
- "polkadot-allychain",
+ "polkadot-parachain",
  "scale-info",
  "serde",
  "sp-api",
@@ -8621,7 +8621,7 @@ dependencies = [
  "parity-scale-codec",
  "polkadot-primitives",
  "polkadot-runtime-common",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "rustc-hex",
  "scale-info",
  "serde",
@@ -8672,7 +8672,7 @@ dependencies = [
  "pallet-vesting",
  "parity-scale-codec",
  "polkadot-primitives",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "rustc-hex",
  "scale-info",
  "serde",
@@ -8692,7 +8692,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "polkadot-runtime-allychains"
+name = "polkadot-runtime-parachains"
 version = "0.9.12"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
@@ -8768,7 +8768,7 @@ dependencies = [
  "polkadot-node-core-chain-selection",
  "polkadot-node-core-dispute-coordinator",
  "polkadot-node-core-dispute-participation",
- "polkadot-node-core-allychains-inherent",
+ "polkadot-node-core-parachains-inherent",
  "polkadot-node-core-provisioner",
  "polkadot-node-core-runtime-api",
  "polkadot-node-network-protocol",
@@ -8776,11 +8776,11 @@ dependencies = [
  "polkadot-node-subsystem",
  "polkadot-node-subsystem-util",
  "polkadot-overseer",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "polkadot-rpc",
  "polkadot-runtime",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "polkadot-statement-distribution",
  "rococo-runtime",
  "sc-authority-discovery",
@@ -9576,7 +9576,7 @@ dependencies = [
 name = "relay-encoder-precompiles"
 version = "0.1.0"
 dependencies = [
- "cumulus-pallet-allychain-system",
+ "cumulus-pallet-parachain-system",
  "cumulus-primitives-core",
  "derive_more",
  "fp-evm",
@@ -9745,10 +9745,10 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "polkadot-runtime-common",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "scale-info",
  "serde",
  "serde_derive",
@@ -9787,6 +9787,7 @@ dependencies = [
 name = "runtime-common"
 version = "0.8.0-dev"
 dependencies = [
+ "allychain-staking",
  "frame-support",
  "frame-system",
  "log",
@@ -9795,7 +9796,6 @@ dependencies = [
  "pallet-collective",
  "pallet-evm",
  "pallet-migrations",
- "allychain-staking",
  "sp-core",
  "sp-runtime",
  "sp-std",
@@ -12848,7 +12848,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f559b464de2e2bdabcac6a210d12e9b5a5973c251e102c44c585c71d51bd78e"
 dependencies = [
  "cfg-if 1.0.0",
- "rand 0.8.4",
+ "rand 0.6.5",
  "static_assertions",
 ]
 
@@ -13453,10 +13453,10 @@ dependencies = [
  "pallet-vesting",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-allychain",
+ "polkadot-parachain",
  "polkadot-primitives",
  "polkadot-runtime-common",
- "polkadot-runtime-allychains",
+ "polkadot-runtime-parachains",
  "rustc-hex",
  "scale-info",
  "serde",
@@ -13601,7 +13601,7 @@ dependencies = [
  "log",
  "pallet-transaction-payment",
  "parity-scale-codec",
- "polkadot-allychain",
+ "polkadot-parachain",
  "scale-info",
  "sp-arithmetic",
  "sp-io",
@@ -13666,8 +13666,8 @@ dependencies = [
  "parity-scale-codec",
  "paste",
  "polkadot-core-primitives",
- "polkadot-allychain",
- "polkadot-runtime-allychains",
+ "polkadot-parachain",
+ "polkadot-runtime-parachains",
  "sp-io",
  "sp-std",
  "xcm",

@@ -43,7 +43,7 @@ scale-info = { version = "1.0", default-features = false, features = [ "derive" 
 sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # Cumulus
-cumulus-pallet-allychain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12" }
+cumulus-pallet-parachain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12" }
 
 [features]
 default = [ "std" ]

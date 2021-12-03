@@ -216,8 +216,8 @@ pub fn testnet_genesis(
 			funded_amount: crowdloan_fund_pot,
 		},
 		sudo: SudoConfig { key: root_key },
-		allychain_info: ParachainInfoConfig {
-			allychain_id: para_id,
+		parachain_info: ParachainInfoConfig {
+			parachain_id: para_id,
 		},
 		ethereum_chain_id: EthereumChainIdConfig { chain_id },
 		evm: EVMConfig {
@@ -240,7 +240,7 @@ pub fn testnet_genesis(
 		ethereum: EthereumConfig {},
 		democracy: DemocracyConfig::default(),
 		scheduler: SchedulerConfig {},
-		allychain_staking: ParachainStakingConfig {
+		parachain_staking: ParachainStakingConfig {
 			candidates: candidates
 				.iter()
 				.cloned()

@@ -39,7 +39,7 @@ use cumulus_client_network::build_block_announce_validator;
 use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
-use cumulus_primitives_allychain_inherent::{
+use cumulus_primitives_parachain_inherent::{
 	MockValidationDataInherentDataProvider, ParachainInherentData,
 };
 use nimbus_consensus::{build_nimbus_consensus, BuildNimbusConsensusParams};
@@ -656,7 +656,7 @@ where
 			block_import,
 			relay_chain_client: relay_chain_full_node.client.clone(),
 			relay_chain_backend: relay_chain_full_node.backend.clone(),
-			allychain_client: client.clone(),
+			parachain_client: client.clone(),
 			keystore: params.keystore_container.sync_keystore(),
 			skip_prediction,
 			create_inherent_data_providers: move |_, (relay_parent, validation_data, author_id)| {
