@@ -22,7 +22,7 @@ use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
-use polkadot_allychain::primitives::AccountIdConversion;
+use polkadot_parachain::primitives::AccountIdConversion;
 #[cfg(feature = "westend-native")]
 use polkadot_service::WestendChainSpec;
 use sc_cli::{
@@ -137,7 +137,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
-		load_spec(id, self.run.allychain_id.unwrap_or(1000).into(), &self.run)
+		load_spec(id, self.run.parachain_id.unwrap_or(1000).into(), &self.run)
 	}
 
 	fn native_runtime_version(spec: &Box<dyn sc_service::ChainSpec>) -> &'static RuntimeVersion {
@@ -600,7 +600,7 @@ pub fn run() -> Result<()> {
 			runner.run_node_until_exit(|config| async move {
 				let extension = chain_spec::Extensions::try_get(&*config.chain_spec);
 				let para_id = extension.map(|e| e.para_id);
-				let id = ParaId::from(cli.run.allychain_id.clone().or(para_id).unwrap_or(1000));
+				let id = ParaId::from(cli.run.parachain_id.clone().or(para_id).unwrap_or(1000));
 
 				let rpc_config = RpcConfig {
 					ethapi: cli.run.ethapi,
@@ -661,7 +661,7 @@ pub fn run() -> Result<()> {
 						.chain(cli.relaychain_args.iter()),
 				);
 
-				let allychain_account =
+				let parachain_account =
 					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
 
 				let genesis_state = match &config.chain_spec {
@@ -693,7 +693,7 @@ pub fn run() -> Result<()> {
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Parachain id: {:?}", id);
-				info!("Parachain Account: {}", allychain_account);
+				info!("Parachain Account: {}", parachain_account);
 				info!("Parachain genesis state: {}", genesis_state);
 
 				match &config.chain_spec {

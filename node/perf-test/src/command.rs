@@ -21,7 +21,7 @@ use crate::{
 	PerfCmd,
 };
 
-use cumulus_primitives_allychain_inherent::MockValidationDataInherentDataProvider;
+use cumulus_primitives_parachain_inherent::MockValidationDataInherentDataProvider;
 use ethereum::TransactionAction;
 use fp_rpc::{ConvertTransaction, EthereumRuntimeRPCApi};
 use nimbus_primitives::NimbusId;

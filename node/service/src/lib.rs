@@ -650,7 +650,7 @@ where
 		let relay_chain_backend = relay_chain_full_node.backend.clone();
 		let relay_chain_client = relay_chain_full_node.client.clone();
 
-		let allychain_consensus = build_nimbus_consensus(BuildNimbusConsensusParams {
+		let parachain_consensus = build_nimbus_consensus(BuildNimbusConsensusParams {
 			para_id: id,
 			proposer_factory,
 			block_import,
@@ -693,7 +693,7 @@ where
 			task_manager: &mut task_manager,
 			spawner,
 			relay_chain_full_node,
-			allychain_consensus,
+			parachain_consensus,
 			import_queue,
 		};
 
