@@ -20,8 +20,8 @@ interface AssetMetadata {
   isFrozen: boolean;
 }
 const relayAssetMetadata: AssetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };

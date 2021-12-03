@@ -10,8 +10,8 @@ import { verifyLatestBlockFees } from "../util/block";
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
 
 const assetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
