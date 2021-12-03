@@ -105,6 +105,6 @@ $MOONBEAM_BINARY \
     --listen-addr "/ip4/0.0.0.0/tcp/$((PARACHAIN_PORT))" \
     --rpc-port $((PARACHAIN_PORT + 1)) \
     --ws-port $((PARACHAIN_PORT + 2)) \
-    --chain $ROCOCO_LOCAL_RAW_SPEC \
+    --chain $BETANET_LOCAL_RAW_SPEC \
   $RELAY_BOOTNODES_ARGS;
   

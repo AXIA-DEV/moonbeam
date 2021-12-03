@@ -143,7 +143,7 @@ default = [
 ]
 
 kusama-native = [ "polkadot-cli/kusama-native", "polkadot-service/kusama-native" ]
-betanet-native = [ "polkadot-cli/betanet-native", "polkadot-service/betanet-native" ]
+betanet-native = [ "polkadot-cli/rococo-native", "polkadot-service/rococo-native" ]
 westend-native = [ "polkadot-cli/westend-native", "polkadot-service/westend-native" ]
 
 moonbase-native = [ "moonbase-runtime", "westend-native" ]

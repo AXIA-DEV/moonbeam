@@ -17,5 +17,5 @@ docker run -it -v $(pwd)/build:/build purestake/moonbase-relay-testnet:$AXIA_VER
       -lerror \
       --disable-default-bootnode \
       --raw \
-    > $ROCOCO_LOCAL_RAW_SPEC
-echo $ROCOCO_LOCAL_RAW_SPEC generated
+    > $BETANET_LOCAL_RAW_SPEC
+echo $BETANET_LOCAL_RAW_SPEC generated
