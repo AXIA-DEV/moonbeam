@@ -12,7 +12,7 @@
 # 53 for http
 # 54 for ws
 #
-# Ex: USER_PORT=20000 scripts/run-rococo-local.sh
+# Ex: USER_PORT=20000 scripts/run-betanet-local.sh
 # will open port 20042, 20043, 20044
 
 # Loading binary/specs variables
@@ -55,7 +55,7 @@ docker run \
   -p $((RELAY_PORT + 2)):$((RELAY_PORT + 2)) \
   -it purestake/moonbase-relay-testnet:$AXIA_VERSION \
     /usr/local/bin/axia \
-      --chain rococo-local \
+      --chain betanet-local \
       --${WELL_KNOWN_USERS[$RELAY_INDEX]} \
       --node-key ${COMMON_NODE_KEYS[$RELAY_INDEX]} \
       --base-path /tmp \

@@ -61,7 +61,7 @@ export type ParachainOptions = {
     | "moonbase"
     | "moonriver"
     | "moonbeam";
-  relaychain?: "rococo-local" | "westend-local" | "kusama-local" | "axia-local";
+  relaychain?: "betanet-local" | "westend-local" | "kusama-local" | "axia-local";
   numberOfParachains?: number;
 };
 
@@ -89,7 +89,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
       setTimeout(resolve, 100);
     });
   }
-  const relaychain = options.relaychain || "rococo-local";
+  const relaychain = options.relaychain || "betanet-local";
   // For now we only support one, two or three parachains
   const numberOfParachains =
     (options.numberOfParachains < 4 &&

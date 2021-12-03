@@ -51,12 +51,12 @@ npm run launch -- --parachain local
 npm run launch
 ```
 
-which uses the configuration (based on latest rococo, you can override using `--relay local`):
+which uses the configuration (based on latest betanet, you can override using `--relay local`):
 
 ```
 # parachain
 local: {
-  relay: "rococo-9004",
+  relay: "betanet-9004",
   chain: "moonbase-local",
   binary: "../target/release/moonbeam",
 }
@@ -64,7 +64,7 @@ local: {
 # relay
 local: {
   binary: "../../axia/target/release/axia",
-  chain: "rococo-local",
+  chain: "betanet-local",
 },
 
 ```
@@ -96,12 +96,12 @@ Options:
 
   --relay            overrides relay configuration                      [string]
                      [choices: "kusama-9030", "kusama-9040", "kusama-9030-fast",
-                      "kusama-9040-fast", "rococo-9001", "rococo-9003",
-                      "rococo-9004", "westend-9030", "westend-9040", "local"]
+                      "kusama-9040-fast", "betanet-9001", "betanet-9003",
+                      "betanet-9004", "westend-9030", "westend-9040", "local"]
 
   --relay-chain      overrides relay chain/runtime                      [string]
-                     [choices: "rococo", "westend", "kusama", "axia",
-                      "rococo-local", "westend-local", "kusama-local",
+                     [choices: "betanet", "westend", "kusama", "axia",
+                      "betanet-local", "westend-local", "kusama-local",
                       "axia-local"]
 
   --port-prefix      provides port prefix for nodes       [number] [default: 34]
@@ -135,12 +135,12 @@ Here is the list of cargo aliases allowing you to compile only some native rutim
 | command | native runtimes |
 |-|-|
 | `cargo moonbase`  | `moonbase, westend, axia`  |
-| `cargo moonbase-rococo`  | `moonbase, rococo, westend, axia` |
+| `cargo moonbase-betanet`  | `moonbase, betanet, westend, axia` |
 | `cargo moonriver` | `moonriver, axia` |
-| `cargo moonriver-rococo` | `moonriver, rococo, axia` |
+| `cargo moonriver-betanet` | `moonriver, betanet, axia` |
 | `cargo moonriver-kusama` | `moonriver, kusama, axia` |
 | `cargo moonbeam` | `moonbeam, axia` |
-| `cargo moonbeam-rococo` | `moonbeam, rococo, axia` |
+| `cargo moonbeam-betanet` | `moonbeam, betanet, axia` |
 
 * The `moonbase` native runtime require `westend` native runtime to compile.
 * The `axia` native runtime is always included (This is requirement from axia repo).

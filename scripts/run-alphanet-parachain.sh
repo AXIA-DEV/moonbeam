@@ -15,7 +15,7 @@
 # Ex: USER_PORT=20000 scripts/run-alphanet-parachain.sh
 # will open port 21052, 21053, 21054
 
-# The parachain will run on rococo-local relay
+# The parachain will run on betanet-local relay
 
 # Loading binary/specs variables
 source scripts/_init_var.sh

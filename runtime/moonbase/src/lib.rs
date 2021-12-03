@@ -1355,7 +1355,7 @@ impl TryFrom<u8> for Transactors {
 impl xcm_primitives::UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: xcm_primitives::UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
+			// Shall we use westend for moonbase? The tests are probably based on betanet
 			// but moonbase-alpha is attached to westend-runtime I think
 			Transactors::Relay => moonbeam_relay_encoder::westend::WestendEncoder.encode_call(call),
 		}

@@ -33,7 +33,7 @@ xcm-builder = { git = "https://github.com/purestake/polkadot", branch = "moonbea
 default = [ "moonbase-native", "moonbeam-native", "moonriver-native" ]
 
 kusama-native = [ "moonbeam-service/kusama-native" ]
-rococo-native = [ "moonbeam-service/rococo-native" ]
+betanet-native = [ "moonbeam-service/betanet-native" ]
 westend-native = [ "moonbeam-cli/westend-native", "moonbeam-service/westend-native" ]
 
 moonbase-native = [ "moonbeam-cli/moonbase-native", "moonbeam-service/moonbase-native" ]

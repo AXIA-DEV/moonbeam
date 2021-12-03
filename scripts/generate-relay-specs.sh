@@ -13,7 +13,7 @@ echo "=================== BetaNet-Local ==================="
 docker run -it -v $(pwd)/build:/build purestake/moonbase-relay-testnet:$AXIA_VERSION \
   /usr/local/bin/axia \
     build-spec \
-      --chain rococo-local \
+      --chain betanet-local \
       -lerror \
       --disable-default-bootnode \
       --raw \

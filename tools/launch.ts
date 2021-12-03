@@ -39,72 +39,72 @@ const parachains: { [name: string]: ParachainConfig } = {
     docker: "purestake/moonbeam:moonriver-genesis",
   },
   "moonriver-genesis-fast": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonriver-local",
     docker: "purestake/moonbeam:sha-153c4c4a",
   },
   "moonbase-0.8.2": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.8.2",
   },
   "moonbase-0.8.1": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.8.1",
   },
   "moonbase-0.8.0": {
-    relay: "rococo-9001",
+    relay: "betanet-9001",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.8.0",
   },
   "moonbase-0.9.2": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.9.2",
   },
   "moonbase-0.9.4": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.9.4",
   },
   "moonbase-0.9.6": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.9.6",
   },
   "moonbase-0.10.0": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.10.0",
   },
   "moonbase-0.11.3": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.11.3",
   },
   "moonbase-0.12.3": {
-    relay: "rococo-9102",
+    relay: "betanet-9102",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.12.3",
   },
   "moonbase-0.13.2": {
-    relay: "rococo-9100",
+    relay: "betanet-9100",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.13.2",
   },
   "moonbase-0.14.2": {
-    relay: "rococo-9111",
+    relay: "betanet-9111",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.14.2",
   },
   "moonbase-0.15.1": {
-    relay: "rococo-9111",
+    relay: "betanet-9111",
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.15.1",
   },
   local: {
-    relay: "rococo-9111",
+    relay: "betanet-9111",
     chain: "moonbase-local",
     binary: "../target/release/moonbeam",
   },
@@ -128,29 +128,29 @@ const relays: { [name: string]: NetworkConfig } = {
     docker: "purestake/moonbase-relay-testnet:sha-2239072e",
     chain: "kusama-local",
   },
-  "rococo-9001": {
+  "betanet-9001": {
     docker: "purestake/moonbase-relay-testnet:sha-86a45114",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9003": {
+  "betanet-9003": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9100": {
+  "betanet-9100": {
     docker: "purestake/moonbase-relay-testnet:v0.9.10",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9102": {
+  "betanet-9102": {
     docker: "purestake/moonbase-relay-testnet:sha-43d9b899",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9004": {
+  "betanet-9004": {
     docker: "purestake/moonbase-relay-testnet:sha-2f28561a",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9111": {
+  "betanet-9111": {
     docker: "purestake/moonbase-relay-testnet:sha-7da182da",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
   "westend-9030": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
@@ -162,7 +162,7 @@ const relays: { [name: string]: NetworkConfig } = {
   },
   local: {
     binary: "../../axia/target/release/axia",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
 };
 const relayNames = Object.keys(relays);
@@ -194,11 +194,11 @@ async function start() {
       "relay-chain": {
         type: "string",
         choices: [
-          "rococo",
+          "betanet",
           "westend",
           "kusama",
           "axia",
-          "rococo-local",
+          "betanet-local",
           "westend-local",
           "kusama-local",
           "axia-local",
@@ -365,7 +365,7 @@ async function start() {
     let parachainConfig = JSON.parse(JSON.stringify(parachainTemplate));
     // HRMP is not configurable in Kusama and Westend thorugh genesis. We should detect this here
     // Maybe there is a nicer way of doing this
-    if (launchConfig.relaychain.chain.startsWith("rococo")) {
+    if (launchConfig.relaychain.chain.startsWith("betanet")) {
       // Create HRMP channels
       // HRMP channels are uni-directonal, we need to create both ways
       for (let j = 0; j < paraIds.length; j++) {
@@ -405,15 +405,15 @@ async function start() {
 
   launchConfig.relaychain.nodes = relay_nodes;
 
-  const knownRelayChains = ["kusama", "westend", "rococo", "axia"]
+  const knownRelayChains = ["kusama", "westend", "betanet", "axia"]
     .map((network) => [`${network}`, `${network}-local`, `${network}-dev`])
     .flat();
 
   // In case the chain is a spec file
   if (!knownRelayChains.includes(launchConfig.relaychain.chain)) {
     delete launchConfig.relaychain.genesis;
-  } else if (launchConfig.relaychain.chain.startsWith("rococo")) {
-    // To support compatibility with rococo
+  } else if (launchConfig.relaychain.chain.startsWith("betanet")) {
+    // To support compatibility with betanet
     (launchConfig.relaychain.genesis.runtime as any).runtime_genesis_config = {
       ...launchConfig.relaychain.genesis.runtime,
     };

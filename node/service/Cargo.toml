@@ -138,12 +138,12 @@ default = [
 	"moonbase-native",
 	"moonbeam-native",
 	"moonriver-native",
-	"rococo-native",
+	"betanet-native",
 	"westend-native",
 ]
 
 kusama-native = [ "polkadot-cli/kusama-native", "polkadot-service/kusama-native" ]
-rococo-native = [ "polkadot-cli/rococo-native", "polkadot-service/rococo-native" ]
+betanet-native = [ "polkadot-cli/betanet-native", "polkadot-service/betanet-native" ]
 westend-native = [ "polkadot-cli/westend-native", "polkadot-service/westend-native" ]
 
 moonbase-native = [ "moonbase-runtime", "westend-native" ]

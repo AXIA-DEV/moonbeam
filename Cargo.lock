@@ -833,7 +833,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-rococo"
+name = "bp-betanet"
 version = "0.1.0"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
@@ -889,7 +889,7 @@ source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.
 dependencies = [
  "bp-messages",
  "bp-polkadot-core",
- "bp-rococo",
+ "bp-betanet",
  "bp-runtime",
  "parity-scale-codec",
  "sp-api",
@@ -5208,7 +5208,7 @@ dependencies = [
  "parity-scale-codec",
  "polkadot-runtime",
  "relay-encoder-precompiles",
- "rococo-runtime",
+ "betanet-runtime",
  "sp-runtime",
  "sp-std",
  "westend-runtime",
@@ -7931,7 +7931,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "polkadot-primitives",
  "polkadot-runtime",
- "rococo-runtime",
+ "betanet-runtime",
  "sc-client-api",
  "sc-consensus",
  "sc-executor",
@@ -8782,7 +8782,7 @@ dependencies = [
  "polkadot-runtime",
  "polkadot-runtime-parachains",
  "polkadot-statement-distribution",
- "rococo-runtime",
+ "betanet-runtime",
  "sc-authority-discovery",
  "sc-basic-authorship",
  "sc-block-builder",
@@ -9702,13 +9702,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "rococo-runtime"
+name = "betanet-runtime"
 version = "0.9.12"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
  "beefy-primitives",
  "bp-messages",
- "bp-rococo",
+ "bp-betanet",
  "bp-runtime",
  "bp-wococo",
  "bridge-runtime-common",
