@@ -167,7 +167,7 @@ From substrate:
   launch
 - _Timestamp_: On-Chain notion of time
 - _Transaction Payment_: Transaction payment (fee) management
-- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by parachain
+- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by allychain
   randomness by mainnet.
 
 From frontier:
@@ -177,8 +177,8 @@ From frontier:
 
 From cumulus:
 
-- _ParachainUpgrade_: A helper to perform runtime upgrades on parachains
-- _ParachainInfo_: A place to store parachain-relevant constants like parachain id
+- _ParachainUpgrade_: A helper to perform runtime upgrades on allychains
+- _ParachainInfo_: A place to store allychain-relevant constants like allychain id
 
 The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
 

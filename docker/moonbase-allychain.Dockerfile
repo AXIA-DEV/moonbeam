@@ -11,18 +11,18 @@ RUN mv /usr/share/ca* /tmp && \
 	rm -rf /usr/share/*  && \
 	mv /tmp/ca-certificates /usr/share/ && \
 	rm -rf /usr/lib/python* && \
-	useradd -m -u 1000 -U -s /bin/sh -d /moonbase-parachain moonbeam && \
-	mkdir -p /moonbase-parachain/.local/share/moonbase-parachain && \
-	chown -R moonbeam:moonbeam /moonbase-parachain && \
-	ln -s /moonbase-parachain/.local/share/moonbase-parachain /data && \
+	useradd -m -u 1000 -U -s /bin/sh -d /moonbase-allychain moonbeam && \
+	mkdir -p /moonbase-allychain/.local/share/moonbase-allychain && \
+	chown -R moonbeam:moonbeam /moonbase-allychain && \
+	ln -s /moonbase-allychain/.local/share/moonbase-allychain /data && \
 	rm -rf /usr/bin /usr/sbin
 
 USER moonbeam
 
-COPY --chown=moonbeam build /moonbase-parachain
-RUN chmod uog+x /moonbase-parachain/moonbeam
+COPY --chown=moonbeam build /moonbase-allychain
+RUN chmod uog+x /moonbase-allychain/moonbeam
 
-# 30333 for parachain p2p 
+# 30333 for allychain p2p 
 # 30334 for relaychain p2p 
 # 9933 for RPC call
 # 9944 for Websocket
@@ -31,4 +31,4 @@ EXPOSE 30333 30334 9933 9944 9615
 
 VOLUME ["/data"]
 
-CMD ["/moonbase-parachain/moonbeam"]
+CMD ["/moonbase-allychain/moonbeam"]

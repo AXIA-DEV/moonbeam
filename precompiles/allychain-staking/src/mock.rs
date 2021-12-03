@@ -23,7 +23,7 @@ use frame_support::{
 	weights::Weight,
 };
 use pallet_evm::{AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet};
-use parachain_staking::{AwardedPts, InflationInfo, Points, Range};
+use allychain_staking::{AwardedPts, InflationInfo, Points, Range};
 use serde::{Deserialize, Serialize};
 use sp_core::{H160, H256};
 use sp_io;
@@ -50,7 +50,7 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Evm: pallet_evm::{Pallet, Call, Storage, Event<T>},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		ParachainStaking: parachain_staking::{Pallet, Call, Storage, Config<T>, Event<T>},
+		ParachainStaking: allychain_staking::{Pallet, Call, Storage, Config<T>, Event<T>},
 	}
 );
 
@@ -170,10 +170,10 @@ impl<R> PrecompileSet for TestPrecompiles<R>
 where
 	R::Call: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo + Decode,
 	<R::Call as Dispatchable>::Origin: From<Option<R::AccountId>>,
-	R: parachain_staking::Config + pallet_evm::Config,
+	R: allychain_staking::Config + pallet_evm::Config,
 	R::AccountId: From<H160>,
 	BalanceOf<R>: EvmData,
-	R::Call: From<parachain_staking::Call<R>>,
+	R::Call: From<allychain_staking::Call<R>>,
 {
 	fn execute(
 		address: H160,
@@ -237,7 +237,7 @@ parameter_types! {
 	pub const MinDelegatorStk: u128 = 5;
 	pub const MinDelegation: u128 = 3;
 }
-impl parachain_staking::Config for Runtime {
+impl allychain_staking::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type MonetaryGovernanceOrigin = frame_system::EnsureRoot<AccountId>;
@@ -336,7 +336,7 @@ impl ExtBuilder {
 		}
 		.assimilate_storage(&mut t)
 		.expect("Pallet balances storage can be assimilated");
-		parachain_staking::GenesisConfig::<Runtime> {
+		allychain_staking::GenesisConfig::<Runtime> {
 			candidates: self.collators,
 			delegations: self.delegations,
 			inflation_config: self.inflation,

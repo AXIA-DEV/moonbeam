@@ -24,7 +24,7 @@ USER moonbeam
 COPY --chown=moonbeam build/moonbeam /moonbeam/moonbeam
 RUN chmod uog+x /moonbeam/moonbeam
 
-# 30333 for parachain p2p 
+# 30333 for allychain p2p 
 # 30334 for relaychain p2p 
 # 9933 for RPC call
 # 9944 for Websocket

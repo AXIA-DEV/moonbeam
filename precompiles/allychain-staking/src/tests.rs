@@ -22,7 +22,7 @@ use crate::PrecompileOutput;
 use frame_support::{assert_ok, dispatch::Dispatchable};
 use pallet_evm::Call as EvmCall;
 use pallet_evm::{ExitSucceed, PrecompileSet};
-use parachain_staking::Event as StakingEvent;
+use allychain_staking::Event as StakingEvent;
 use precompile_utils::{error, EvmDataWriter};
 use sha3::{Digest, Keccak256};
 use sp_core::U256;
@@ -949,9 +949,9 @@ fn cancel_candidate_bond_more_works() {
 
 			let expected: crate::mock::Event = StakingEvent::CancelledCandidateBondChange(
 				TestAccount::Alice,
-				parachain_staking::CandidateBondRequest {
+				allychain_staking::CandidateBondRequest {
 					amount: 500,
-					change: parachain_staking::CandidateBondChange::Increase,
+					change: allychain_staking::CandidateBondChange::Increase,
 					when_executable: 3,
 				},
 			)
@@ -984,9 +984,9 @@ fn cancel_candidate_bond_less_works() {
 
 			let expected: crate::mock::Event = StakingEvent::CancelledCandidateBondChange(
 				TestAccount::Alice,
-				parachain_staking::CandidateBondRequest {
+				allychain_staking::CandidateBondRequest {
 					amount: 200,
-					change: parachain_staking::CandidateBondChange::Decrease,
+					change: allychain_staking::CandidateBondChange::Decrease,
 					when_executable: 3,
 				},
 			)
@@ -1026,7 +1026,7 @@ fn nominate_works() {
 				TestAccount::Bob,
 				1_000,
 				TestAccount::Alice,
-				parachain_staking::DelegatorAdded::AddedToTop { new_total: 2_000 },
+				allychain_staking::DelegatorAdded::AddedToTop { new_total: 2_000 },
 			)
 			.into();
 			// Assert that the events vector contains the one expected
@@ -1063,7 +1063,7 @@ fn delegate_works() {
 				TestAccount::Bob,
 				1_000,
 				TestAccount::Alice,
-				parachain_staking::DelegatorAdded::AddedToTop { new_total: 2_000 },
+				allychain_staking::DelegatorAdded::AddedToTop { new_total: 2_000 },
 			)
 			.into();
 			// Assert that the events vector contains the one expected
@@ -1490,11 +1490,11 @@ fn cancel_revoke_delegation_works() {
 
 			let expected: crate::mock::Event = StakingEvent::CancelledDelegationRequest(
 				TestAccount::Bob,
-				parachain_staking::DelegationRequest {
+				allychain_staking::DelegationRequest {
 					collator: TestAccount::Alice,
 					amount: 1_000,
 					when_executable: 3,
-					action: parachain_staking::DelegationChange::Revoke,
+					action: allychain_staking::DelegationChange::Revoke,
 				},
 			)
 			.into();
@@ -1528,11 +1528,11 @@ fn cancel_delegator_bonded_more_works() {
 
 			let expected: crate::mock::Event = StakingEvent::CancelledDelegationRequest(
 				TestAccount::Bob,
-				parachain_staking::DelegationRequest {
+				allychain_staking::DelegationRequest {
 					collator: TestAccount::Alice,
 					amount: 500,
 					when_executable: 3,
-					action: parachain_staking::DelegationChange::Increase,
+					action: allychain_staking::DelegationChange::Increase,
 				},
 			)
 			.into();
@@ -1566,11 +1566,11 @@ fn cancel_delegator_bonded_less_works() {
 
 			let expected: crate::mock::Event = StakingEvent::CancelledDelegationRequest(
 				TestAccount::Bob,
-				parachain_staking::DelegationRequest {
+				allychain_staking::DelegationRequest {
 					collator: TestAccount::Alice,
 					amount: 500,
 					when_executable: 3,
-					action: parachain_staking::DelegationChange::Decrease,
+					action: allychain_staking::DelegationChange::Decrease,
 				},
 			)
 			.into();

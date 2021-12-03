@@ -31,12 +31,12 @@ jobs:
         run: rustup show
       - name: Build Node
         run: cargo build --release --all
-      - name: Save parachain binary
+      - name: Save allychain binary
         if: ${{ matrix.cpu == '' }}
         run: |
           mkdir -p build
           cp target/release/moonbeam build/moonbeam
-      - name: Save parachain custom binary
+      - name: Save allychain custom binary
         if: ${{ matrix.cpu != '' }}
         run: |
           mkdir -p build

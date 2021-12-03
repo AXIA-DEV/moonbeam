@@ -24,7 +24,7 @@ use frame_support::{
 };
 use pallet_author_mapping::{migrations::TwoXToBlake, Config as AuthorMappingConfig};
 use pallet_migrations::Migration;
-use parachain_staking::{
+use allychain_staking::{
 	migrations::{PurgeStaleStorage, RemoveExitQueue},
 	Config as ParachainStakingConfig,
 };
@@ -57,7 +57,7 @@ impl<T: ParachainStakingConfig> Migration for ParachainStakingManualExits<T> {
 	}
 }
 
-/// A moonbeam migration wrapping the similarly named migration in parachain-staking
+/// A moonbeam migration wrapping the similarly named migration in allychain-staking
 pub struct ParachainStakingPurgeStaleStorage<T>(PhantomData<T>);
 impl<T: ParachainStakingConfig> Migration for ParachainStakingPurgeStaleStorage<T> {
 	fn friendly_name(&self) -> &str {
@@ -146,7 +146,7 @@ pub struct CommonMigrations<Runtime, Council, Tech>(PhantomData<(Runtime, Counci
 impl<Runtime, Council, Tech> Get<Vec<Box<dyn Migration>>>
 	for CommonMigrations<Runtime, Council, Tech>
 where
-	Runtime: pallet_author_mapping::Config + parachain_staking::Config,
+	Runtime: pallet_author_mapping::Config + allychain_staking::Config,
 	Council: GetStorageVersion + PalletInfoAccess + 'static,
 	Tech: GetStorageVersion + PalletInfoAccess + 'static,
 {
@@ -158,9 +158,9 @@ where
 		// let migration_collectives =
 		//	MigrateCollectivePallets::<Runtime, Council, Tech>(Default::default());
 
-		let migration_parachain_staking_purge_stale_storage =
+		let migration_allychain_staking_purge_stale_storage =
 			ParachainStakingPurgeStaleStorage::<Runtime>(Default::default());
-		let migration_parachain_staking_manual_exits =
+		let migration_allychain_staking_manual_exits =
 			ParachainStakingManualExits::<Runtime>(Default::default());
 
 		// TODO: this is a lot of allocation to do upon every get() call. this *should* be avoided
@@ -171,8 +171,8 @@ where
 			// Box::new(migration_author_mapping_twox_to_blake),
 			// completed in runtime 900
 			// Box::new(migration_collectives),
-			Box::new(migration_parachain_staking_purge_stale_storage),
-			Box::new(migration_parachain_staking_manual_exits),
+			Box::new(migration_allychain_staking_purge_stale_storage),
+			Box::new(migration_allychain_staking_manual_exits),
 		]
 	}
 }

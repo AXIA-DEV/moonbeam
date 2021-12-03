@@ -33,7 +33,7 @@ use moonriver_runtime::{BlockWeights, Precompiles};
 use nimbus_primitives::NimbusId;
 use pallet_evm::PrecompileSet;
 use pallet_transaction_payment::Multiplier;
-use parachain_staking::Bond;
+use allychain_staking::Bond;
 use parity_scale_codec::Encode;
 use sha3::{Digest, Keccak256};
 use sp_core::Pair;
@@ -273,7 +273,7 @@ fn join_collator_candidates() {
 					1_000 * MOVR,
 					2u32
 				),
-				parachain_staking::Error::<Runtime>::CandidateExists
+				allychain_staking::Error::<Runtime>::CandidateExists
 			);
 			assert_noop!(
 				ParachainStaking::join_candidates(
@@ -281,7 +281,7 @@ fn join_collator_candidates() {
 					1_000 * MOVR,
 					2u32
 				),
-				parachain_staking::Error::<Runtime>::DelegatorExists
+				allychain_staking::Error::<Runtime>::DelegatorExists
 			);
 			assert!(System::events().is_empty());
 			assert_ok!(ParachainStaking::join_candidates(
@@ -291,7 +291,7 @@ fn join_collator_candidates() {
 			));
 			assert_eq!(
 				last_event(),
-				Event::ParachainStaking(parachain_staking::Event::JoinedCollatorCandidates(
+				Event::ParachainStaking(allychain_staking::Event::JoinedCollatorCandidates(
 					AccountId::from(DAVE),
 					1_000 * MOVR,
 					3_100 * MOVR
@@ -404,7 +404,7 @@ fn reward_block_authors() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			for x in 2..599 {
 				set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 				run_to_block(x);
@@ -427,7 +427,7 @@ fn reward_block_authors() {
 }
 
 #[test]
-fn reward_block_authors_with_parachain_bond_reserved() {
+fn reward_block_authors_with_allychain_bond_reserved() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			// Alice gets 100 extra tokens for her mapping deposit
@@ -447,8 +447,8 @@ fn reward_block_authors_with_parachain_bond_reserved() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
-			assert_ok!(ParachainStaking::set_parachain_bond_account(
+			set_allychain_inherent_data();
+			assert_ok!(ParachainStaking::set_allychain_bond_account(
 				root_origin(),
 				AccountId::from(CHARLIE),
 			),);
@@ -471,7 +471,7 @@ fn reward_block_authors_with_parachain_bond_reserved() {
 				Balances::free_balance(AccountId::from(BOB)),
 				525841666640825000000,
 			);
-			// 30% reserved for parachain bond
+			// 30% reserved for allychain bond
 			assert_eq!(
 				Balances::free_balance(AccountId::from(CHARLIE)),
 				47515000000000000000,
@@ -494,8 +494,8 @@ fn initialize_crowdloan_addresses_with_batch_and_pay() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);
@@ -606,8 +606,8 @@ fn initialize_crowdloan_address_and_change_with_relay_key_sig() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);
@@ -711,8 +711,8 @@ fn claim_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);
@@ -806,8 +806,8 @@ fn is_contributor_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);
@@ -928,8 +928,8 @@ fn reward_info_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);
@@ -1022,8 +1022,8 @@ fn update_reward_address_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * MOVR)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			for x in 1..3 {
 				run_to_block(x);

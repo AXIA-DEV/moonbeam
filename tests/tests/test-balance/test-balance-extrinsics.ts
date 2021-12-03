@@ -27,7 +27,7 @@ describeDevMoonbeam("Balance extrinsics", (context) => {
       switch (index) {
         // First 3 events:
         // timestamp.set:: system.ExtrinsicSuccess
-        // parachainUpgrade.setValidationData:: system.ExtrinsicSuccess
+        // allychainUpgrade.setValidationData:: system.ExtrinsicSuccess
         // authorInherent.setAuthor:: system.ExtrinsicSuccess
         case 0:
         case 1:

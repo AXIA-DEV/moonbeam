@@ -26,7 +26,7 @@ const relayChainAddress_2: string =
 const VESTING_PERIOD = 201600n;
 async function calculate_vested_amount(context, totalReward, initialPayment, numberOfBlocks) {
   const amountToVest = BigInt(totalReward) - BigInt(initialPayment);
-  // On average a parachain only gets a candidate into every other relay chain block.
+  // On average a allychain only gets a candidate into every other relay chain block.
   // In the dev service, where the relay block number is mocked, we get exactly two relay blocks.
   const elapsedRelayBlocks = numberOfBlocks * 2;
   const amountForBlocks = (BigInt(amountToVest) * BigInt(elapsedRelayBlocks)) / VESTING_PERIOD;

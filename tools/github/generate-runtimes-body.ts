@@ -27,8 +27,8 @@ function getRuntimeInfo(srtoolReportFolder: string, runtimeName: string) {
   };
 }
 
-// Srtool expects the pallet parachain_system to be at index 1. However, in the case of moonbase,
-// the pallet parachain_system is at index 6, so we have to recalculate the hash of the
+// Srtool expects the pallet allychain_system to be at index 1. However, in the case of moonbase,
+// the pallet allychain_system is at index 6, so we have to recalculate the hash of the
 // authorizeUpgrade call in the case of moonbase by hand.
 function authorizeUpgradeHash(runtimeName: string, srtool: any): string {
   if (runtimeName == "moonbase") {
@@ -37,7 +37,7 @@ function authorizeUpgradeHash(runtimeName: string, srtool: any): string {
         srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
     );
   } else {
-    return srtool.runtimes.compressed.subwasm.parachain_authorize_upgrade_hash;
+    return srtool.runtimes.compressed.subwasm.allychain_authorize_upgrade_hash;
   }
 }
 

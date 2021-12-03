@@ -86,7 +86,7 @@ describeDevMoonbeam("Staking - Join Candidates", (context) => {
     const receipt = await context.web3.eth.getTransactionReceipt(block.txResults[0].result);
     expect(receipt.status).to.equal(true);
 
-    let candidatesAfter = await context.axiaApi.query.parachainStaking.candidatePool();
+    let candidatesAfter = await context.axiaApi.query.allychainStaking.candidatePool();
     expect((candidatesAfter.toJSON() as { owner: string; amount: string }[]).length).to.equal(
       2,
       "New candidate should have been added"
@@ -117,7 +117,7 @@ describeDevMoonbeam("Staking - Join Delegators", (context) => {
 
   it("should have successfully delegated ALITH", async function () {
     const delegatorsAfter = (
-      (await context.axiaApi.query.parachainStaking.delegatorState(ETHAN)) as any
+      (await context.axiaApi.query.allychainStaking.delegatorState(ETHAN)) as any
     ).unwrap();
     expect(
       (

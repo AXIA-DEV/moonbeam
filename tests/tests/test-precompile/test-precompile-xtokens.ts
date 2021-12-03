@@ -113,8 +113,8 @@ describeDevMoonbeam("Precompiles - xtokens", (context) => {
     const destination_network_id = "00";
 
     // Junction::Parachain(0)
-    const x2_parachain_asset_enum_selector = "0x00";
-    const x2_parachain_id = "00000000";
+    const x2_allychain_asset_enum_selector = "0x00";
+    const x2_allychain_id = "00000000";
 
     // Junction::PalletInstance(3)
     const x2_pallet_instance_enum_selector = "0x04";
@@ -127,10 +127,10 @@ describeDevMoonbeam("Precompiles - xtokens", (context) => {
       // one parent
       1,
       // X2(Parachain, PalletInstance)
-      // Parachain: Parachain selector (00) + parachain id (0) in 4 bytes (00000000)
+      // Parachain: Parachain selector (00) + allychain id (0) in 4 bytes (00000000)
       // PalletInstance: Selector (04) + pallet instance 1 byte (03)
       [
-        x2_parachain_asset_enum_selector + x2_parachain_id,
+        x2_allychain_asset_enum_selector + x2_allychain_id,
         x2_pallet_instance_enum_selector + x2_instance,
       ],
     ];

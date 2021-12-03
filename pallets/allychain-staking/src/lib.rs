@@ -76,7 +76,7 @@ pub mod pallet {
 	};
 	use sp_std::{cmp::Ordering, collections::btree_map::BTreeMap, prelude::*};
 
-	/// Pallet for parachain staking
+	/// Pallet for allychain staking
 	#[pallet::pallet]
 	pub struct Pallet<T>(PhantomData<T>);
 
@@ -1251,9 +1251,9 @@ pub mod pallet {
 	#[derive(Clone, PartialEq, Eq, Encode, Decode, RuntimeDebug, TypeInfo)]
 	/// Reserve information { account, percent_of_inflation }
 	pub struct ParachainBondConfig<AccountId> {
-		/// Account which receives funds intended for parachain bond
+		/// Account which receives funds intended for allychain bond
 		pub account: AccountId,
-		/// Percent of inflation set aside for parachain bond account
+		/// Percent of inflation set aside for allychain bond account
 		pub percent: Percent,
 	}
 	impl<A: Default> Default for ParachainBondConfig<A> {
@@ -1329,7 +1329,7 @@ pub mod pallet {
 		/// Default commission due to collators, is `CollatorCommission` storage value in genesis
 		#[pallet::constant]
 		type DefaultCollatorCommission: Get<Perbill>;
-		/// Default percent of inflation set aside for parachain bond account
+		/// Default percent of inflation set aside for allychain bond account
 		#[pallet::constant]
 		type DefaultParachainBondReservePercent: Get<Percent>;
 		/// Minimum stake required for any candidate to be in `SelectedCandidates` for the round
@@ -1452,11 +1452,11 @@ pub mod pallet {
 		DelegatorDueReward(T::AccountId, T::AccountId, BalanceOf<T>),
 		/// Paid the account (delegator or collator) the balance as liquid rewards
 		Rewarded(T::AccountId, BalanceOf<T>),
-		/// Transferred to account which holds funds reserved for parachain bond
+		/// Transferred to account which holds funds reserved for allychain bond
 		ReservedForParachainBond(T::AccountId, BalanceOf<T>),
-		/// Account (re)set for parachain bond treasury [old, new]
+		/// Account (re)set for allychain bond treasury [old, new]
 		ParachainBondAccountSet(T::AccountId, T::AccountId),
-		/// Percent of inflation reserved for parachain bond (re)set [old, new]
+		/// Percent of inflation reserved for allychain bond (re)set [old, new]
 		ParachainBondReservePercentSet(Percent, Percent),
 		/// Annual inflation input (first 3) was used to derive new per-round inflation (last 3)
 		InflationSet(Perbill, Perbill, Perbill, Perbill, Perbill, Perbill),
@@ -1518,7 +1518,7 @@ pub mod pallet {
 	type TotalSelected<T: Config> = StorageValue<_, u32, ValueQuery>;
 
 	#[pallet::storage]
-	#[pallet::getter(fn parachain_bond_info)]
+	#[pallet::getter(fn allychain_bond_info)]
 	/// Parachain bond config info { account, percent_of_inflation }
 	type ParachainBondInfo<T: Config> =
 		StorageValue<_, ParachainBondConfig<T::AccountId>, ValueQuery>;
@@ -1718,7 +1718,7 @@ pub mod pallet {
 			}
 			// Set collator commission to default config
 			<CollatorCommission<T>>::put(T::DefaultCollatorCommission::get());
-			// Set parachain bond config to default config
+			// Set allychain bond config to default config
 			<ParachainBondInfo<T>>::put(ParachainBondConfig {
 				// must be set soon; if not => due inflation will be sent to collators/delegators
 				account: T::AccountId::default(),
@@ -1791,9 +1791,9 @@ pub mod pallet {
 			<InflationConfig<T>>::put(config);
 			Ok(().into())
 		}
-		#[pallet::weight(<T as Config>::WeightInfo::set_parachain_bond_account())]
-		/// Set the account that will hold funds set aside for parachain bond
-		pub fn set_parachain_bond_account(
+		#[pallet::weight(<T as Config>::WeightInfo::set_allychain_bond_account())]
+		/// Set the account that will hold funds set aside for allychain bond
+		pub fn set_allychain_bond_account(
 			origin: OriginFor<T>,
 			new: T::AccountId,
 		) -> DispatchResultWithPostInfo {
@@ -1810,9 +1810,9 @@ pub mod pallet {
 			Self::deposit_event(Event::ParachainBondAccountSet(old, new));
 			Ok(().into())
 		}
-		#[pallet::weight(<T as Config>::WeightInfo::set_parachain_bond_reserve_percent())]
-		/// Set the percent of inflation set aside for parachain bond
-		pub fn set_parachain_bond_reserve_percent(
+		#[pallet::weight(<T as Config>::WeightInfo::set_allychain_bond_reserve_percent())]
+		/// Set the percent of inflation set aside for allychain bond
+		pub fn set_allychain_bond_reserve_percent(
 			origin: OriginFor<T>,
 			new: Percent,
 		) -> DispatchResultWithPostInfo {
@@ -2375,11 +2375,11 @@ pub mod pallet {
 			let total_staked = <Staked<T>>::take(round_to_payout);
 			let total_issuance = Self::compute_issuance(total_staked);
 			let mut left_issuance = total_issuance;
-			// reserve portion of issuance for parachain bond account
+			// reserve portion of issuance for allychain bond account
 			let bond_config = <ParachainBondInfo<T>>::get();
-			let parachain_bond_reserve = bond_config.percent * total_issuance;
+			let allychain_bond_reserve = bond_config.percent * total_issuance;
 			if let Ok(imb) =
-				T::Currency::deposit_into_existing(&bond_config.account, parachain_bond_reserve)
+				T::Currency::deposit_into_existing(&bond_config.account, allychain_bond_reserve)
 			{
 				// update round issuance iff transfer succeeds
 				left_issuance -= imb.peek();

@@ -27,7 +27,7 @@ use pallet_evm_precompile_dispatch::Dispatch;
 use pallet_evm_precompile_modexp::Modexp;
 use pallet_evm_precompile_sha3fips::Sha3FIPS256;
 use pallet_evm_precompile_simple::{ECRecover, ECRecoverPublicKey, Identity, Ripemd160, Sha256};
-use parachain_staking_precompiles::ParachainStakingWrapper;
+use allychain_staking_precompiles::ParachainStakingWrapper;
 use relay_encoder_precompiles::RelayEncoderWrapper;
 use sp_core::H160;
 use sp_std::fmt::Debug;

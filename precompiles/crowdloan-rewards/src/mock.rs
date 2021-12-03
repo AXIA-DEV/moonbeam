@@ -20,7 +20,7 @@ use codec::{Decode, Encode, MaxEncodedLen};
 use cumulus_primitives_core::{
 	relay_chain::BlockNumber as RelayChainBlockNumber, PersistedValidationData,
 };
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::ParachainInherentData;
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use frame_support::{
 	construct_runtime,
@@ -57,7 +57,7 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Evm: pallet_evm::{Pallet, Call, Storage, Event<T>},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>},
+		ParachainSystem: cumulus_pallet_allychain_system::{Pallet, Call, Storage, Inherent, Event<T>},
 		Crowdloan: pallet_crowdloan_rewards::{Pallet, Call, Storage, Event<T>},
 	}
 );
@@ -118,7 +118,7 @@ parameter_types! {
 	pub ParachainId: cumulus_primitives_core::ParaId = 100.into();
 }
 
-impl cumulus_pallet_parachain_system::Config for Runtime {
+impl cumulus_pallet_allychain_system::Config for Runtime {
 	type SelfParaId = ParachainId;
 	type Event = Event;
 	type OnValidationData = ();
@@ -156,7 +156,7 @@ impl frame_system::Config for Runtime {
 	type BlockWeights = ();
 	type BlockLength = ();
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_allychain_system::ParachainSetCode<Self>;
 }
 parameter_types! {
 	pub const ExistentialDeposit: u128 = 0;
@@ -253,7 +253,7 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 	type RewardAddressChangeOrigin = EnsureSigned<Self::AccountId>;
 	type VestingBlockNumber = cumulus_primitives_core::relay_chain::BlockNumber;
 	type VestingBlockProvider =
-		cumulus_pallet_parachain_system::RelaychainBlockNumberProvider<Self>;
+		cumulus_pallet_allychain_system::RelaychainBlockNumberProvider<Self>;
 	type WeightInfo = ();
 }
 pub(crate) struct ExtBuilder {
@@ -325,7 +325,7 @@ pub(crate) fn roll_to(n: u64) {
 			};
 			inherent_data
 				.put_data(
-					cumulus_primitives_parachain_inherent::INHERENT_IDENTIFIER,
+					cumulus_primitives_allychain_inherent::INHERENT_IDENTIFIER,
 					&system_inherent_data,
 				)
 				.expect("failed to put VFP inherent");

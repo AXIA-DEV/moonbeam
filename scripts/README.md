@@ -5,7 +5,7 @@ This folder contains a list of script useful to develop/test the Moonbeam Node
 ## Requirements
 
 For running nodes, you need to have **docker** running.
-It is used to run the axia relay node (also needed to generate the relay specs for the parachain)
+It is used to run the axia relay node (also needed to generate the relay specs for the allychain)
 
 !!All the commands are to be executed from the repository root folder.!!
 
@@ -32,13 +32,13 @@ WS: 33[0-9]44
 (so your first relay node will have RPC at 33043)
 
 ```
-Parachain Nodes: 34[0-9]XX (supports 9 parachain nodes)
+Parachain Nodes: 34[0-9]XX (supports 9 allychain nodes)
 P2P: 34[0-9]52
 RPC: 34[0-9]53
 WS: 34[0-9]54
 ```
 
-(so your first parachain node will have RPC at 34053)
+(so your first allychain node will have RPC at 34053)
 
 ### Setting your USER_PORT
 
@@ -74,20 +74,20 @@ You can change this behavior by providing `--sealing 12000`
 ## Running complete local network
 
 Moonbeam rely on `axia-launch` to provide a simple command to create a local network including
-the relay and the parachain nodes.
+the relay and the allychain nodes.
 
 The script [tools/launch.ts] contains a list of presets to execute the different possible networks.
 Ex:
 
 ```
-yarn launch --parachain moonbase-0.15.1
+yarn launch --allychain moonbase-0.15.1
 ```
 
 (More details in [tools/README.md])
 
-## Running a parachain test
+## Running a allychain test
 
-You can directly launch a parachain test with this script.
+You can directly launch a allychain test with this script.
 It takes care of getting the binary relay node and spawns 2 validators and 2 collators.
 
 ```bash

@@ -19,7 +19,7 @@
 //!
 //! This module can assemble:
 //! PartialComponents: For maintence tasks without a complete node (eg import/export blocks, purge)
-//! Full Service: A complete parachain node including the pool, rpc, network, embedded relay chain
+//! Full Service: A complete allychain node including the pool, rpc, network, embedded relay chain
 //! Dev Service: A leaner service without the relay chain backing.
 
 use cli_opt::{EthApi as EthApiCmd, RpcConfig};
@@ -39,7 +39,7 @@ use cumulus_client_network::build_block_announce_validator;
 use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
-use cumulus_primitives_parachain_inherent::{
+use cumulus_primitives_allychain_inherent::{
 	MockValidationDataInherentDataProvider, ParachainInherentData,
 };
 use nimbus_consensus::{build_nimbus_consensus, BuildNimbusConsensusParams};
@@ -270,7 +270,7 @@ where
 	))
 }
 
-/// Builds the PartialComponents for a parachain or development service
+/// Builds the PartialComponents for a allychain or development service
 ///
 /// Use this function if you don't actually need the full service, but just the partial in order to
 /// be able to perform chain operations.
@@ -473,12 +473,12 @@ impl fp_rpc::ConvertTransaction<moonbeam_core_primitives::OpaqueExtrinsic>
 	}
 }
 
-/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
+/// Start a node with the given allychain `Configuration` and relay chain `Configuration`.
 ///
 /// This is the actual implementation that is abstract over the executor and the runtime api.
 #[sc_tracing::logging::prefix_logs_with("🌗")]
 async fn start_node_impl<RuntimeApi, Executor>(
-	parachain_config: Configuration,
+	allychain_config: Configuration,
 	axia_config: Configuration,
 	id: polkadot_primitives::v0::Id,
 	rpc_config: RpcConfig,
@@ -490,13 +490,13 @@ where
 		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
 	Executor: NativeExecutionDispatch + 'static,
 {
-	if matches!(parachain_config.role, Role::Light) {
+	if matches!(allychain_config.role, Role::Light) {
 		return Err("Light client not supported!".into());
 	}
 
-	let parachain_config = prepare_node_config(parachain_config);
+	let allychain_config = prepare_node_config(allychain_config);
 
-	let params = new_partial(&parachain_config, false)?;
+	let params = new_partial(&allychain_config, false)?;
 	let (block_import, filter_pool, mut telemetry, telemetry_worker_handle, frontier_backend) =
 		params.other;
 
@@ -516,14 +516,14 @@ where
 		relay_chain_full_node.backend.clone(),
 	);
 
-	let collator = parachain_config.role.is_authority();
-	let prometheus_registry = parachain_config.prometheus_registry().cloned();
+	let collator = allychain_config.role.is_authority();
+	let prometheus_registry = allychain_config.prometheus_registry().cloned();
 	let transaction_pool = params.transaction_pool.clone();
 	let mut task_manager = params.task_manager;
 	let import_queue = cumulus_client_service::SharedImportQueue::new(params.import_queue);
 	let (network, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
-			config: &parachain_config,
+			config: &allychain_config,
 			client: client.clone(),
 			transaction_pool: transaction_pool.clone(),
 			spawn_handle: task_manager.spawn_handle(),
@@ -574,8 +574,8 @@ where
 		let ethapi_cmd = ethapi_cmd.clone();
 		let max_past_logs = rpc_config.max_past_logs;
 
-		let is_moonbeam = parachain_config.chain_spec.is_moonbeam();
-		let is_moonriver = parachain_config.chain_spec.is_moonriver();
+		let is_moonbeam = allychain_config.chain_spec.is_moonbeam();
+		let is_moonriver = allychain_config.chain_spec.is_moonriver();
 
 		Box::new(move |deny_unsafe, _| {
 			let transaction_converter: TransactionConverters = if is_moonbeam {
@@ -616,7 +616,7 @@ where
 		})
 	};
 
-	let skip_prediction = parachain_config.force_authoring;
+	let skip_prediction = allychain_config.force_authoring;
 
 	sc_service::spawn_tasks(sc_service::SpawnTasksParams {
 		on_demand: None,
@@ -625,7 +625,7 @@ where
 		client: client.clone(),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
-		config: parachain_config,
+		config: allychain_config,
 		keystore: params.keystore_container.sync_keystore(),
 		backend: backend.clone(),
 		network: network.clone(),
@@ -650,17 +650,17 @@ where
 		let relay_chain_backend = relay_chain_full_node.backend.clone();
 		let relay_chain_client = relay_chain_full_node.client.clone();
 
-		let parachain_consensus = build_nimbus_consensus(BuildNimbusConsensusParams {
+		let allychain_consensus = build_nimbus_consensus(BuildNimbusConsensusParams {
 			para_id: id,
 			proposer_factory,
 			block_import,
 			relay_chain_client: relay_chain_full_node.client.clone(),
 			relay_chain_backend: relay_chain_full_node.backend.clone(),
-			parachain_client: client.clone(),
+			allychain_client: client.clone(),
 			keystore: params.keystore_container.sync_keystore(),
 			skip_prediction,
 			create_inherent_data_providers: move |_, (relay_parent, validation_data, author_id)| {
-				let parachain_inherent = ParachainInherentData::create_at_with_client(
+				let allychain_inherent = ParachainInherentData::create_at_with_client(
 					relay_parent,
 					&relay_chain_client,
 					&*relay_chain_backend,
@@ -670,15 +670,15 @@ where
 				async move {
 					let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-					let parachain_inherent = parachain_inherent.ok_or_else(|| {
+					let allychain_inherent = allychain_inherent.ok_or_else(|| {
 						Box::<dyn std::error::Error + Send + Sync>::from(
-							"Failed to create parachain inherent",
+							"Failed to create allychain inherent",
 						)
 					})?;
 
 					let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-					Ok((time, parachain_inherent, author))
+					Ok((time, allychain_inherent, author))
 				}
 			},
 		});
@@ -693,7 +693,7 @@ where
 			task_manager: &mut task_manager,
 			spawner,
 			relay_chain_full_node,
-			parachain_consensus,
+			allychain_consensus,
 			import_queue,
 		};
 
@@ -715,9 +715,9 @@ where
 	Ok((task_manager, client))
 }
 
-/// Start a normal parachain node.
+/// Start a normal allychain node.
 pub async fn start_node<RuntimeApi, Executor>(
-	parachain_config: Configuration,
+	allychain_config: Configuration,
 	axia_config: Configuration,
 	id: polkadot_primitives::v0::Id,
 	rpc_config: RpcConfig,
@@ -729,11 +729,11 @@ where
 		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
 	Executor: NativeExecutionDispatch + 'static,
 {
-	start_node_impl(parachain_config, axia_config, id, rpc_config).await
+	start_node_impl(allychain_config, axia_config, id, rpc_config).await
 }
 
 /// Builds a new development service. This service uses manual seal, and mocks
-/// the parachain inherent.
+/// the allychain inherent.
 pub fn new_dev<RuntimeApi, Executor>(
 	config: Configuration,
 	_author_id: Option<nimbus_primitives::NimbusId>,
@@ -795,7 +795,7 @@ where
 		// This could and perhaps should be made more flexible. Here are some options:
 		// 1. a dedicated `--dev-author-id` flag that only works with the dev service
 		// 2. restore the old --author-id` and also allow it to force a secific key
-		//    in the parachain context
+		//    in the allychain context
 		// 3. check the keystore like we do in nimbus. Actually, maybe the keystore-checking could
 		//    be exported as a helper function from nimbus.
 		let author_id = chain_spec::get_from_seed::<NimbusId>("Alice");
@@ -869,7 +869,7 @@ where
 					async move {
 						let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-						let mocked_parachain = MockValidationDataInherentDataProvider {
+						let mocked_allychain = MockValidationDataInherentDataProvider {
 							current_para_block,
 							relay_offset: 1000,
 							relay_blocks_per_para_block: 2,
@@ -877,7 +877,7 @@ where
 
 						let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-						Ok((time, mocked_parachain, author))
+						Ok((time, mocked_allychain, author))
 					}
 				},
 			}),

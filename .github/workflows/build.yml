@@ -162,7 +162,7 @@ jobs:
       - name: Format code with rustfmt
         run: cargo fmt -- --check
 
-  ####### Preparing axia binary for parachain tests #######
+  ####### Preparing axia binary for allychain tests #######
 
   prepare-axia:
     runs-on: self-hosted
@@ -474,7 +474,7 @@ jobs:
           npm install
           node_modules/.bin/mocha --parallel -j 7 -r ts-node/register 'para-tests/**/test-*.ts'
 
-  docker-parachain:
+  docker-allychain:
     runs-on: ubuntu-latest
     needs: ["set-tags", "build"]
     if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/moonbeam'
@@ -490,7 +490,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=purestake/moonbase-parachain
+          DOCKER_IMAGE=purestake/moonbase-allychain
           TAGS="${DOCKER_IMAGE}:sha-${{ needs.set-tags.outputs.sha8 }}"
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -507,12 +507,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push parachain
+      - name: Build and push allychain
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/moonbase-parachain.Dockerfile
+          file: ./docker/moonbase-allychain.Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.prep.outputs.tags }}

@@ -22,7 +22,7 @@ use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
-use polkadot_parachain::primitives::AccountIdConversion;
+use polkadot_allychain::primitives::AccountIdConversion;
 #[cfg(feature = "westend-native")]
 use polkadot_service::WestendChainSpec;
 use sc_cli::{
@@ -46,7 +46,7 @@ fn load_spec(
 	Ok(match id {
 		// Moonbase networks
 		"moonbase-alpha" | "alphanet" => Box::new(chain_spec::RawChainSpec::from_json_bytes(
-			&include_bytes!("../../../specs/alphanet/parachain-embedded-specs-v8.json")[..],
+			&include_bytes!("../../../specs/alphanet/allychain-embedded-specs-v8.json")[..],
 		)?),
 		#[cfg(feature = "moonbase-native")]
 		"moonbase-local" => Box::new(chain_spec::moonbase::get_chain_spec(para_id)),
@@ -58,7 +58,7 @@ fn load_spec(
 		"staking" => Box::new(chain_spec::test_spec::staking_spec(para_id)),
 		// Moonriver networks
 		"moonriver" => Box::new(chain_spec::RawChainSpec::from_json_bytes(
-			&include_bytes!("../../../specs/moonriver/parachain-embedded-specs.json")[..],
+			&include_bytes!("../../../specs/moonriver/allychain-embedded-specs.json")[..],
 		)?),
 		#[cfg(feature = "moonriver-native")]
 		"moonriver-dev" => Box::new(chain_spec::moonriver::development_chain_spec(None, None)),
@@ -117,9 +117,9 @@ impl SubstrateCli for Cli {
 	fn description() -> String {
 		format!(
 			"Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
-		{} [parachain-args] -- [relaychain-args]",
+		{} [allychain-args] -- [relaychain-args]",
 			Self::executable_name()
 		)
 	}
@@ -137,7 +137,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
-		load_spec(id, self.run.parachain_id.unwrap_or(1000).into(), &self.run)
+		load_spec(id, self.run.allychain_id.unwrap_or(1000).into(), &self.run)
 	}
 
 	fn native_runtime_version(spec: &Box<dyn sc_service::ChainSpec>) -> &'static RuntimeVersion {
@@ -165,9 +165,9 @@ impl SubstrateCli for RelayChainCli {
 
 	fn description() -> String {
 		"Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
-		parachain-collator [parachain-args] -- [relaychain-args]"
+		allychain-collator [allychain-args] -- [relaychain-args]"
 			.into()
 	}
 
@@ -361,7 +361,7 @@ pub fn run() -> Result<()> {
 			// Cumulus approach here, we directly call the generic load_spec func
 			let chain_spec = load_spec(
 				&params.chain.clone().unwrap_or_default(),
-				params.parachain_id.unwrap_or(1000).into(),
+				params.allychain_id.unwrap_or(1000).into(),
 				&cli.run,
 			)?;
 			let output_buf = match chain_spec {
@@ -600,7 +600,7 @@ pub fn run() -> Result<()> {
 			runner.run_node_until_exit(|config| async move {
 				let extension = chain_spec::Extensions::try_get(&*config.chain_spec);
 				let para_id = extension.map(|e| e.para_id);
-				let id = ParaId::from(cli.run.parachain_id.clone().or(para_id).unwrap_or(1000));
+				let id = ParaId::from(cli.run.allychain_id.clone().or(para_id).unwrap_or(1000));
 
 				let rpc_config = RpcConfig {
 					ethapi: cli.run.ethapi,
@@ -612,7 +612,7 @@ pub fn run() -> Result<()> {
 				};
 
 				// If dev service was requested, start up manual or instant seal.
-				// Otherwise continue with the normal parachain node.
+				// Otherwise continue with the normal allychain node.
 				// Dev service can be requested in two ways.
 				// 1. by providing the --dev-service flag to the CLI
 				// 2. by specifying "dev-service" in the chain spec's "relay-chain" field.
@@ -661,7 +661,7 @@ pub fn run() -> Result<()> {
 						.chain(cli.relaychain_args.iter()),
 				);
 
-				let parachain_account =
+				let allychain_account =
 					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
 
 				let genesis_state = match &config.chain_spec {
@@ -693,7 +693,7 @@ pub fn run() -> Result<()> {
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Parachain id: {:?}", id);
-				info!("Parachain Account: {}", parachain_account);
+				info!("Parachain Account: {}", allychain_account);
 				info!("Parachain genesis state: {}", genesis_state);
 
 				match &config.chain_spec {

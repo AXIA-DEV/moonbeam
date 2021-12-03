@@ -25,7 +25,7 @@ export interface ParaTestContext {
 }
 
 export interface ParachainApis {
-  parachainId: number;
+  allychainId: number;
   apis: ApiPromise[];
 }
 
@@ -56,7 +56,7 @@ export function describeParachain(
         : {
             paraPorts: [
               {
-                parachainId: 1000,
+                allychainId: 1000,
                 ports: [
                   {
                     p2pPort: 19931,
@@ -86,11 +86,11 @@ export function describeParachain(
       context.createEthers = async () => provideEthersApi(init.paraPorts[0].ports[0].rpcPort);
       context.createAXIAApiParachains = async () => {
         const apiPromises = await Promise.all(
-          init.paraPorts.map(async (parachain: ParachainPorts) => {
+          init.paraPorts.map(async (allychain: ParachainPorts) => {
             return {
-              parachainId: parachain.parachainId,
+              allychainId: allychain.allychainId,
               apis: await Promise.all(
-                parachain.ports.map(async (ports: NodePorts) => {
+                allychain.ports.map(async (ports: NodePorts) => {
                   return provideAXIAApi(ports.wsPort);
                 })
               ),

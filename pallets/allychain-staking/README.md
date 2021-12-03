@@ -15,12 +15,12 @@ Implements Delegated Proof of Stake to
 
 Links:
 
-- [Rust Documentation](https://purestake.github.io/moonbeam/parachain_staking/index.html)
-- [Unofficial Documentation](https://meta5.world/parachain-staking-docs/)
-- [(Outdated) Blog Post with Justification](https://meta5.world/posts/parachain-staking)
+- [Rust Documentation](https://purestake.github.io/moonbeam/allychain_staking/index.html)
+- [Unofficial Documentation](https://meta5.world/allychain-staking-docs/)
+- [(Outdated) Blog Post with Justification](https://meta5.world/posts/allychain-staking)
 
 ## History
 
-Since January 2021, Moonbeam's team has maintained this Delegated Proof of Stake (DPoS) pallet designed specifically for parachains.
+Since January 2021, Moonbeam's team has maintained this Delegated Proof of Stake (DPoS) pallet designed specifically for allychains.
 
 Since April 2021, the development of this pallet has been supported by [a Web3 Foundation grant](https://github.com/w3f/Grants-Program/pull/389). The [first milestone](https://github.com/w3f/Grant-Milestone-Delivery/pull/218) was approved in June 2021.

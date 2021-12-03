@@ -27,11 +27,11 @@ pallet-ethereum-chain-id = { path = "../../pallets/ethereum-chain-id", default-f
 pallet-maintenance-mode = { path = "../../pallets/maintenance-mode", default-features = false }
 pallet-migrations = { path = "../../pallets/migrations", default-features = false }
 pallet-proxy-genesis-companion = { path = "../../pallets/proxy-genesis-companion", default-features = false }
-parachain-staking = { path = "../../pallets/parachain-staking", default-features = false }
+allychain-staking = { path = "../../pallets/allychain-staking", default-features = false }
 
 # Moonbeam precompiles
 crowdloan-rewards-precompiles = { path = "../../precompiles/crowdloan-rewards", default-features = false }
-parachain-staking-precompiles = { path = "../../precompiles/parachain-staking", default-features = false }
+allychain-staking-precompiles = { path = "../../precompiles/allychain-staking", default-features = false }
 
 # Moonbeam tracing
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", optional = true, default-features = false }
@@ -86,13 +86,13 @@ pallet-evm-precompile-sha3fips = { git = "https://github.com/purestake/frontier"
 pallet-evm-precompile-simple = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # Cumulus / Nimbus
-cumulus-pallet-parachain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+cumulus-pallet-allychain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-primitives-timestamp = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 nimbus-primitives = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-author-inherent = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-author-slot-filter = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parachain-info = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+allychain-info = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # Benchmarking
 frame-benchmarking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", optional = true, default-features = false }
@@ -103,7 +103,7 @@ hex = "0.4"
 rlp = "0.5"
 sha3 = "0.9"
 
-cumulus-primitives-parachain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 [build-dependencies]
@@ -113,7 +113,7 @@ substrate-wasm-builder = { git = "https://github.com/purestake/substrate", branc
 default = [ "std" ]
 std = [
 	"account/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-allychain-system/std",
 	"cumulus-primitives-core/std",
 	"cumulus-primitives-timestamp/std",
 	"evm-tracing-events/std",
@@ -153,9 +153,9 @@ std = [
 	"pallet-transaction-payment/std",
 	"pallet-treasury/std",
 	"pallet-utility/std",
-	"parachain-info/std",
-	"parachain-staking-precompiles/std",
-	"parachain-staking/std",
+	"allychain-info/std",
+	"allychain-staking-precompiles/std",
+	"allychain-staking/std",
 	"parity-scale-codec/std",
 	"precompile-utils/std",
 	"runtime-common/std",
@@ -196,6 +196,6 @@ runtime-benchmarks = [
 	"pallet-migrations/try-runtime",
 	"pallet-society/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
-	"parachain-staking/runtime-benchmarks",
+	"allychain-staking/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 ]

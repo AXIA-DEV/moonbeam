@@ -148,17 +148,17 @@ benchmarks! {
 		assert_eq!(Pallet::<T>::inflation_config().annual, inflation_range);
 	}
 
-	set_parachain_bond_account {
-		let parachain_bond_account: T::AccountId = account("TEST", 0u32, USER_SEED);
-	}: _(RawOrigin::Root, parachain_bond_account.clone())
+	set_allychain_bond_account {
+		let allychain_bond_account: T::AccountId = account("TEST", 0u32, USER_SEED);
+	}: _(RawOrigin::Root, allychain_bond_account.clone())
 	verify {
-		assert_eq!(Pallet::<T>::parachain_bond_info().account, parachain_bond_account);
+		assert_eq!(Pallet::<T>::allychain_bond_info().account, allychain_bond_account);
 	}
 
-	set_parachain_bond_reserve_percent {
+	set_allychain_bond_reserve_percent {
 	}: _(RawOrigin::Root, Percent::from_percent(33))
 	verify {
-		assert_eq!(Pallet::<T>::parachain_bond_info().percent, Percent::from_percent(33));
+		assert_eq!(Pallet::<T>::allychain_bond_info().percent, Percent::from_percent(33));
 	}
 
 	// ROOT DISPATCHABLES
@@ -1101,16 +1101,16 @@ mod tests {
 	}
 
 	#[test]
-	fn bench_set_parachain_bond_account() {
+	fn bench_set_allychain_bond_account() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(Pallet::<Test>::test_benchmark_set_parachain_bond_account());
+			assert_ok!(Pallet::<Test>::test_benchmark_set_allychain_bond_account());
 		});
 	}
 
 	#[test]
-	fn bench_set_parachain_bond_reserve_percent() {
+	fn bench_set_allychain_bond_reserve_percent() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(Pallet::<Test>::test_benchmark_set_parachain_bond_reserve_percent());
+			assert_ok!(Pallet::<Test>::test_benchmark_set_allychain_bond_reserve_percent());
 		});
 	}
 

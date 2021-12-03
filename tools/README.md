@@ -3,7 +3,7 @@
 ## Launching complete network
 
 Based on [axia-launch](https://github.com/paritytech/axia-launch), the tool to launch
-multiple relay and parachain nodes, the script [launch.ts](./launch.ts) allows to start a complete
+multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
 As the moonbeam and relay runtimes evolved, more configurations will be added to the script.
@@ -23,7 +23,7 @@ npm install
 ### Usage
 
 ```
-npm run launch -- --parachain moonbase-0.11.2
+npm run launch -- --allychain moonbase-0.11.2
 ```
 
 The launch script accepts a preconfigured network (default is "local", see further).
@@ -46,7 +46,7 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 It is also possible to specify a binary instead of a docker image. Ex:
 
 ```
-npm run launch -- --parachain local
+npm run launch -- --allychain local
 # or
 npm run launch
 ```
@@ -54,7 +54,7 @@ npm run launch
 which uses the configuration (based on latest betanet, you can override using `--relay local`):
 
 ```
-# parachain
+# allychain
 local: {
   relay: "betanet-9004",
   chain: "moonbase-local",
@@ -83,16 +83,16 @@ Usage: launch [args]
 Options:
   --version          Show version number                               [boolean]
 
-  --parachain        which parachain configuration to run               [string]
+  --allychain        which allychain configuration to run               [string]
                      [choices: "moonriver-genesis", "moonriver-genesis-fast",
                       "alphanet-8.1", "alphanet-8.0", "local"] [default: "local"]
 
-  --parachain-chain  overrides parachain chain/runtime                  [string]
+  --allychain-chain  overrides allychain chain/runtime                  [string]
                      [choices: "moonbase", "moonriver", "moonbeam",
                       "moonbase-local", "moonriver-local",
                       "moonbeam-local"]
 
-  --parachain-id     overrides parachain-id             [number] [default: 1000]
+  --allychain-id     overrides allychain-id             [number] [default: 1000]
 
   --relay            overrides relay configuration                      [string]
                      [choices: "kusama-9030", "kusama-9040", "kusama-9030-fast",
@@ -112,20 +112,20 @@ Options:
 Ex: _Run only local binaries (with runtime moonriver and relay runtime kusama)_
 
 ```
-npm run launch -- --parachain-chain moonriver-local --relay local --relay-chain kusama-local
+npm run launch -- --allychain-chain moonriver-local --relay local --relay-chain kusama-local
 ```
 
-(no --parachain defaults to `--parachain local`)
+(no --allychain defaults to `--allychain local`)
 
 Ex: _Run alphanet-8.1 with westend 9030 runtime_
 
 ```
-npm run launch -- --parachain alphanet-8.1 --relay westend-9030
+npm run launch -- --allychain alphanet-8.1 --relay westend-9030
 ```
 
 ### Fast local build
 
-If you want to use your local binary for parachain or relay chain, you can reduce your compilation
+If you want to use your local binary for allychain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
 For that you have to carefully check which runtimes you need, both on the moonbeam side and on the
 axia side.
@@ -158,7 +158,7 @@ each relay node:
   - rpc: startingPort + i * 10 + 1
   - ws: startingPort + i * 10 + 2
 
-each parachain node:
+each allychain node:
   - p2p: startingPort + 100 + i * 10
   - rpc: startingPort + 100 + i * 10 + 1
   - ws: startingPort + 100 + i * 10 + 2
@@ -167,7 +167,7 @@ each parachain node:
 For the default configuration, you can access through axiajs:
 
 - relay node 1: https://axia.js.org/apps/?rpc=ws://localhost:34002
-- parachain node 1: https://axia.js.org/apps/?rpc=ws://localhost:34102
+- allychain node 1: https://axia.js.org/apps/?rpc=ws://localhost:34102
 
 ### Example of output:
 
@@ -180,7 +180,7 @@ For the default configuration, you can access through axiajs:
 🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
      Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
      build/moonriver-genesis-fast/moonbeam downloaded !
-🚀 Parachain: moonriver-genesis-fast   - purestake/moonbase-parachain:moonriver-genesis-fast (moonriver-local)
+🚀 Parachain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
      Missing build/kusama-9030-fast/axia locally, downloading it...
      build/kusama-9030-fast/axia downloaded !
 

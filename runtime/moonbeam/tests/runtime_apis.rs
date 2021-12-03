@@ -102,7 +102,7 @@ fn ethereum_runtime_rpc_api_author() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			assert_eq!(Runtime::author(), H160::from(ALICE));
 		});
@@ -204,7 +204,7 @@ fn ethereum_runtime_rpc_api_current_transaction_statuses() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			// Calls are currently filtered, so the extrinsic will fail to apply.
 			let result =
@@ -237,7 +237,7 @@ fn ethereum_runtime_rpc_api_current_block() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			run_to_block(2);
 			let block = Runtime::current_block().expect("Block result.");
@@ -269,7 +269,7 @@ fn ethereum_runtime_rpc_api_current_receipts() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			set_author(NimbusId::from_slice(&ALICE_NIMBUS));
 			// Calls are currently filtered, so the extrinsic will fail to apply.
 			let result =

@@ -28,14 +28,14 @@ $MOONBEAM_BINARY export-genesis-wasm \
 echo $ALPHANET_WASM generated
 
 $MOONBEAM_BINARY export-genesis-state \
-  --parachain-id $ALPHANET_PARACHAIN_ID \
+  --allychain-id $ALPHANET_PARACHAIN_ID \
   --chain $ALPHANET_PARACHAIN_SPEC_RAW \
   > $ALPHANET_GENESIS;
 echo $ALPHANET_GENESIS generated
 
-cp $ALPHANET_PARACHAIN_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/parachain-embedded-specs.json
+cp $ALPHANET_PARACHAIN_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/allychain-embedded-specs.json
 cp $ALPHANET_BETANET_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/betanet-embedded-specs.json
 grep -v '/p2p/' $ALPHANET_PARACHAIN_EMBEDDED_SPEC > \
-  $ALPHANET_BUILD_FOLDER/parachain-embedded-no-bootnodes-specs.json
+  $ALPHANET_BUILD_FOLDER/allychain-embedded-no-bootnodes-specs.json
 grep -v '/p2p/' $ALPHANET_BETANET_EMBEDDED_SPEC > \
   $ALPHANET_BUILD_FOLDER/betanet-embedded-no-bootnodes-specs.json

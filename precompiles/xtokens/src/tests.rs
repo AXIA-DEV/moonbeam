@@ -192,7 +192,7 @@ fn transfer_non_reserve_to_non_reserve_works() {
 				}),
 			);
 
-			// We are transferring asset 1, which corresponds to another parachain Id asset
+			// We are transferring asset 1, which corresponds to another allychain Id asset
 			assert_eq!(
 				Precompiles::execute(
 					Precompile.into(),

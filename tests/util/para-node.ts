@@ -10,10 +10,10 @@ import {
 } from "./constants";
 const debug = require("debug")("test:para-node");
 
-export async function findAvailablePorts(parachainCount: number = 1) {
+export async function findAvailablePorts(allychainCount: number = 1) {
   // 2 nodes per prachain, and as many relaychain nodes
-  const relayCount = parachainCount + 1;
-  const paraNodeCount = parachainCount * 2; // * 2;
+  const relayCount = allychainCount + 1;
+  const paraNodeCount = allychainCount * 2; // * 2;
   const nodeCount = relayCount + paraNodeCount;
   const portCount = nodeCount * 3;
   const availablePorts = await Promise.all(
@@ -66,7 +66,7 @@ export type ParachainOptions = {
 };
 
 export interface ParachainPorts {
-  parachainId: number;
+  allychainId: number;
   ports: NodePorts[];
 }
 
@@ -76,9 +76,9 @@ export interface NodePorts {
   wsPort: number;
 }
 
-// This will start a parachain node, only 1 at a time (check every 100ms).
+// This will start a allychain node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
-// Returns ports for the 3rd parachain node
+// Returns ports for the 3rd allychain node
 export async function startParachainNodes(options: ParachainOptions): Promise<{
   relayPorts: NodePorts[];
   paraPorts: ParachainPorts[];
@@ -90,19 +90,19 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
     });
   }
   const relaychain = options.relaychain || "betanet-local";
-  // For now we only support one, two or three parachains
+  // For now we only support one, two or three allychains
   const numberOfParachains =
     (options.numberOfParachains < 4 &&
       options.numberOfParachains > 0 &&
       options.numberOfParachains) ||
     1;
-  const parachainArray = new Array(numberOfParachains).fill(0);
+  const allychainArray = new Array(numberOfParachains).fill(0);
   nodeStarted = true;
-  // Each node will have 3 ports. There are 2 nodes per parachain, and as many relaychain nodes.
-  // So numberOfPorts =  3 * 2 * parachainCount
+  // Each node will have 3 ports. There are 2 nodes per allychain, and as many relaychain nodes.
+  // So numberOfPorts =  3 * 2 * allychainCount
   const ports = await findAvailablePorts(numberOfParachains);
 
-  //Build hrmpChannels, all connected to first parachain
+  //Build hrmpChannels, all connected to first allychain
   const hrmpChannels = [];
   new Array(numberOfParachains - 1).fill(0).forEach((_, i) => {
     hrmpChannels.push({
@@ -135,7 +135,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
       genesis: {
         runtime: {
           runtime_genesis_config: {
-            parachainsConfiguration: {
+            allychainsConfiguration: {
               config: {
                 validation_upgrade_frequency: 1,
                 validation_upgrade_delay: 1,
@@ -145,7 +145,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
         },
       },
     },
-    parachains: parachainArray.map((_, i) => {
+    allychains: allychainArray.map((_, i) => {
       return {
         bin: BINARY_PATH,
         id: 1000 * (i + 1),
@@ -207,9 +207,9 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
       };
     }),
 
-    paraPorts: parachainArray.map((_, i) => {
+    paraPorts: allychainArray.map((_, i) => {
       return {
-        parachainId: 1000 * (i + 1),
+        allychainId: 1000 * (i + 1),
         ports: [
           {
             p2pPort: ports[i * 2 + numberOfParachains + 1].p2pPort,

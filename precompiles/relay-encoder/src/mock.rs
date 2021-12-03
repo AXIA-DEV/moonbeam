@@ -49,7 +49,7 @@ construct_runtime!(
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Evm: pallet_evm::{Pallet, Call, Storage, Event<T>},
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>},
+		ParachainSystem: cumulus_pallet_allychain_system::{Pallet, Call, Storage, Inherent, Event<T>},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
 	}
 );
@@ -132,14 +132,14 @@ impl frame_system::Config for Test {
 	type BlockWeights = ();
 	type BlockLength = ();
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_allychain_system::ParachainSetCode<Self>;
 }
 
 parameter_types! {
 	pub ParachainId: cumulus_primitives_core::ParaId = 100.into();
 }
 
-impl cumulus_pallet_parachain_system::Config for Test {
+impl cumulus_pallet_allychain_system::Config for Test {
 	type SelfParaId = ParachainId;
 	type Event = Event;
 	type OnValidationData = ();

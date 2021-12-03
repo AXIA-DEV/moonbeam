@@ -25,7 +25,7 @@
 //! WithdrawAsset,BuyExecution and Transact messages allowed) in the destination chain
 //!
 //! In this pallet we will make distinctions between sovereign
-//! and derivative accounts. The first is the account the parachain controls
+//! and derivative accounts. The first is the account the allychain controls
 //! in the destination chain, while the latter is an account derived from the
 //! sovereign account itself, e.g., by hashing it with an index. Such distinction
 //! is important since we want to keep the integrity of the sovereign account
@@ -543,7 +543,7 @@ pub mod pallet {
 		/// Check whether the transfer is allowed.
 		///
 		/// Returns `Err` if `asset` is not a reserved asset of `dest`,
-		/// else returns `dest`, parachain or relay chain location.
+		/// else returns `dest`, allychain or relay chain location.
 		fn transfer_allowed(
 			asset: &MultiAsset,
 			dest: &MultiLocation,

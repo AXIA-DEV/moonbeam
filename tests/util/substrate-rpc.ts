@@ -63,7 +63,7 @@ export async function waitOneBlock(api: ApiPromise, numberOfBlocks: number = 1) 
   });
 }
 
-// Log relay/parachain new blocks and events
+// Log relay/allychain new blocks and events
 export async function logEvents(api: ApiPromise, name: string) {
   api.derive.chain.subscribeNewHeads(async (header) => {
     debug(

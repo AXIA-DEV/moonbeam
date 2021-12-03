@@ -19,21 +19,21 @@ describeDevMoonbeam("Staking - Parachain Bond - genesis and setParachainBondAcco
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
-  it("should have right parachain bond in genesis", async function () {
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+  it("should have right allychain bond in genesis", async function () {
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
 
-  it("should be able set the parachain bond with sudo", async function () {
+  it("should be able set the allychain bond with sudo", async function () {
     // should be able to register the genesis account for reward
     await context.axiaApi.tx.sudo
-      .sudo(context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT))
+      .sudo(context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
 });
 
@@ -46,7 +46,7 @@ describeDevMoonbeam("Staking - Parachain Bond - no sudo on setParachainBondAccou
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
 
-  it("should NOT be able set the parachain bond if NOT sudo", async function () {
+  it("should NOT be able set the allychain bond if NOT sudo", async function () {
     // should be able to register the genesis account for reward
     try {
       await createBlockWithExtrinsic(
@@ -72,15 +72,15 @@ describeDevMoonbeam("Staking - Parachain Bond - setParachainBondReservePercent",
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
 
-  it("should be able set the parachain bond reserve percent with sudo", async function () {
+  it("should be able set the allychain bond reserve percent with sudo", async function () {
     // should be able to register the genesis account
     await context.axiaApi.tx.sudo
-      .sudo(context.axiaApi.tx.parachainStaking.setParachainBondReservePercent(TWENTY_PERCENT))
+      .sudo(context.axiaApi.tx.allychainStaking.setParachainBondReservePercent(TWENTY_PERCENT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal(TWENTY_PERCENT_STRING);
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal(TWENTY_PERCENT_STRING);
   });
 });
 
@@ -93,7 +93,7 @@ describeDevMoonbeam(
       genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     });
-    it("should NOT be able set the parachain bond reserve percent without sudo", async function () {
+    it("should NOT be able set the allychain bond reserve percent without sudo", async function () {
       // should be able to register the genesis account for reward
       try {
         await createBlockWithExtrinsic(

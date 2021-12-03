@@ -26,16 +26,16 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
       context,
       alith,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length).to.eq(5);
-    expect(context.axiaApi.events.parachainStaking.ParachainBondAccountSet.is(events[1])).to.be
+    expect(context.axiaApi.events.allychainStaking.ParachainBondAccountSet.is(events[1])).to.be
       .true;
     expect(context.axiaApi.events.balances.Deposit.is(events[3])).to.be.true;
     expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[4])).to.be.true;
@@ -75,7 +75,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
         context,
         alith,
         context.axiaApi.tx.sudo.sudo(
-          context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+          context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
         )
       );
     } catch (e) {
@@ -84,9 +84,9 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
           "to pay some fees , e.g. account balance too low"
       );
     }
-    //check parachainBondInfo
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
 });
 describeDevMoonbeam("Sudo - Only sudo account", (context) => {
@@ -100,13 +100,13 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
       context,
       genesisAccount,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length === 6).to.be.true;
     expect(context.axiaApi.events.system.NewAccount.is(events[2])).to.be.true;
@@ -131,7 +131,7 @@ describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
       context,
       alith,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
       )
     );
 

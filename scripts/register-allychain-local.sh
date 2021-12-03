@@ -19,12 +19,12 @@ if [ -z "$BETANET_SUDO_SEED" ]; then
 fi
 
 if [ ! -f "$WASM" ]; then
-    echo "Missing $WASM. Please run scripts/generate-parachain-specs.sh"
+    echo "Missing $WASM. Please run scripts/generate-allychain-specs.sh"
     exit 1
 fi
 
 if [ ! -f "$GENESIS" ]; then
-    echo "Missing $GENESIS. Please run scripts/generate-parachain-specs.sh"
+    echo "Missing $GENESIS. Please run scripts/generate-allychain-specs.sh"
     exit 1
 fi
 
@@ -34,7 +34,7 @@ CONFIG="$TMP_FOLDER/moonbase-alphanet-runtime.config.json";
 echo -n "$PARACHAIN_ID {\"genesis_head\":\"$(cat $GENESIS)\",\"validation_code\":\"" \
     > $CONFIG;
 cat $WASM  >> $CONFIG;
-echo -n "\",\"parachain\":true}" >> $CONFIG;
+echo -n "\",\"allychain\":true}" >> $CONFIG;
 
 TYPES="$TMP_FOLDER/relay-types.json"
 echo '{"Address": "MultiAddress", "LookupSource": "MultiAddress"}' > $TYPES;

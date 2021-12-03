@@ -29,11 +29,11 @@ use structopt::StructOpt;
 /// Sub-commands supported by the collator.
 #[derive(Debug, StructOpt)]
 pub enum Subcommand {
-	/// Export the genesis state of the parachain.
+	/// Export the genesis state of the allychain.
 	#[structopt(name = "export-genesis-state")]
 	ExportGenesisState(ExportGenesisStateCommand),
 
-	/// Export the genesis wasm of the parachain.
+	/// Export the genesis wasm of the allychain.
 	#[structopt(name = "export-genesis-wasm")]
 	ExportGenesisWasm(ExportGenesisWasmCommand),
 
@@ -93,16 +93,16 @@ pub struct BuildSpecCommand {
 	pub mnemonic: Option<String>,
 }
 
-/// Command for exporting the genesis state of the parachain
+/// Command for exporting the genesis state of the allychain
 #[derive(Debug, StructOpt)]
 pub struct ExportGenesisStateCommand {
 	/// Output file name or stdout if unspecified.
 	#[structopt(parse(from_os_str))]
 	pub output: Option<PathBuf>,
 
-	/// Id of the parachain this state is for.
+	/// Id of the allychain this state is for.
 	#[structopt(long)]
-	pub parachain_id: Option<u32>,
+	pub allychain_id: Option<u32>,
 
 	/// Write output in binary. Default is to write in hex.
 	#[structopt(short, long)]

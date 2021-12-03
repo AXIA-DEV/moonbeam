@@ -28,7 +28,7 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use cumulus_pallet_parachain_system::RelaychainBlockNumberProvider;
+use cumulus_pallet_allychain_system::RelaychainBlockNumberProvider;
 use fp_rpc::TransactionStatus;
 use pallet_evm_precompile_assets_erc20::AccountIdAssetIdConversion;
 
@@ -76,7 +76,7 @@ use pallet_evm::{
 	Runner,
 };
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier, TargetedFeeAdjustment};
-pub use parachain_staking::{InflationInfo, Range};
+pub use allychain_staking::{InflationInfo, Range};
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 use sp_api::impl_runtime_apis;
@@ -192,7 +192,7 @@ parameter_types! {
 	pub const BlockHashCount: BlockNumber = 256;
 	pub const Version: RuntimeVersion = VERSION;
 	/// We allow for one half second of compute with a 6 second average block time.
-	/// These values are dictated by AXIA for the parachain.
+	/// These values are dictated by AXIA for the allychain.
 	pub BlockWeights: frame_system::limits::BlockWeights = frame_system::limits::BlockWeights
 		::with_sensible_defaults(MAXIMUM_BLOCK_WEIGHT, NORMAL_DISPATCH_RATIO);
 	/// We allow for 5 MB blocks.
@@ -239,7 +239,7 @@ impl frame_system::Config for Runtime {
 	type SystemWeightInfo = ();
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_allychain_system::ParachainSetCode<Self>;
 }
 
 impl pallet_utility::Config for Runtime {
@@ -687,7 +687,7 @@ parameter_types! {
 	pub const ReservedDmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT / 4;
 }
 
-impl cumulus_pallet_parachain_system::Config for Runtime {
+impl cumulus_pallet_allychain_system::Config for Runtime {
 	type Event = Event;
 	type OnValidationData = ();
 	type SelfParaId = ParachainInfo;
@@ -698,7 +698,7 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type ReservedXcmpWeight = ReservedXcmpWeight;
 }
 
-impl parachain_info::Config for Runtime {}
+impl allychain_info::Config for Runtime {}
 
 parameter_types! {
 	/// Minimum round length is 2 minutes (10 * 12 second block times)
@@ -725,7 +725,7 @@ parameter_types! {
 	pub const MaxDelegationsPerDelegator: u32 = 100;
 	/// Default fixed percent a collator takes off the top of due rewards
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
-	/// Default percent of inflation set aside for parachain bond every round
+	/// Default percent of inflation set aside for allychain bond every round
 	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
 	/// Minimum stake required to become a collator
 	pub const MinCollatorStk: u128 = 1 * currency::KILOUNIT * currency::SUPPLY_FACTOR;
@@ -735,7 +735,7 @@ parameter_types! {
 	pub const MinDelegatorStk: u128 = 5 * currency::UNIT * currency::SUPPLY_FACTOR;
 }
 
-impl parachain_staking::Config for Runtime {
+impl allychain_staking::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type MonetaryGovernanceOrigin = EnsureRoot<AccountId>;
@@ -756,7 +756,7 @@ impl parachain_staking::Config for Runtime {
 	type MinCandidateStk = MinCandidateStk;
 	type MinDelegation = MinDelegatorStk;
 	type MinDelegatorStk = MinDelegatorStk;
-	type WeightInfo = parachain_staking::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = allychain_staking::weights::SubstrateWeight<Runtime>;
 }
 
 impl pallet_author_inherent::Config for Runtime {
@@ -794,7 +794,7 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 	type RewardAddressRelayVoteThreshold = RelaySignaturesThreshold;
 	type VestingBlockNumber = cumulus_primitives_core::relay_chain::BlockNumber;
 	type VestingBlockProvider =
-		cumulus_pallet_parachain_system::RelaychainBlockNumberProvider<Self>;
+		cumulus_pallet_allychain_system::RelaychainBlockNumberProvider<Self>;
 	type WeightInfo = pallet_crowdloan_rewards::weights::SubstrateWeight<Runtime>;
 }
 
@@ -936,14 +936,14 @@ parameter_types! {
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
-	pub Ancestry: MultiLocation = Parachain(ParachainInfo::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Parachain(ParachainInfo::allychain_id().into()).into();
 	// Self Reserve location, defines the multilocation identifiying the self-reserve currency
 	// This is used to match it against our Balances pallet when we receive such a MultiLocation
 	// (Parent, Self Para Id, Self Balances pallet index)
 	pub SelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Parachain(ParachainInfo::parachain_id().into()),
+			Parachain(ParachainInfo::allychain_id().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)
 	};
@@ -955,8 +955,8 @@ parameter_types! {
 pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsDefault<AccountId>,
-	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
+	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
+	SiblingParachainConvertsVia<polkadot_allychain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1315,7 +1315,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Parachain(ParachainInfo::parachain_id().into())
+			Parachain(ParachainInfo::allychain_id().into())
 		)
 	};
 }
@@ -1455,13 +1455,13 @@ construct_runtime! {
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>} = 3,
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>} = 4,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 5,
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 6,
+		ParachainSystem: cumulus_pallet_allychain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 6,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage} = 7,
-		ParachainInfo: parachain_info::{Pallet, Storage, Config} = 8,
+		ParachainInfo: allychain_info::{Pallet, Storage, Config} = 8,
 		EthereumChainId: pallet_ethereum_chain_id::{Pallet, Storage, Config} = 9,
 		EVM: pallet_evm::{Pallet, Config, Call, Storage, Event<T>} = 10,
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Origin, Config} = 11,
-		ParachainStaking: parachain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 12,
+		ParachainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 12,
 		Scheduler: pallet_scheduler::{Pallet, Storage, Config, Event<T>, Call} = 13,
 		Democracy: pallet_democracy::{Pallet, Storage, Config<T>, Event<T>, Call} = 14,
 		CouncilCollective:
@@ -1610,13 +1610,13 @@ runtime_common::impl_runtime_apis_plus_common! {
 	}
 }
 
-// Check the timestamp and parachain inherents
+// Check the timestamp and allychain inherents
 struct CheckInherents;
 
-impl cumulus_pallet_parachain_system::CheckInherents<Block> for CheckInherents {
+impl cumulus_pallet_allychain_system::CheckInherents<Block> for CheckInherents {
 	fn check_inherents(
 		block: &Block,
-		relay_state_proof: &cumulus_pallet_parachain_system::RelayChainStateProof,
+		relay_state_proof: &cumulus_pallet_allychain_system::RelayChainStateProof,
 	) -> sp_inherents::CheckInherentsResult {
 		let relay_chain_slot = relay_state_proof
 			.read_slot()
@@ -1635,7 +1635,7 @@ impl cumulus_pallet_parachain_system::CheckInherents<Block> for CheckInherents {
 }
 
 // Nimbus's Executive wrapper allows relay validators to verify the seal digest
-cumulus_pallet_parachain_system::register_validate_block!(
+cumulus_pallet_allychain_system::register_validate_block!(
 	Runtime = Runtime,
 	BlockExecutor = pallet_author_inherent::BlockExecutor::<Runtime, Executive>,
 	CheckInherents = CheckInherents,

@@ -32,7 +32,7 @@ use sp_std::{convert::TryFrom, prelude::*};
 use xcm::{latest::prelude::*, Version as XcmVersion, VersionedXcm};
 
 use axia_core_primitives::BlockNumber as RelayBlockNumber;
-use polkadot_parachain::primitives::{Id as ParaId, Sibling};
+use polkadot_allychain::primitives::{Id as ParaId, Sibling};
 use xcm::latest::{
 	AssetId as XcmAssetId, Error as XcmError, ExecuteXcm,
 	Junction::{PalletInstance, Parachain},
@@ -137,7 +137,7 @@ impl pallet_assets::Config for Runtime {
 pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsDefault<AccountId>,
-	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
+	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
 	SiblingParachainConvertsVia<Sibling, AccountId>,
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -227,11 +227,11 @@ parameter_types! {
 parameter_types! {
 	pub const RelayNetwork: NetworkId = NetworkId::AXIA;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
-	pub Ancestry: MultiLocation = Parachain(MsgQueue::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Parachain(MsgQueue::allychain_id().into()).into();
 		pub SelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Parachain(MsgQueue::parachain_id().into()),
+			Parachain(MsgQueue::allychain_id().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)
 	};
@@ -293,7 +293,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Parachain(MsgQueue::parachain_id().into())
+			Parachain(MsgQueue::allychain_id().into())
 		)
 	};
 }
@@ -332,12 +332,12 @@ pub mod mock_msg_queue {
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
-	#[pallet::getter(fn parachain_id)]
+	#[pallet::getter(fn allychain_id)]
 	pub(super) type ParachainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
 
 	impl<T: Config> Get<ParaId> for Pallet<T> {
 		fn get() -> ParaId {
-			Self::parachain_id()
+			Self::allychain_id()
 		}
 	}
 

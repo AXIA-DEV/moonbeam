@@ -12,10 +12,10 @@
 # 53 for http
 # 54 for ws
 #
-# Ex: USER_PORT=20000 scripts/run-alphanet-parachain.sh
+# Ex: USER_PORT=20000 scripts/run-alphanet-allychain.sh
 # will open port 21052, 21053, 21054
 
-# The parachain will run on betanet-local relay
+# The allychain will run on betanet-local relay
 
 # Loading binary/specs variables
 source scripts/_init_var.sh
@@ -60,7 +60,7 @@ PARACHAIN_INDEX=0
 PARACHAIN_BOOTNODES_ARGS=""
 while nc -z -v -w5 ${PARACHAIN_IP} $((PARACHAIN_PORT + 10)) 2> /dev/null
 do
-  echo "Found existing parachain on $((PARACHAIN_PORT + 10))."
+  echo "Found existing allychain on $((PARACHAIN_PORT + 10))."
   PARACHAIN_BOOTNODES_ARGS="$PARACHAIN_BOOTNODES_ARGS --bootnodes \
     /ip4/$PARACHAIN_IP/tcp/$((PARACHAIN_PORT + 10))/p2p/${PARACHAIN_LOCAL_IDS[$PARACHAIN_INDEX]}"
   PARACHAIN_INDEX=$((PARACHAIN_INDEX + 1))
@@ -68,7 +68,7 @@ do
 
   if [ $PARACHAIN_PORT -ge $((USER_PORT + 2000)) ]
   then
-    echo "No more parachain port available! (limited to 9 parachains)"
+    echo "No more allychain port available! (limited to 9 allychains)"
     exit 1
   fi
 done
@@ -76,10 +76,10 @@ done
 if [ -z "$PARACHAIN_BASE_PREFIX" ]; then
   PARACHAIN_BASE_PATH="--tmp"
 else
-  PARACHAIN_BASE_PATH="$PARACHAIN_BASE_PREFIX-parachain-$PARACHAIN_INDEX"
+  PARACHAIN_BASE_PATH="$PARACHAIN_BASE_PREFIX-allychain-$PARACHAIN_INDEX"
 fi
 
-echo "parachain $PARACHAIN_INDEX ($PARACHAIN_ID) - p2p-port: $((PARACHAIN_PORT + 10)), \
+echo "allychain $PARACHAIN_INDEX ($PARACHAIN_ID) - p2p-port: $((PARACHAIN_PORT + 10)), \
 http-port: $((PARACHAIN_PORT + 10 + 1)), ws-port: $((PARACHAIN_PORT + 10 + 2))"
 
 sha256sum $CHAIN
@@ -93,7 +93,7 @@ $MOONBEAM_BINARY \
   --rpc-methods=unsafe \
   --execution wasm \
   --wasm-execution compiled \
-  --name parachain_$PARACHAIN_INDEX \
+  --name allychain_$PARACHAIN_INDEX \
   $PARACHAIN_BASE_PATH \
   '-linfo,evm=debug,ethereum=trace,rpc=trace,cumulus_collator=debug,txpool=debug' \
   --${WELL_KNOWN_USERS[$PARACHAIN_INDEX]} \

@@ -231,11 +231,11 @@ fn invalid_monetary_origin_fails() {
 			sp_runtime::DispatchError::BadOrigin
 		);
 		assert_noop!(
-			Stake::set_parachain_bond_account(Origin::signed(45), 11),
+			Stake::set_allychain_bond_account(Origin::signed(45), 11),
 			sp_runtime::DispatchError::BadOrigin
 		);
 		assert_noop!(
-			Stake::set_parachain_bond_reserve_percent(Origin::signed(45), Percent::from_percent(2)),
+			Stake::set_allychain_bond_reserve_percent(Origin::signed(45), Percent::from_percent(2)),
 			sp_runtime::DispatchError::BadOrigin
 		);
 	});
@@ -438,28 +438,28 @@ fn cannot_set_same_inflation() {
 // SET PARACHAIN BOND ACCOUNT
 
 #[test]
-fn set_parachain_bond_account_event_emits_correctly() {
+fn set_allychain_bond_account_event_emits_correctly() {
 	ExtBuilder::default().build().execute_with(|| {
-		assert_ok!(Stake::set_parachain_bond_account(Origin::root(), 11));
+		assert_ok!(Stake::set_allychain_bond_account(Origin::root(), 11));
 		assert_last_event!(MetaEvent::Stake(Event::ParachainBondAccountSet(0, 11)));
 	});
 }
 
 #[test]
-fn set_parachain_bond_account_storage_updates_correctly() {
+fn set_allychain_bond_account_storage_updates_correctly() {
 	ExtBuilder::default().build().execute_with(|| {
-		assert_eq!(Stake::parachain_bond_info().account, 0);
-		assert_ok!(Stake::set_parachain_bond_account(Origin::root(), 11));
-		assert_eq!(Stake::parachain_bond_info().account, 11);
+		assert_eq!(Stake::allychain_bond_info().account, 0);
+		assert_ok!(Stake::set_allychain_bond_account(Origin::root(), 11));
+		assert_eq!(Stake::allychain_bond_info().account, 11);
 	});
 }
 
 // SET PARACHAIN BOND RESERVE PERCENT
 
 #[test]
-fn set_parachain_bond_reserve_percent_event_emits_correctly() {
+fn set_allychain_bond_reserve_percent_event_emits_correctly() {
 	ExtBuilder::default().build().execute_with(|| {
-		assert_ok!(Stake::set_parachain_bond_reserve_percent(
+		assert_ok!(Stake::set_allychain_bond_reserve_percent(
 			Origin::root(),
 			Percent::from_percent(50)
 		));
@@ -471,28 +471,28 @@ fn set_parachain_bond_reserve_percent_event_emits_correctly() {
 }
 
 #[test]
-fn set_parachain_bond_reserve_percent_storage_updates_correctly() {
+fn set_allychain_bond_reserve_percent_storage_updates_correctly() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_eq!(
-			Stake::parachain_bond_info().percent,
+			Stake::allychain_bond_info().percent,
 			Percent::from_percent(30)
 		);
-		assert_ok!(Stake::set_parachain_bond_reserve_percent(
+		assert_ok!(Stake::set_allychain_bond_reserve_percent(
 			Origin::root(),
 			Percent::from_percent(50)
 		));
 		assert_eq!(
-			Stake::parachain_bond_info().percent,
+			Stake::allychain_bond_info().percent,
 			Percent::from_percent(50)
 		);
 	});
 }
 
 #[test]
-fn cannot_set_same_parachain_bond_reserve_percent() {
+fn cannot_set_same_allychain_bond_reserve_percent() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
-			Stake::set_parachain_bond_reserve_percent(Origin::root(), Percent::from_percent(30)),
+			Stake::set_allychain_bond_reserve_percent(Origin::root(), Percent::from_percent(30)),
 			Error::<Test>::NoWritingSameValue
 		);
 	});
@@ -3267,7 +3267,7 @@ fn delegator_schedule_revocation_total() {
 }
 
 #[test]
-fn parachain_bond_inflation_reserve_matches_config() {
+fn allychain_bond_inflation_reserve_matches_config() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			(1, 100),
@@ -3293,9 +3293,9 @@ fn parachain_bond_inflation_reserve_matches_config() {
 		.build()
 		.execute_with(|| {
 			assert_eq!(Balances::free_balance(&11), 1);
-			// set parachain bond account so DefaultParachainBondReservePercent = 30% of inflation
+			// set allychain bond account so DefaultParachainBondReservePercent = 30% of inflation
 			// is allocated to this account hereafter
-			assert_ok!(Stake::set_parachain_bond_account(Origin::root(), 11));
+			assert_ok!(Stake::set_allychain_bond_account(Origin::root(), 11));
 			roll_to(8);
 			// chooses top TotalSelectedCandidates (5), in order
 			let mut expected = vec![
@@ -3402,7 +3402,7 @@ fn parachain_bond_inflation_reserve_matches_config() {
 			expected.append(&mut new2);
 			assert_eq_events!(expected.clone());
 			assert_eq!(Balances::free_balance(&11), 65);
-			assert_ok!(Stake::set_parachain_bond_reserve_percent(
+			assert_ok!(Stake::set_allychain_bond_reserve_percent(
 				Origin::root(),
 				Percent::from_percent(50)
 			));

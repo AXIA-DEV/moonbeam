@@ -46,7 +46,7 @@ describeDevMoonbeam("AXIA API - Transfers", (context) => {
     const signedBlock = await context.axiaApi.rpc.chain.getBlock();
 
     // Expecting 4 extrinsics so far:
-    // timestamp, author, the parachain validation data and the balances transfer.
+    // timestamp, author, the allychain validation data and the balances transfer.
     expect(signedBlock.block.extrinsics).to.be.of.length(4);
 
     signedBlock.block.extrinsics.forEach((ex, index) => {
@@ -59,7 +59,7 @@ describeDevMoonbeam("AXIA API - Transfers", (context) => {
           expect(message.substring(0, 13)).to.eq(`timestamp.set`);
           break;
         case 1:
-          expect(message.substring(0, 33)).to.eq(`parachainSystem.setValidationData`);
+          expect(message.substring(0, 33)).to.eq(`allychainSystem.setValidationData`);
           break;
         case 2:
           expect(message.substring(0, 24)).to.eq(`authorInherent.setAuthor`);
@@ -93,7 +93,7 @@ describeDevMoonbeam("AXIA API - Transfers", (context) => {
       switch (index) {
         // First 3 events:
         // timestamp.set:: system.ExtrinsicSuccess
-        // parachainUpgrade.setValidationData:: system.ExtrinsicSuccess
+        // allychainUpgrade.setValidationData:: system.ExtrinsicSuccess
         // authorInherent.setAuthor:: system.ExtrinsicSuccess
         case 0:
         case 1:

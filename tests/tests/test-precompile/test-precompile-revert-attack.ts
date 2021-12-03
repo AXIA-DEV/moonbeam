@@ -51,7 +51,7 @@ describeDevMoonbeam("Precompiles - test revert attack on state modifier", (conte
     expect(receipt.status).to.eq(false);
 
     // Delegation shouldn't have passed
-    const nominatorsAfter = await context.axiaApi.query.parachainStaking.delegatorState(
+    const nominatorsAfter = await context.axiaApi.query.allychainStaking.delegatorState(
       GENESIS_ACCOUNT
     );
     expect(nominatorsAfter.toHuman()).to.eq(null);

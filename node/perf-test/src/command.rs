@@ -21,7 +21,7 @@ use crate::{
 	PerfCmd,
 };
 
-use cumulus_primitives_parachain_inherent::MockValidationDataInherentDataProvider;
+use cumulus_primitives_allychain_inherent::MockValidationDataInherentDataProvider;
 use ethereum::TransactionAction;
 use fp_rpc::{ConvertTransaction, EthereumRuntimeRPCApi};
 use nimbus_primitives::NimbusId;
@@ -155,7 +155,7 @@ where
 					async move {
 						let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-						let mocked_parachain = MockValidationDataInherentDataProvider {
+						let mocked_allychain = MockValidationDataInherentDataProvider {
 							current_para_block,
 							relay_offset: 1000,
 							relay_blocks_per_para_block: 2,
@@ -163,7 +163,7 @@ where
 
 						let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-						Ok((time, mocked_parachain, author))
+						Ok((time, mocked_allychain, author))
 					}
 				},
 			}),

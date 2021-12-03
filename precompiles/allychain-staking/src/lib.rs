@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Precompile to call parachain-staking runtime methods via the EVM
+//! Precompile to call allychain-staking runtime methods via the EVM
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -36,7 +36,7 @@ use sp_std::fmt::Debug;
 use sp_std::marker::PhantomData;
 use sp_std::vec;
 
-type BalanceOf<Runtime> = <<Runtime as parachain_staking::Config>::Currency as Currency<
+type BalanceOf<Runtime> = <<Runtime as allychain_staking::Config>::Currency as Currency<
 	<Runtime as frame_system::Config>::AccountId,
 >>::Balance;
 
@@ -96,7 +96,7 @@ enum Action {
 	CancelDelegationRequest = "cancel_delegation_request(address)",
 }
 
-/// A precompile to wrap the functionality from parachain_staking.
+/// A precompile to wrap the functionality from allychain_staking.
 ///
 /// EXAMPLE USECASE:
 /// A simple example usecase is a contract that allows donors to donate, and stakes all the funds
@@ -107,11 +107,11 @@ pub struct ParachainStakingWrapper<Runtime>(PhantomData<Runtime>);
 
 impl<Runtime> Precompile for ParachainStakingWrapper<Runtime>
 where
-	Runtime: parachain_staking::Config + pallet_evm::Config,
+	Runtime: allychain_staking::Config + pallet_evm::Config,
 	BalanceOf<Runtime>: EvmData,
 	Runtime::Call: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
 	<Runtime::Call as Dispatchable>::Origin: From<Option<Runtime::AccountId>>,
-	Runtime::Call: From<parachain_staking::Call<Runtime>>,
+	Runtime::Call: From<allychain_staking::Call<Runtime>>,
 {
 	fn execute(
 		input: &[u8],
@@ -210,11 +210,11 @@ where
 
 impl<Runtime> ParachainStakingWrapper<Runtime>
 where
-	Runtime: parachain_staking::Config + pallet_evm::Config,
+	Runtime: allychain_staking::Config + pallet_evm::Config,
 	BalanceOf<Runtime>: EvmData,
 	Runtime::Call: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
 	<Runtime::Call as Dispatchable>::Origin: From<Option<Runtime::AccountId>>,
-	Runtime::Call: From<parachain_staking::Call<Runtime>>,
+	Runtime::Call: From<allychain_staking::Call<Runtime>>,
 {
 	// Constants
 
@@ -223,7 +223,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let min_nomination: u128 = <<Runtime as parachain_staking::Config>::MinDelegation as Get<
+		let min_nomination: u128 = <<Runtime as allychain_staking::Config>::MinDelegation as Get<
 			BalanceOf<Runtime>,
 		>>::get()
 		.try_into()
@@ -252,7 +252,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let points: u32 = parachain_staking::Pallet::<Runtime>::points(round);
+		let points: u32 = allychain_staking::Pallet::<Runtime>::points(round);
 
 		// Build output.
 		Ok(PrecompileOutput {
@@ -268,7 +268,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let candidate_count: u32 = <parachain_staking::Pallet<Runtime>>::candidate_pool()
+		let candidate_count: u32 = <allychain_staking::Pallet<Runtime>>::candidate_pool()
 			.0
 			.len() as u32;
 
@@ -294,7 +294,7 @@ where
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
 		let result =
-			if let Some(state) = <parachain_staking::Pallet<Runtime>>::candidate_state(&address) {
+			if let Some(state) = <allychain_staking::Pallet<Runtime>>::candidate_state(&address) {
 				let candidate_delegation_count: u32 = state.delegators.0.len() as u32;
 
 				log::trace!(
@@ -334,7 +334,7 @@ where
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
 		let result =
-			if let Some(state) = <parachain_staking::Pallet<Runtime>>::delegator_state(&address) {
+			if let Some(state) = <allychain_staking::Pallet<Runtime>>::delegator_state(&address) {
 				let delegator_delegation_count: u32 = state.delegations.0.len() as u32;
 
 				log::trace!(
@@ -376,7 +376,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let is_delegator = parachain_staking::Pallet::<Runtime>::is_delegator(&address);
+		let is_delegator = allychain_staking::Pallet::<Runtime>::is_delegator(&address);
 
 		// Build output.
 		Ok(PrecompileOutput {
@@ -399,7 +399,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let is_candidate = parachain_staking::Pallet::<Runtime>::is_candidate(&address);
+		let is_candidate = allychain_staking::Pallet::<Runtime>::is_candidate(&address);
 
 		// Build output.
 		Ok(PrecompileOutput {
@@ -422,7 +422,7 @@ where
 
 		// Fetch info.
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
-		let is_selected = parachain_staking::Pallet::<Runtime>::is_selected_candidate(&address);
+		let is_selected = allychain_staking::Pallet::<Runtime>::is_selected_candidate(&address);
 
 		// Build output.
 		Ok(PrecompileOutput {
@@ -441,7 +441,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -452,7 +452,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::join_candidates {
+		let call = allychain_staking::Call::<Runtime>::join_candidates {
 			bond,
 			candidate_count,
 		};
@@ -467,7 +467,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -478,7 +478,7 @@ where
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
 		let call =
-			parachain_staking::Call::<Runtime>::schedule_leave_candidates { candidate_count };
+			allychain_staking::Call::<Runtime>::schedule_leave_candidates { candidate_count };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -490,7 +490,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -500,7 +500,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::execute_leave_candidates { candidate };
+		let call = allychain_staking::Call::<Runtime>::execute_leave_candidates { candidate };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -512,7 +512,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -522,7 +522,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::cancel_leave_candidates { candidate_count };
+		let call = allychain_staking::Call::<Runtime>::cancel_leave_candidates { candidate_count };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -533,13 +533,13 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::go_offline {};
+		let call = allychain_staking::Call::<Runtime>::go_offline {};
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -550,13 +550,13 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::go_online {};
+		let call = allychain_staking::Call::<Runtime>::go_online {};
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -568,7 +568,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -578,7 +578,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::schedule_candidate_bond_more { more };
+		let call = allychain_staking::Call::<Runtime>::schedule_candidate_bond_more { more };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -590,7 +590,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -600,7 +600,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::schedule_candidate_bond_less { less };
+		let call = allychain_staking::Call::<Runtime>::schedule_candidate_bond_less { less };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -612,7 +612,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -622,7 +622,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::execute_candidate_bond_request { candidate };
+		let call = allychain_staking::Call::<Runtime>::execute_candidate_bond_request { candidate };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -633,13 +633,13 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::cancel_candidate_bond_request {};
+		let call = allychain_staking::Call::<Runtime>::cancel_candidate_bond_request {};
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -651,7 +651,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -664,7 +664,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::delegate {
+		let call = allychain_staking::Call::<Runtime>::delegate {
 			collator,
 			amount,
 			candidate_delegation_count,
@@ -680,13 +680,13 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::schedule_leave_delegators {};
+		let call = allychain_staking::Call::<Runtime>::schedule_leave_delegators {};
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -698,7 +698,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -709,7 +709,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::execute_leave_delegators {
+		let call = allychain_staking::Call::<Runtime>::execute_leave_delegators {
 			delegator,
 			delegation_count,
 		};
@@ -723,13 +723,13 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::cancel_leave_delegators {};
+		let call = allychain_staking::Call::<Runtime>::cancel_leave_delegators {};
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -741,7 +741,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -751,7 +751,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::schedule_revoke_delegation { collator };
+		let call = allychain_staking::Call::<Runtime>::schedule_revoke_delegation { collator };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -763,7 +763,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -775,7 +775,7 @@ where
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
 		let call =
-			parachain_staking::Call::<Runtime>::schedule_delegator_bond_more { candidate, more };
+			allychain_staking::Call::<Runtime>::schedule_delegator_bond_more { candidate, more };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -787,7 +787,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -799,7 +799,7 @@ where
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
 		let call =
-			parachain_staking::Call::<Runtime>::schedule_delegator_bond_less { candidate, less };
+			allychain_staking::Call::<Runtime>::schedule_delegator_bond_less { candidate, less };
 
 		// Return call information
 		Ok((Some(origin).into(), call))
@@ -811,7 +811,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -822,7 +822,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::execute_delegation_request {
+		let call = allychain_staking::Call::<Runtime>::execute_delegation_request {
 			delegator,
 			candidate,
 		};
@@ -837,7 +837,7 @@ where
 	) -> Result<
 		(
 			<Runtime::Call as Dispatchable>::Origin,
-			parachain_staking::Call<Runtime>,
+			allychain_staking::Call<Runtime>,
 		),
 		ExitError,
 	> {
@@ -847,7 +847,7 @@ where
 
 		// Build call with origin.
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
-		let call = parachain_staking::Call::<Runtime>::cancel_delegation_request { candidate };
+		let call = allychain_staking::Call::<Runtime>::cancel_delegation_request { candidate };
 
 		// Return call information
 		Ok((Some(origin).into(), call))

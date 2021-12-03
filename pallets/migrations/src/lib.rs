@@ -41,7 +41,7 @@ pub trait Migration {
 	///
 	/// Currently there is no way to migrate across blocks, so this method must (1) perform its full
 	/// migration and (2) not produce a block that has gone over-weight. Not meeting these strict
-	/// constraints will lead to a bricked chain upon a runtime upgrade because the parachain will
+	/// constraints will lead to a bricked chain upon a runtime upgrade because the allychain will
 	/// not be able to produce a block that the relay chain will accept.
 	fn migrate(&self, available_weight: Weight) -> Weight;
 

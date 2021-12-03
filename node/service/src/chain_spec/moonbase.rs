@@ -93,7 +93,7 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 	)
 }
 
-/// Generate a default spec for the parachain service. Use this as a starting point when launching
+/// Generate a default spec for the allychain service. Use this as a starting point when launching
 /// a custom chain.
 pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
@@ -216,8 +216,8 @@ pub fn testnet_genesis(
 			funded_amount: crowdloan_fund_pot,
 		},
 		sudo: SudoConfig { key: root_key },
-		parachain_info: ParachainInfoConfig {
-			parachain_id: para_id,
+		allychain_info: ParachainInfoConfig {
+			allychain_id: para_id,
 		},
 		ethereum_chain_id: EthereumChainIdConfig { chain_id },
 		evm: EVMConfig {
@@ -240,7 +240,7 @@ pub fn testnet_genesis(
 		ethereum: EthereumConfig {},
 		democracy: DemocracyConfig::default(),
 		scheduler: SchedulerConfig {},
-		parachain_staking: ParachainStakingConfig {
+		allychain_staking: ParachainStakingConfig {
 			candidates: candidates
 				.iter()
 				.cloned()

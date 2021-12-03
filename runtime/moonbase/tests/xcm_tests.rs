@@ -19,7 +19,7 @@
 mod xcm_mock;
 use frame_support::{assert_ok, traits::PalletInfo};
 use xcm::{VersionedMultiLocation, WrapVersion};
-use xcm_mock::parachain;
+use xcm_mock::allychain;
 use xcm_mock::relay_chain;
 use xcm_mock::*;
 use xcm_primitives::UtilityEncodeCall;
@@ -32,34 +32,34 @@ use xcm::latest::{
 };
 use xcm_simulator::TestExt;
 
-// Send a relay asset (like AXC) to a parachain A
+// Send a relay asset (like AXC) to a allychain A
 #[test]
 fn receive_relay_asset_from_relay() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
-	let asset_metadata = parachain::AssetMetadata {
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
 	};
-	// register relay asset in parachain A
+	// register relay asset in allychain A
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
 	});
 
-	// Actually send relay asset to parachain
+	// Actually send relay asset to allychain
 	let dest: MultiLocation = AccountKey20 {
 		network: NetworkId::Any,
 		key: PARAALICE,
@@ -75,7 +75,7 @@ fn receive_relay_asset_from_relay() {
 		));
 	});
 
-	// Verify that parachain received the asset
+	// Verify that allychain received the asset
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_eq!(Assets::balance(source_id, &PARAALICE.into()), 123);
@@ -87,10 +87,10 @@ fn receive_relay_asset_from_relay() {
 fn send_relay_asset_to_relay() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -99,13 +99,13 @@ fn send_relay_asset_to_relay() {
 	// First send relay chain asset to Parachain like in previous test
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -147,8 +147,8 @@ fn send_relay_asset_to_relay() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			123,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			40000
@@ -170,10 +170,10 @@ fn send_relay_asset_to_relay() {
 fn send_relay_asset_to_para_b() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -181,13 +181,13 @@ fn send_relay_asset_to_para_b() {
 
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location.clone(),
 			asset_metadata.clone(),
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -195,13 +195,13 @@ fn send_relay_asset_to_para_b() {
 
 	ParaB::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -241,8 +241,8 @@ fn send_relay_asset_to_para_b() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			40000
@@ -265,10 +265,10 @@ fn send_para_a_asset_to_para_b() {
 	MockNet::reset();
 
 	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
-	let source_location = parachain::AssetType::Xcm(para_a_balances);
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(para_a_balances);
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"ParaAToken".to_vec(),
 		symbol: b"ParaA".to_vec(),
 		decimals: 18,
@@ -276,13 +276,13 @@ fn send_para_a_asset_to_para_b() {
 
 	ParaB::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -302,8 +302,8 @@ fn send_para_a_asset_to_para_b() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::SelfReserve,
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::SelfReserve,
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			800000
@@ -328,10 +328,10 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 	MockNet::reset();
 
 	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
-	let source_location = parachain::AssetType::Xcm(para_a_balances);
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(para_a_balances);
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"ParaAToken".to_vec(),
 		symbol: b"ParaA".to_vec(),
 		decimals: 18,
@@ -339,13 +339,13 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 
 	ParaB::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location.clone(),
 			asset_metadata.clone(),
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -353,13 +353,13 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 
 	ParaC::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -378,8 +378,8 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::SelfReserve,
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::SelfReserve,
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			80
@@ -413,15 +413,15 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 	ParaB::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			80
 		));
 	});
 
-	// The message passed through parachainA so we needed to pay since its the native token
+	// The message passed through allychainA so we needed to pay since its the native token
 	ParaC::execute_with(|| {
 		// free execution, full amount received
 		assert_eq!(Assets::balance(source_id, &PARAALICE.into()), 96);
@@ -433,10 +433,10 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	MockNet::reset();
 
 	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
-	let source_location = parachain::AssetType::Xcm(para_a_balances);
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(para_a_balances);
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"ParaAToken".to_vec(),
 		symbol: b"ParaA".to_vec(),
 		decimals: 18,
@@ -444,13 +444,13 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 
 	ParaB::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -469,8 +469,8 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::SelfReserve,
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::SelfReserve,
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			80
@@ -503,8 +503,8 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	ParaB::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			80
@@ -525,10 +525,10 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 fn receive_relay_asset_with_trader() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -539,13 +539,13 @@ fn receive_relay_asset_with_trader() {
 	// Lets put 1e6 as units per second
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			2500000000000u128
 		));
@@ -582,10 +582,10 @@ fn receive_relay_asset_with_trader() {
 fn error_when_not_paying_enough() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -601,13 +601,13 @@ fn error_when_not_paying_enough() {
 	// Lets put 1e6 as units per second
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			2500000000000u128
 		));
@@ -636,10 +636,10 @@ fn error_when_not_paying_enough() {
 fn transact_through_derivative_multilocation() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -647,20 +647,20 @@ fn transact_through_derivative_multilocation() {
 
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			1u128
 		));
 
 		// Root can set transact info
 		assert_ok!(XcmTransactor::set_transact_info(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			xcm::VersionedMultiLocation::V1(MultiLocation::parent()),
 			// Relay charges 1000 for every instruction, and we have 3, so 3000
 			3000,
@@ -697,7 +697,7 @@ fn transact_through_derivative_multilocation() {
 	// Register address
 	ParaA::execute_with(|| {
 		assert_ok!(XcmTransactor::register(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			PARAALICE.into(),
 			0,
 		));
@@ -717,8 +717,8 @@ fn transact_through_derivative_multilocation() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			40000
@@ -757,8 +757,8 @@ fn transact_through_derivative_multilocation() {
 
 	ParaA::execute_with(|| {
 		assert_ok!(XcmTransactor::transact_through_derivative_multilocation(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::MockTransactors::Relay,
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::MockTransactors::Relay,
 			0,
 			xcm::VersionedMultiLocation::V1(MultiLocation::parent()),
 			// 4000000000 + 3000 we should have taken out 4000003000 tokens from the caller
@@ -779,10 +779,10 @@ fn transact_through_derivative_multilocation() {
 fn transact_through_sovereign() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
@@ -790,20 +790,20 @@ fn transact_through_sovereign() {
 
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			1u128
 		));
 
 		// Root can set transact info
 		assert_ok!(XcmTransactor::set_transact_info(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			xcm::VersionedMultiLocation::V1(MultiLocation::parent()),
 			3000,
 			0,
@@ -836,7 +836,7 @@ fn transact_through_sovereign() {
 	// Register address
 	ParaA::execute_with(|| {
 		assert_ok!(XcmTransactor::register(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			PARAALICE.into(),
 			0,
 		));
@@ -855,8 +855,8 @@ fn transact_through_sovereign() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::OtherReserve(source_id),
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::OtherReserve(source_id),
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			40000
@@ -900,14 +900,14 @@ fn transact_through_sovereign() {
 	.encode();
 	encoded.append(&mut call_bytes);
 
-	let utility_bytes = parachain::MockTransactors::Relay.encode_call(
+	let utility_bytes = allychain::MockTransactors::Relay.encode_call(
 		xcm_primitives::UtilityAvailableCalls::AsDerivative(0, encoded),
 	);
 
 	// Root can directly pass the execution byes to the sovereign
 	ParaA::execute_with(|| {
 		assert_ok!(XcmTransactor::transact_through_sovereign(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			xcm::VersionedMultiLocation::V1(dest),
 			PARAALICE.into(),
 			xcm::VersionedMultiLocation::V1(MultiLocation::parent()),
@@ -928,24 +928,24 @@ fn transact_through_sovereign() {
 fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 	MockNet::reset();
 
-	let source_location = parachain::AssetType::Xcm(MultiLocation::parent());
-	let source_id: parachain::AssetId = source_location.clone().into();
-	let asset_metadata = parachain::AssetMetadata {
+	let source_location = allychain::AssetType::Xcm(MultiLocation::parent());
+	let source_id: allychain::AssetId = source_location.clone().into();
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"RelayToken".to_vec(),
 		symbol: b"Relay".to_vec(),
 		decimals: 12,
 	};
-	// register relay asset in parachain A and set XCM version to 1
+	// register relay asset in allychain A and set XCM version to 1
 	ParaA::execute_with(|| {
-		parachain::XcmVersioner::set_version(1);
+		allychain::XcmVersioner::set_version(1);
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -962,7 +962,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 	}]);
 	// The router is mocked, and we cannot use WrapVersion in ChildParachainRouter. So we will force
 	// it directly here
-	// Actually send relay asset to parachain
+	// Actually send relay asset to allychain
 	let dest: MultiLocation = AccountKey20 {
 		network: NetworkId::Any,
 		key: PARAALICE,
@@ -1015,7 +1015,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 		assert!(relay_chain::relay_events().contains(&expected_supported_version));
 	});
 
-	let expected_version_notified: parachain::Event = pallet_xcm::Event::VersionChangeNotified(
+	let expected_version_notified: allychain::Event = pallet_xcm::Event::VersionChangeNotified(
 		MultiLocation {
 			parents: 1,
 			interior: Here,
@@ -1028,13 +1028,13 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 	// of the new version change
 	ParaA::execute_with(|| {
 		// Set version
-		parachain::XcmVersioner::set_version(2);
+		allychain::XcmVersioner::set_version(2);
 		// Do runtime upgrade
-		parachain::on_runtime_upgrade();
+		allychain::on_runtime_upgrade();
 		// Initialize block, to call on_initialize and notify targets
-		parachain::para_roll_to(2);
-		// Expect the event in the parachain
-		assert!(parachain::para_events().contains(&expected_version_notified));
+		allychain::para_roll_to(2);
+		// Expect the event in the allychain
+		assert!(allychain::para_events().contains(&expected_version_notified));
 	});
 
 	// This event should have been seen in the relay
@@ -1059,10 +1059,10 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	MockNet::reset();
 
 	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
-	let source_location = parachain::AssetType::Xcm(para_a_balances);
-	let source_id: parachain::AssetId = source_location.clone().into();
+	let source_location = allychain::AssetType::Xcm(para_a_balances);
+	let source_id: allychain::AssetId = source_location.clone().into();
 
-	let asset_metadata = parachain::AssetMetadata {
+	let asset_metadata = allychain::AssetMetadata {
 		name: b"ParaAToken".to_vec(),
 		symbol: b"ParaA".to_vec(),
 		decimals: 18,
@@ -1079,21 +1079,21 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 
 	ParaA::execute_with(|| {
 		// advertised version
-		parachain::XcmVersioner::set_version(2);
+		allychain::XcmVersioner::set_version(2);
 	});
 
 	ParaB::execute_with(|| {
 		// Let's try with v0
-		parachain::XcmVersioner::set_version(0);
+		allychain::XcmVersioner::set_version(0);
 
 		assert_ok!(AssetManager::register_asset(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
 		));
 		assert_ok!(AssetManager::set_asset_units_per_second(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			source_id,
 			0u128
 		));
@@ -1102,7 +1102,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	ParaA::execute_with(|| {
 		// This sets the default version, for not known destinations
 		assert_ok!(ParachainPalletXcm::force_default_xcm_version(
-			parachain::Origin::root(),
+			allychain::Origin::root(),
 			Some(2)
 		));
 		// Wrap version, which sets VersionedStorage
@@ -1111,13 +1111,13 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 			mock_message
 		));
 
-		parachain::para_roll_to(2);
+		allychain::para_roll_to(2);
 
 		// queries should have been updated
 		assert!(ParachainPalletXcm::query(0).is_some());
 	});
 
-	let expected_supported_version: parachain::Event = pallet_xcm::Event::SupportedVersionChanged(
+	let expected_supported_version: allychain::Event = pallet_xcm::Event::SupportedVersionChanged(
 		MultiLocation {
 			parents: 1,
 			interior: X1(Parachain(2)),
@@ -1128,7 +1128,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 
 	ParaA::execute_with(|| {
 		// Assert that the events vector contains the version change
-		assert!(parachain::para_events().contains(&expected_supported_version));
+		assert!(allychain::para_events().contains(&expected_supported_version));
 	});
 
 	// Let's ensure talking in v0 works
@@ -1145,8 +1145,8 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	ParaA::execute_with(|| {
 		// free execution, full amount received
 		assert_ok!(XTokens::transfer(
-			parachain::Origin::signed(PARAALICE.into()),
-			parachain::CurrencyId::SelfReserve,
+			allychain::Origin::signed(PARAALICE.into()),
+			allychain::CurrencyId::SelfReserve,
 			100,
 			Box::new(VersionedMultiLocation::V1(dest)),
 			80
@@ -1163,7 +1163,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 		assert_eq!(Assets::balance(source_id, &PARAALICE.into()), 100);
 	});
 
-	let expected_version_notified: parachain::Event = pallet_xcm::Event::VersionChangeNotified(
+	let expected_version_notified: allychain::Event = pallet_xcm::Event::VersionChangeNotified(
 		MultiLocation {
 			parents: 1,
 			interior: X1(Parachain(1)),
@@ -1176,17 +1176,17 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	// of the new version change
 	ParaB::execute_with(|| {
 		// Set version
-		parachain::XcmVersioner::set_version(2);
+		allychain::XcmVersioner::set_version(2);
 		// Do runtime upgrade
-		parachain::on_runtime_upgrade();
+		allychain::on_runtime_upgrade();
 		// Initialize block, to call on_initialize and notify targets
-		parachain::para_roll_to(2);
-		// Expect the event in the parachain
-		assert!(parachain::para_events().contains(&expected_version_notified));
+		allychain::para_roll_to(2);
+		// Expect the event in the allychain
+		assert!(allychain::para_events().contains(&expected_version_notified));
 	});
 
 	// This event should have been seen in para A
-	let expected_supported_version_2: parachain::Event =
+	let expected_supported_version_2: allychain::Event =
 		pallet_xcm::Event::SupportedVersionChanged(
 			MultiLocation {
 				parents: 1,
@@ -1199,7 +1199,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	// Para A should have received the version change
 	ParaA::execute_with(|| {
 		// Assert that the events vector contains the new version change
-		assert!(parachain::para_events().contains(&expected_supported_version_2));
+		assert!(allychain::para_events().contains(&expected_supported_version_2));
 	});
 }
 

@@ -16,7 +16,7 @@
 
 #![allow(dead_code)]
 
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::ParachainInherentData;
 use frame_support::{
 	assert_ok,
 	dispatch::Dispatchable,
@@ -201,7 +201,7 @@ impl ExtBuilder {
 		.assimilate_storage(&mut t)
 		.unwrap();
 
-		parachain_staking::GenesisConfig::<Runtime> {
+		allychain_staking::GenesisConfig::<Runtime> {
 			candidates: self.collators,
 			delegations: self.delegations,
 			inflation_config: self.inflation,
@@ -314,7 +314,7 @@ pub fn set_author(a: NimbusId) {
 /// Mock the inherent that sets validation data in ParachainSystem, which
 /// contains the `relay_chain_block_number`, which is used in `author-filter` as a
 /// source of randomness to filter valid authors at each block.
-pub fn set_parachain_inherent_data() {
+pub fn set_allychain_inherent_data() {
 	use cumulus_primitives_core::PersistedValidationData;
 	use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 	let (relay_parent_storage_root, relay_chain_state) =
@@ -324,15 +324,15 @@ pub fn set_parachain_inherent_data() {
 		relay_parent_storage_root,
 		..Default::default()
 	};
-	let parachain_inherent_data = ParachainInherentData {
+	let allychain_inherent_data = ParachainInherentData {
 		validation_data: vfp,
 		relay_chain_state: relay_chain_state,
 		downward_messages: Default::default(),
 		horizontal_messages: Default::default(),
 	};
 	assert_ok!(Call::ParachainSystem(
-		cumulus_pallet_parachain_system::Call::<Runtime>::set_validation_data {
-			data: parachain_inherent_data
+		cumulus_pallet_allychain_system::Call::<Runtime>::set_validation_data {
+			data: allychain_inherent_data
 		}
 	)
 	.dispatch(inherent_origin()));
