@@ -435,7 +435,7 @@ fn cannot_set_same_inflation() {
 	});
 }
 
-// SET PARACHAIN BOND ACCOUNT
+// SET ALLYCHAIN BOND ACCOUNT
 
 #[test]
 fn set_allychain_bond_account_event_emits_correctly() {
@@ -454,7 +454,7 @@ fn set_allychain_bond_account_storage_updates_correctly() {
 	});
 }
 
-// SET PARACHAIN BOND RESERVE PERCENT
+// SET ALLYCHAIN BOND RESERVE PERCENT
 
 #[test]
 fn set_allychain_bond_reserve_percent_event_emits_correctly() {

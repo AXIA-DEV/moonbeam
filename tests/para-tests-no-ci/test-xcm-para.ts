@@ -105,7 +105,7 @@ describeParachain(
 
       await new Promise((res) => setTimeout(res, 10000));
 
-      // PARACHAINS
+      // ALLYCHAINS
       // registerAsset
       const { events, assetId } = await registerAssetToParachain(allychainOne, alith);
 
@@ -194,7 +194,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
 
     await new Promise((res) => setTimeout(res, 10000));
 
-    // PARACHAIN A
+    // ALLYCHAIN A
     // registerAsset
     ({ assetId } = await registerAssetToParachain(allychainOne, alith));
 
@@ -244,7 +244,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
     // about 1k should have been substracted from AliceRelay (plus fees)
     let beforeAliceRelayBalance = ((await relayOne.query.system.account(aliceRelay.address)) as any)
       .data.free;
-    // PARACHAIN A
+    // ALLYCHAIN A
     // xToken transfer : sending 100 units back to relay
     const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
       allychainOne,
@@ -314,11 +314,11 @@ describeParachain(
 
       await new Promise((res) => setTimeout(res, 2000));
 
-      // PARACHAIN A
+      // ALLYCHAIN A
       // registerAsset
       ({ assetId } = await registerAssetToParachain(allychainOne, alith));
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
       const { assetId: assetIdB } = await registerAssetToParachain(allychainTwo, alith);
 
@@ -369,7 +369,7 @@ describeParachain(
       ).to.eq(BigInt(THOUSAND_UNITS).toString());
     });
     it("should be able to receive a non-reserve asset in para b from para a", async function () {
-      // PARACHAIN A
+      // ALLYCHAIN A
       // transfer 100 units to allychain B
       const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
         allychainOne,
@@ -458,7 +458,7 @@ describeParachain(
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
       ({ assetId } = await registerAssetToParachain(
         allychainTwo,
@@ -468,7 +468,7 @@ describeParachain(
       ));
     });
     it("should be able to receive an asset in para b from para a", async function () {
-      // PARACHAIN A
+      // ALLYCHAIN A
       // transfer 100 units to allychain B
       const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
         allychainOne,
@@ -559,7 +559,7 @@ describeParachain(
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
       ({ assetId } = await registerAssetToParachain(
         allychainTwo,
@@ -568,7 +568,7 @@ describeParachain(
         paraAssetMetadata
       ));
 
-      // PARACHAIN A
+      // ALLYCHAIN A
       // transfer 100 units to allychain B
       await createBlockWithExtrinsicParachain(
         allychainOne,
@@ -594,7 +594,7 @@ describeParachain(
       await waitOneBlock(allychainTwo, 3);
     });
     it("should be able to receive an asset in para b from para a", async function () {
-      // PARACHAIN B
+      // ALLYCHAIN B
       // transfer back 100 units to allychain A
       const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
         allychainTwo,
@@ -687,7 +687,7 @@ describeParachain(
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
       ({ assetId } = await registerAssetToParachain(
         allychainTwo,
@@ -696,12 +696,12 @@ describeParachain(
         paraAssetMetadata
       ));
 
-      // PARACHAIN C
+      // ALLYCHAIN C
       // registerAsset
       await registerAssetToParachain(allychainThree, alith, sourceLocationParaA, paraAssetMetadata);
     });
     it("should be able to receive an asset back in para a from para b", async function () {
-      // PARACHAIN A
+      // ALLYCHAIN A
       // transfer 100 units to allychain B
       await createBlockWithExtrinsicParachain(
         allychainOne,
@@ -726,7 +726,7 @@ describeParachain(
 
       await waitOneBlock(allychainTwo, 6);
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // transfer 100 units to allychain C
       const { events: eventsTransfer2 } = await createBlockWithExtrinsicParachain(
         allychainTwo,
