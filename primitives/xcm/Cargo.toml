@@ -15,7 +15,7 @@ frame-support = { git = "https://github.com/purestake/substrate", branch = "moon
 frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 hex = { version = "0.4", default-features = false }
 log = "0.4"
-axia-scale-codec = { version = "2.2", default-features = false, features = [ "derive" ] }
+parity-scale-codec = { version = "2.2", default-features = false, features = [ "derive" ] }
 scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
 serde = { version = "1.0.101", optional = true, default-features = false, features = [ "derive" ] }
 sha3 = { version = "0.8", default-features = false }
@@ -30,7 +30,7 @@ xcm-executor = { git = "https://github.com/purestake/polkadot", branch = "moonbe
 default = [ "std" ]
 std = [
 	"hex/std",
-	"axia-scale-codec/std",
+	"parity-scale-codec/std",
 	"serde/std",
 	"sha3/std",
 	"sp-runtime/std",

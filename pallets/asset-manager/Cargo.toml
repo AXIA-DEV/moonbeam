@@ -13,7 +13,7 @@ xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 # Substrate
 frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-axia-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
 sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
@@ -34,7 +34,7 @@ default = [ "std" ]
 std = [
 	"frame-support/std",
 	"frame-system/std",
-	"axia-scale-codec/std",
+	"parity-scale-codec/std",
 	"scale-info/std",
 	"serde",
 	"sp-io/std",
