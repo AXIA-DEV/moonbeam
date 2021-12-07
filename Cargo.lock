@@ -2684,7 +2684,7 @@ dependencies = [
  "ethereum",
  "frame-support",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "scale-info",
  "serde",
  "sha3 0.8.2",
@@ -3784,7 +3784,7 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-server-utils",
  "log",
- "axia-tokio-ipc",
+ "parity-tokio-ipc",
  "parking_lot 0.11.1",
  "tower-service",
 ]
@@ -3832,7 +3832,7 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-server-utils",
  "log",
- "axia-ws",
+ "parity-ws",
  "parking_lot 0.11.1",
  "slab",
 ]
@@ -4005,7 +4005,7 @@ version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "45a3f58dc069ec0e205a27f5b45920722a46faed802a0541538241af6228f512"
 dependencies = [
- "axia-util-mem",
+ "parity-util-mem",
  "smallvec 1.7.0",
 ]
 
@@ -4016,7 +4016,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3b6b85fc643f5acd0bffb2cc8a6d150209379267af0d41db72170021841f9f5"
 dependencies = [
  "kvdb",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
 ]
 
@@ -4031,7 +4031,7 @@ dependencies = [
  "log",
  "num_cpus",
  "owning_ref",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
  "regex",
  "rocksdb",
@@ -4483,7 +4483,7 @@ dependencies = [
  "futures 0.3.17",
  "js-sys",
  "libp2p-core",
- "axia-send-wrapper",
+ "parity-send-wrapper",
  "wasm-bindgen",
  "wasm-bindgen-futures",
 ]
@@ -4864,7 +4864,7 @@ checksum = "de006e09d04fc301a5f7e817b75aa49801c4479a8af753764416b085337ddcc5"
 dependencies = [
  "hash-db",
  "hashbrown",
- "axia-util-mem",
+ "parity-util-mem",
 ]
 
 [[package]]
@@ -7377,10 +7377,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-db"
-version = "0.3.2"
+name = "parity-db"
+version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91b679c6acc14fac74382942e2b73bea441686a33430b951ea03b5aeb6a7f254"
+checksum = "78a95abf24f1097c6e3181abbbbfc3630b3b5e681470940f719b69acb4911c7f"
 dependencies = [
  "blake2-rfc",
  "crc32fast",
@@ -7422,13 +7422,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-send-wrapper"
+name = "parity-send-wrapper"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa9777aa91b8ad9dd5aaa04a9b6bcb02c7f1deb952fca5a66034d5e63afc5c6f"
 
 [[package]]
-name = "axia-tokio-ipc"
+name = "parity-tokio-ipc"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9981e32fb75e004cc148f5fb70342f393830e0a4aa62e3cc93b50976218d42b6"
@@ -7442,7 +7442,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-util-mem"
+name = "parity-util-mem"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f4cb4e169446179cbc6b8b6320cc9fca49bd2e94e8db25f25f200a8ea774770"
@@ -7452,7 +7452,7 @@ dependencies = [
  "hashbrown",
  "impl-trait-for-tuples 0.2.1",
  "lru 0.6.6",
- "axia-util-mem-derive",
+ "parity-util-mem-derive",
  "parking_lot 0.11.1",
  "primitive-types",
  "smallvec 1.7.0",
@@ -7460,7 +7460,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-util-mem-derive"
+name = "parity-util-mem-derive"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f557c32c6d268a07c921471619c0295f5efad3a0e76d4f97a05c091a51d110b2"
@@ -7471,7 +7471,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-wasm"
+name = "parity-wasm"
 version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "16ad52817c4d343339b3bc2e26861bd21478eda0b7509acf83505727000512ac"
@@ -7480,16 +7480,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "axia-wasm"
+name = "parity-wasm"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be5e13c266502aadf83426d87d81a0f5d1ef45b8027f5a471c360abfe4bfae92"
 
 [[package]]
-name = "axia-ws"
-version = "0.11.0"
+name = "parity-ws"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d0ab8a461779bd022964cae2b4989fa9c99deb270bec162da2125ec03c09fcaa"
+checksum = "5983d3929ad50f12c3eb9a6743f19d691866ecd44da74c0a3308c3f8a56df0c6"
 dependencies = [
  "byteorder",
  "bytes 0.4.12",
@@ -7978,7 +7978,7 @@ version = "0.9.12"
 source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.9.12#415ce0db8dd603903476a2361f23641a5dd0af47"
 dependencies = [
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "scale-info",
  "sp-core",
  "sp-runtime",
@@ -8311,7 +8311,7 @@ source = "git+https://github.com/purestake/polkadot?branch=moonbeam-polkadot-v0.
 dependencies = [
  "futures 0.3.17",
  "memory-lru",
- "axia-util-mem",
+ "parity-util-mem",
  "polkadot-node-subsystem",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
@@ -8455,7 +8455,7 @@ dependencies = [
  "futures 0.3.17",
  "futures-timer 3.0.2",
  "lru 0.7.0",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
  "polkadot-node-metrics",
  "polkadot-node-network-protocol",
@@ -8504,7 +8504,7 @@ dependencies = [
  "derive_more",
  "frame-support",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "polkadot-core-primitives",
  "scale-info",
  "serde",
@@ -8522,7 +8522,7 @@ dependencies = [
  "frame-system",
  "hex-literal",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "polkadot-core-primitives",
  "polkadot-parachain",
  "scale-info",
@@ -9162,7 +9162,7 @@ checksum = "f0c1a2f10b47d446372a4f397c58b329aaea72b2daf9395a623a411cb8ccb54f"
 dependencies = [
  "byteorder",
  "log",
- "axia-wasm 0.42.2",
+ "parity-wasm 0.42.2",
 ]
 
 [[package]]
@@ -10087,7 +10087,7 @@ dependencies = [
  "kvdb-rocksdb",
  "linked-hash-map",
  "log",
- "axia-db",
+ "parity-db",
  "parity-scale-codec",
  "parking_lot 0.11.1",
  "sc-client-api",
@@ -10345,7 +10345,7 @@ dependencies = [
  "libc",
  "log",
  "parity-scale-codec",
- "axia-wasm 0.42.2",
+ "parity-wasm 0.42.2",
  "sc-allocator",
  "sc-executor-common",
  "sp-core",
@@ -10424,7 +10424,7 @@ dependencies = [
  "futures 0.3.17",
  "futures-timer 3.0.2",
  "log",
- "axia-util-mem",
+ "parity-util-mem",
  "sc-client-api",
  "sc-network",
  "sc-transaction-pool-api",
@@ -10669,7 +10669,7 @@ dependencies = [
  "jsonrpc-pubsub",
  "log",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
  "pin-project 1.0.8",
  "rand 0.7.3",
@@ -10726,8 +10726,8 @@ source = "git+https://github.com/purestake/substrate?branch=moonbeam-polkadot-v0
 dependencies = [
  "log",
  "parity-scale-codec",
- "axia-util-mem",
- "axia-util-mem-derive",
+ "parity-util-mem",
+ "parity-util-mem-derive",
  "parking_lot 0.11.1",
  "sc-client-api",
  "sp-core",
@@ -10824,7 +10824,7 @@ dependencies = [
  "linked-hash-map",
  "log",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
  "retain_mut",
  "sc-client-api",
@@ -11565,7 +11565,7 @@ dependencies = [
  "merlin",
  "num-traits",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "parking_lot 0.11.1",
  "primitive-types",
  "rand 0.7.3",
@@ -11776,7 +11776,7 @@ dependencies = [
  "impl-trait-for-tuples 0.2.1",
  "log",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "paste",
  "rand 0.7.3",
  "scale-info",
@@ -11980,7 +11980,7 @@ source = "git+https://github.com/purestake/substrate?branch=moonbeam-polkadot-v0
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
- "axia-wasm 0.42.2",
+ "parity-wasm 0.42.2",
  "scale-info",
  "serde",
  "sp-runtime",
@@ -12273,7 +12273,7 @@ dependencies = [
  "pallet-babe",
  "pallet-timestamp",
  "parity-scale-codec",
- "axia-util-mem",
+ "parity-util-mem",
  "sc-service",
  "scale-info",
  "serde",
@@ -13162,7 +13162,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d0c32691b6c7e6c14e7f8fd55361a9088b507aa49620fcd06c09b3a1082186b9"
 dependencies = [
  "log",
- "axia-wasm 0.32.0",
+ "parity-wasm 0.32.0",
  "rustc-demangle",
 ]
 
@@ -13192,7 +13192,7 @@ dependencies = [
  "memory_units",
  "num-rational 0.2.4",
  "num-traits",
- "axia-wasm 0.42.2",
+ "parity-wasm 0.42.2",
  "wasmi-validation",
 ]
 
@@ -13202,7 +13202,7 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb8e860796d8be48efef530b60eebf84e74a88bce107374fffb0da97d504b8"
 dependencies = [
- "axia-wasm 0.42.2",
+ "parity-wasm 0.42.2",
 ]
 
 [[package]]

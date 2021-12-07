@@ -17,7 +17,7 @@
 // We want to avoid including the betanet-runtime here.
 // TODO: whenever a conclusion is taken from https://github.com/axiatech/substrate/issues/8158
 
-use axia_scale_codec::{Decode, Encode};
+use parity_scale_codec::{Decode, Encode};
 use sp_runtime::traits::{AccountIdLookup, StaticLookup};
 use sp_runtime::AccountId32;
 use sp_std::vec::Vec;
