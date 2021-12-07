@@ -191,14 +191,14 @@ where
 	}
 
 	// This method is not yet implemented because it depends on
-	// https://github.com/paritytech/substrate/pull/9565 which has been merged into Substrate
+	// https://github.com/axiatech/substrate/pull/9565 which has been merged into Substrate
 	// master, but is not on the release branches that we are following
 	fn ongoing_referendum_info(
 		mut _input: EvmDataReader,
 		_target_gas: Option<u64>,
 	) -> EvmResult<PrecompileOutput> {
 		Err(error(
-			"This method depends on https://github.com/paritytech/substrate/pull/9565",
+			"This method depends on https://github.com/axiatech/substrate/pull/9565",
 		))
 		// let mut gasometer = Gasometer::new(target_gas);
 
@@ -244,14 +244,14 @@ where
 	}
 
 	// This method is not yet implemented because it depends on
-	// https://github.com/paritytech/substrate/pull/9565 which has been merged into Substrate
+	// https://github.com/axiatech/substrate/pull/9565 which has been merged into Substrate
 	// master, but is not on the release branches that we are following
 	fn finished_referendum_info(
 		mut _input: EvmDataReader,
 		_target_gas: Option<u64>,
 	) -> EvmResult<PrecompileOutput> {
 		Err(error(
-			"This method depends on https://github.com/paritytech/substrate/pull/9565",
+			"This method depends on https://github.com/axiatech/substrate/pull/9565",
 		))
 	}
 

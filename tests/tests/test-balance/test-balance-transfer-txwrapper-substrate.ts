@@ -1,4 +1,4 @@
-// As inspired by https://github.com/paritytech/txwrapper/blob/master/examples/axia.ts
+// As inspired by https://github.com/axiatech/txwrapper/blob/master/examples/axia.ts
 // This flow is used by some exchange partners like kraken
 
 import { expect } from "chai";

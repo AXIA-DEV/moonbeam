@@ -21,7 +21,7 @@ use cli_opt::{EthApi, RpcConfig};
 use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
-use parity_scale_codec::Encode;
+use axia_scale_codec::Encode;
 use polkadot_parachain::primitives::AccountIdConversion;
 #[cfg(feature = "westend-native")]
 use polkadot_service::WestendChainSpec;

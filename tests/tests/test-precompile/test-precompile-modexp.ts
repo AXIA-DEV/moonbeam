@@ -5,7 +5,7 @@ import { createContract } from "../../util/transactions";
 describeDevMoonbeam("Precompiles - ModExp", (context) => {
   it("should be accessible from a smart contract", async function () {
     // See also the ModExp unit tests at
-    // github.com/paritytech/frontier/blob/378221a4/frame/evm/precompile/modexp/src/lib.rs#L101
+    // github.com/axiatech/frontier/blob/378221a4/frame/evm/precompile/modexp/src/lib.rs#L101
     const { contract, rawTx } = await createContract(context.web3, "ModularCheck");
     const { txResults } = await context.createBlock({ transactions: [rawTx] });
 

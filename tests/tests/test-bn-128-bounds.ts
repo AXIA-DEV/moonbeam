@@ -9,7 +9,7 @@ import { customWeb3Request } from "../util/providers";
  * call on unchecked input.
  *
  * Fixed by:
- * https://github.com/paritytech/frontier/pull/394
+ * https://github.com/axiatech/frontier/pull/394
  */
 
 describeDevMoonbeam("bn128 precompile bounds check", (context) => {

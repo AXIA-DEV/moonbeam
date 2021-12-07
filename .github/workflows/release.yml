@@ -38,7 +38,7 @@ jobs:
           SCCACHE_PATH=${{ runner.tool_cache }}/cargo-sccache-${CARGO_SCCACHE_COMMIT}
           SCCACHE_BIN=${SCCACHE_PATH}/bin/sccache
           if [ ! -f $SCCACHE_BIN ]; then
-            cargo install sccache --git https://github.com/paritytech/sccache.git --rev $CARGO_SCCACHE_COMMIT --force --no-default-features --features=dist-client --root $SCCACHE_PATH
+            cargo install sccache --git https://github.com/axiatech/sccache.git --rev $CARGO_SCCACHE_COMMIT --force --no-default-features --features=dist-client --root $SCCACHE_PATH
           fi
           ls -la $SCCACHE_BIN
           ps aux | grep sccache

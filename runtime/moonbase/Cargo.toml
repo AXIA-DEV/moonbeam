@@ -69,7 +69,7 @@ pallet-transaction-payment = { git = "https://github.com/purestake/substrate", b
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-treasury = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-utility = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parity-scale-codec = { version = "2.2", default-features = false, features = [ "derive", "max-encoded-len" ] }
+axia-scale-codec = { version = "2.2", default-features = false, features = [ "derive", "max-encoded-len" ] }
 scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
 sp-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 sp-block-builder = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
@@ -194,7 +194,7 @@ std = [
 	"parachain-info/std",
 	"allychain-staking-precompiles/std",
 	"allychain-staking/std",
-	"parity-scale-codec/std",
+	"axia-scale-codec/std",
 	"precompile-utils/std",
 	"runtime-common/std",
 	"scale-info/std",

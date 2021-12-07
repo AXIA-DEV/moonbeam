@@ -17,7 +17,7 @@ precompile-utils = { path = "../utils", default-features = false }
 frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 pallet-staking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+axia-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
 sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
@@ -54,8 +54,8 @@ std = [
 	"frame-system/std",
 	"pallet-evm/std",
 	"pallet-staking/std",
-	"parity-scale-codec/std",
-	"parity-scale-codec/std",
+	"axia-scale-codec/std",
+	"axia-scale-codec/std",
 	"precompile-utils/std",
 	"sp-runtime/std",
 	"sp-std/std",

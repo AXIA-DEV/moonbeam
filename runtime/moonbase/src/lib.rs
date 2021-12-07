@@ -77,7 +77,7 @@ use pallet_evm::{
 };
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier, TargetedFeeAdjustment};
 pub use allychain_staking::{InflationInfo, Range};
-use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
+use axia_scale_codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 use sp_api::impl_runtime_apis;
 use sp_core::{u32_trait::*, OpaqueMetadata, H160, H256, U256};
@@ -1031,7 +1031,7 @@ parameter_types! {
 	/// We should increase this to a value close to what axia charges
 	/// We are charging less to make it work with current reserve_transfer_assets issue
 	/// TODO: Once fixed in axia v0.9.12, we should go back to 1_000_000_000
-	/// https://github.com/paritytech/axia/pull/4144
+	/// https://github.com/axiatech/axia/pull/4144
 	pub UnitWeightCost: Weight = 100_000_000;
 	/// Maximum number of instructions in a single XCM fragment. A sanity check against
 	/// weight caculations getting too crazy.

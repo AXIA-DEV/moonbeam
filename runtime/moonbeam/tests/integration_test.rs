@@ -38,7 +38,7 @@ use nimbus_primitives::NimbusId;
 use pallet_evm::PrecompileSet;
 use pallet_transaction_payment::Multiplier;
 use allychain_staking::Bond;
-use parity_scale_codec::Encode;
+use axia_scale_codec::Encode;
 use sha3::{Digest, Keccak256};
 use sp_core::Pair;
 use sp_core::{Public, H160, U256};
@@ -58,14 +58,14 @@ fn verify_pallet_prefixes() {
 		// Compares the unhashed pallet prefix in the `StorageInstance` implementation by every
 		// storage item in the pallet P. This pallet prefix is used in conjunction with the
 		// item name to get the unique storage key: hash(PalletPrefix) + hash(StorageName)
-		// https://github.com/paritytech/substrate/blob/master/frame/support/procedural/src/pallet/
+		// https://github.com/axiatech/substrate/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
 			<moonbeam_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
-	// TODO: use StorageInfoTrait once https://github.com/paritytech/substrate/pull/9246
+	// TODO: use StorageInfoTrait once https://github.com/axiatech/substrate/pull/9246
 	// is pulled in substrate deps.
 	is_pallet_prefix::<moonbeam_runtime::System>("System");
 	is_pallet_prefix::<moonbeam_runtime::Utility>("Utility");
