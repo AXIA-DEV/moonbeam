@@ -66,13 +66,13 @@ fn verify_pallet_prefixes() {
 	is_pallet_prefix::<moonriver_runtime::System>("System");
 	is_pallet_prefix::<moonriver_runtime::Utility>("Utility");
 	is_pallet_prefix::<moonriver_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
-	is_pallet_prefix::<moonriver_runtime::ParachainSystem>("ParachainSystem");
+	is_pallet_prefix::<moonriver_runtime::AllychainSystem>("AllychainSystem");
 	is_pallet_prefix::<moonriver_runtime::TransactionPayment>("TransactionPayment");
-	is_pallet_prefix::<moonriver_runtime::ParachainInfo>("ParachainInfo");
+	is_pallet_prefix::<moonriver_runtime::AllychainInfo>("AllychainInfo");
 	is_pallet_prefix::<moonriver_runtime::EthereumChainId>("EthereumChainId");
 	is_pallet_prefix::<moonriver_runtime::EVM>("EVM");
 	is_pallet_prefix::<moonriver_runtime::Ethereum>("Ethereum");
-	is_pallet_prefix::<moonriver_runtime::ParachainStaking>("ParachainStaking");
+	is_pallet_prefix::<moonriver_runtime::AllychainStaking>("AllychainStaking");
 	is_pallet_prefix::<moonriver_runtime::MaintenanceMode>("MaintenanceMode");
 	is_pallet_prefix::<moonriver_runtime::Scheduler>("Scheduler");
 	is_pallet_prefix::<moonriver_runtime::Democracy>("Democracy");
@@ -204,15 +204,15 @@ fn verify_pallet_indices() {
 	}
 	// System support
 	is_pallet_index::<moonriver_runtime::System>(0);
-	is_pallet_index::<moonriver_runtime::ParachainSystem>(1);
+	is_pallet_index::<moonriver_runtime::AllychainSystem>(1);
 	is_pallet_index::<moonriver_runtime::RandomnessCollectiveFlip>(2);
 	is_pallet_index::<moonriver_runtime::Timestamp>(3);
-	is_pallet_index::<moonriver_runtime::ParachainInfo>(4);
+	is_pallet_index::<moonriver_runtime::AllychainInfo>(4);
 	// Monetary
 	is_pallet_index::<moonriver_runtime::Balances>(10);
 	is_pallet_index::<moonriver_runtime::TransactionPayment>(11);
 	// Consensus support
-	is_pallet_index::<moonriver_runtime::ParachainStaking>(20);
+	is_pallet_index::<moonriver_runtime::AllychainStaking>(20);
 	is_pallet_index::<moonriver_runtime::AuthorInherent>(21);
 	is_pallet_index::<moonriver_runtime::AuthorFilter>(22);
 	is_pallet_index::<moonriver_runtime::AuthorMapping>(23);
@@ -268,7 +268,7 @@ fn join_collator_candidates() {
 		.build()
 		.execute_with(|| {
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(ALICE)),
 					1_000 * MOVR,
 					2u32
@@ -276,7 +276,7 @@ fn join_collator_candidates() {
 				allychain_staking::Error::<Runtime>::CandidateExists
 			);
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * MOVR,
 					2u32
@@ -284,20 +284,20 @@ fn join_collator_candidates() {
 				allychain_staking::Error::<Runtime>::DelegatorExists
 			);
 			assert!(System::events().is_empty());
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(DAVE)),
 				1_000 * MOVR,
 				2u32
 			));
 			assert_eq!(
 				last_event(),
-				Event::ParachainStaking(allychain_staking::Event::JoinedCollatorCandidates(
+				Event::AllychainStaking(allychain_staking::Event::JoinedCollatorCandidates(
 					AccountId::from(DAVE),
 					1_000 * MOVR,
 					3_100 * MOVR
 				))
 			);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(
 				candidates.0[0],
 				Bond {
@@ -330,7 +330,7 @@ fn transfer_through_evm_to_stake() {
 		.execute_with(|| {
 			// Charlie has no balance => fails to stake
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * MOVR,
 					2u32
@@ -368,12 +368,12 @@ fn transfer_through_evm_to_stake() {
 			);
 
 			// Charlie can stake now
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(CHARLIE)),
 				1_000 * MOVR,
 				2u32,
 			),);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(
 				candidates.0[0],
 				Bond {
@@ -448,7 +448,7 @@ fn reward_block_authors_with_allychain_bond_reserved() {
 		.build()
 		.execute_with(|| {
 			set_allychain_inherent_data();
-			assert_ok!(ParachainStaking::set_allychain_bond_account(
+			assert_ok!(AllychainStaking::set_allychain_bond_account(
 				root_origin(),
 				AccountId::from(CHARLIE),
 			),);

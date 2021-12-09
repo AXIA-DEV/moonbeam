@@ -5,17 +5,17 @@ import { DEBUG_MODE } from "./constants";
 import { HttpProvider } from "web3-core";
 import {
   NodePorts,
-  ParachainOptions,
-  ParachainPorts,
-  startParachainNodes,
-  stopParachainNodes,
+  AllychainOptions,
+  AllychainPorts,
+  startAllychainNodes,
+  stopAllychainNodes,
 } from "./para-node";
 const debug = require("debug")("test:setup");
 
 export interface ParaTestContext {
   createWeb3: (protocol?: "ws" | "http") => Promise<EnhancedWeb3>;
   createEthers: () => Promise<ethers.providers.JsonRpcProvider>;
-  createAXIAApiParachains: () => Promise<ApiPromise>;
+  createAXIAApiAllychains: () => Promise<ApiPromise>;
   createAXIAApiRelaychains: () => Promise<ApiPromise>;
 
   // We also provided singleton providers for simplicity
@@ -24,20 +24,20 @@ export interface ParaTestContext {
   axiaApiParaone: ApiPromise;
 }
 
-export interface ParachainApis {
+export interface AllychainApis {
   allychainId: number;
   apis: ApiPromise[];
 }
 
 export interface InternalParaTestContext extends ParaTestContext {
-  _axiaApiParachains: ParachainApis[];
+  _axiaApiAllychains: AllychainApis[];
   _axiaApiRelaychains: ApiPromise[];
   _web3Providers: HttpProvider[];
 }
 
-export function describeParachain(
+export function describeAllychain(
   title: string,
-  options: ParachainOptions,
+  options: AllychainOptions,
   cb: (context: InternalParaTestContext) => void
 ) {
   describe(title, function () {
@@ -52,7 +52,7 @@ export function describeParachain(
     before("Starting Moonbeam Test Node", async function () {
       this.timeout(300000);
       const init = !DEBUG_MODE
-        ? await startParachainNodes(options)
+        ? await startAllychainNodes(options)
         : {
             paraPorts: [
               {
@@ -71,7 +71,7 @@ export function describeParachain(
       // Context is given prior to this assignement, so doing
       // context = init.context will fail because it replace the variable;
 
-      context._axiaApiParachains = [];
+      context._axiaApiAllychains = [];
       context._axiaApiRelaychains = [];
       context._web3Providers = [];
 
@@ -84,9 +84,9 @@ export function describeParachain(
         return provider;
       };
       context.createEthers = async () => provideEthersApi(init.paraPorts[0].ports[0].rpcPort);
-      context.createAXIAApiParachains = async () => {
+      context.createAXIAApiAllychains = async () => {
         const apiPromises = await Promise.all(
-          init.paraPorts.map(async (allychain: ParachainPorts) => {
+          init.paraPorts.map(async (allychain: AllychainPorts) => {
             return {
               allychainId: allychain.allychainId,
               apis: await Promise.all(
@@ -98,7 +98,7 @@ export function describeParachain(
           })
         );
         // We keep track of the axiaApis to close them at the end of the test
-        context._axiaApiParachains = apiPromises;
+        context._axiaApiAllychains = apiPromises;
         await Promise.all(
           apiPromises.map(async (promises) =>
             Promise.all(promises.apis.map((promise) => promise.isReady))
@@ -130,7 +130,7 @@ export function describeParachain(
         return apiPromises[0];
       };
 
-      context.axiaApiParaone = await context.createAXIAApiParachains();
+      context.axiaApiParaone = await context.createAXIAApiAllychains();
       await context.createAXIAApiRelaychains();
       context.web3 = await context.createWeb3();
       context.ethers = await context.createEthers();
@@ -144,14 +144,14 @@ export function describeParachain(
     after(async function () {
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
       await Promise.all(
-        context._axiaApiParachains.map(
+        context._axiaApiAllychains.map(
           async (ps) => await Promise.all(ps.apis.map((p) => p.disconnect()))
         )
       );
       await Promise.all(context._axiaApiRelaychains.map((p) => p.disconnect()));
 
       if (!DEBUG_MODE) {
-        await stopParachainNodes();
+        await stopAllychainNodes();
         await new Promise((resolve) => {
           // TODO: Replace Sleep by actually checking the process has ended
           setTimeout(resolve, 1000);

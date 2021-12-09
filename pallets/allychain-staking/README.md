@@ -1,4 +1,4 @@
-# DPoS Pallet for Parachain Staking
+# DPoS Pallet for Allychain Staking
 
 ## Formatting Rules
 

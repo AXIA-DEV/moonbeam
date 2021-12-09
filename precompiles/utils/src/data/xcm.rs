@@ -89,11 +89,11 @@ impl EvmData for Junction {
 		// The firs byte selects the enum variant
 		match enum_selector[0] {
 			0 => {
-				// In the case of Junction::Parachain, we need 4 additional bytes
+				// In the case of Junction::Allychain, we need 4 additional bytes
 				let mut data: [u8; 4] = Default::default();
 				data.copy_from_slice(&encoded_junction.read_raw_bytes(4)?);
 				let para_id = u32::from_be_bytes(data);
-				Ok(Junction::Parachain(para_id))
+				Ok(Junction::Allychain(para_id))
 			}
 			1 => {
 				// In the case of Junction::AccountId32, we need 32 additional bytes plus NetworkId
@@ -145,7 +145,7 @@ impl EvmData for Junction {
 	fn write(writer: &mut EvmDataWriter, value: Self) {
 		let mut encoded: Vec<u8> = Vec::new();
 		let encoded_bytes: Bytes = match value {
-			Junction::Parachain(para_id) => {
+			Junction::Allychain(para_id) => {
 				encoded.push(0u8);
 				encoded.append(&mut para_id.to_be_bytes().to_vec());
 				encoded.as_slice().into()

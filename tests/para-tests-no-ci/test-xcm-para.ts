@@ -3,8 +3,8 @@ import { expect } from "chai";
 import { BN, hexToU8a } from "@axia/util";
 
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR, BALTATHAR_PRIV_KEY } from "../util/constants";
-import { describeParachain } from "../util/setup-para-tests";
-import { createBlockWithExtrinsicParachain, logEvents, waitOneBlock } from "../util/substrate-rpc";
+import { describeAllychain } from "../util/setup-para-tests";
+import { createBlockWithExtrinsicAllychain, logEvents, waitOneBlock } from "../util/substrate-rpc";
 import { KeyringPair } from "@axia/keyring/types";
 import { ApiPromise } from "@axia/api";
 
@@ -39,13 +39,13 @@ interface SourceLocation {
 }
 const sourceLocationRelay = { XCM: { parents: 1, interior: "Here" } };
 
-async function registerAssetToParachain(
+async function registerAssetToAllychain(
   allychainApi: ApiPromise,
   sudoKeyring: KeyringPair,
   assetLocation: SourceLocation = sourceLocationRelay,
   assetMetadata: AssetMetadata = relayAssetMetadata
 ) {
-  const { events: eventsRegister } = await createBlockWithExtrinsicParachain(
+  const { events: eventsRegister } = await createBlockWithExtrinsicAllychain(
     allychainApi,
     sudoKeyring,
     allychainApi.tx.sudo.sudo(
@@ -66,7 +66,7 @@ async function registerAssetToParachain(
   assetId = assetId.replace(/,/g, "");
 
   // setAssetUnitsPerSecond
-  const { events } = await createBlockWithExtrinsicParachain(
+  const { events } = await createBlockWithExtrinsicAllychain(
     allychainApi,
     sudoKeyring,
     allychainApi.tx.sudo.sudo(allychainApi.tx.assetManager.setAssetUnitsPerSecond(assetId, 0))
@@ -77,7 +77,7 @@ async function registerAssetToParachain(
 async function setDefaultVersionRelay(relayApi: ApiPromise, sudoKeyring: KeyringPair) {
   // Set supported version
   // Release-v0.9.12 does not have yet automatic versioning
-  const { events } = await createBlockWithExtrinsicParachain(
+  const { events } = await createBlockWithExtrinsicAllychain(
     relayApi,
     sudoKeyring,
     relayApi.tx.sudo.sudo(relayApi.tx.xcmPallet.forceDefaultXcmVersion(1))
@@ -85,7 +85,7 @@ async function setDefaultVersionRelay(relayApi: ApiPromise, sudoKeyring: Keyring
   return { events };
 }
 
-describeParachain(
+describeAllychain(
   "XCM - receive_relay_asset_from_relay",
   { chain: "moonbase-local" },
   (context) => {
@@ -107,7 +107,7 @@ describeParachain(
 
       // ALLYCHAINS
       // registerAsset
-      const { events, assetId } = await registerAssetToParachain(allychainOne, alith);
+      const { events, assetId } = await registerAssetToAllychain(allychainOne, alith);
 
       expect(events[1].toHuman().method).to.eq("UnitsPerSecondChanged");
       expect(events[4].toHuman().method).to.eq("ExtrinsicSuccess");
@@ -125,7 +125,7 @@ describeParachain(
       ).data.free;
 
       let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-        { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+        { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
         {
           V1: {
             parents: new BN(0),
@@ -140,7 +140,7 @@ describeParachain(
       // Fees
       const fee = (await reserveTrasnsferAssetsCall.paymentInfo(aliceRelay)).partialFee as any;
       // Trigger the transfer
-      const { events: eventsRelay } = await createBlockWithExtrinsicParachain(
+      const { events: eventsRelay } = await createBlockWithExtrinsicAllychain(
         relayOne,
         aliceRelay,
         reserveTrasnsferAssetsCall
@@ -167,7 +167,7 @@ describeParachain(
   }
 );
 
-describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }, (context) => {
+describeAllychain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }, (context) => {
   let keyring: Keyring,
     aliceRelay: KeyringPair,
     alith: KeyringPair,
@@ -182,7 +182,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
     aliceRelay = keyring.addFromUri("//Alice");
     relayOne = context._axiaApiRelaychains[0];
 
-    // Setup Parachain
+    // Setup Allychain
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
     allychainOne = context.axiaApiParaone;
@@ -196,7 +196,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
 
     // ALLYCHAIN A
     // registerAsset
-    ({ assetId } = await registerAssetToParachain(allychainOne, alith));
+    ({ assetId } = await registerAssetToAllychain(allychainOne, alith));
 
     // RELAYCHAIN
     // Sets default xcm version to relay
@@ -206,7 +206,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
       .data.free;
 
     let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-      { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+      { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
       {
         V1: {
           parents: new BN(0),
@@ -225,7 +225,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
       BigInt(beforeAliceRelayBalance) - BigInt(fee) - BigInt(THOUSAND_UNITS);
 
     // Transfer 1000 units to para a baltathar
-    await createBlockWithExtrinsicParachain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
+    await createBlockWithExtrinsicAllychain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
 
     // Wait for allychain block to have been emited
     await waitOneBlock(allychainOne, 2);
@@ -246,7 +246,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
       .data.free;
     // ALLYCHAIN A
     // xToken transfer : sending 100 units back to relay
-    const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
+    const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
       allychainOne,
       baltathar,
       allychainOne.tx.xTokens.transfer(
@@ -282,9 +282,9 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
   });
 });
 
-describeParachain(
+describeAllychain(
   "XCM - send_relay_asset_to_para_b - aka allychainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       aliceRelay: KeyringPair,
@@ -301,11 +301,11 @@ describeParachain(
       aliceRelay = keyring.addFromUri("//Alice");
       relayOne = context._axiaApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
       allychainOne = context.axiaApiParaone;
-      allychainTwo = context._axiaApiParachains[1].apis[0];
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -316,11 +316,11 @@ describeParachain(
 
       // ALLYCHAIN A
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(allychainOne, alith));
+      ({ assetId } = await registerAssetToAllychain(allychainOne, alith));
 
       // ALLYCHAIN B
       // registerAsset
-      const { assetId: assetIdB } = await registerAssetToParachain(allychainTwo, alith);
+      const { assetId: assetIdB } = await registerAssetToAllychain(allychainTwo, alith);
 
       // They should have the same id
       expect(assetId).to.eq(assetIdB);
@@ -333,7 +333,7 @@ describeParachain(
       ).data.free;
 
       let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-        { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+        { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
         {
           V1: {
             parents: new BN(0),
@@ -353,7 +353,7 @@ describeParachain(
         BigInt(beforeAliceRelayBalance) - BigInt(fee) - BigInt(THOUSAND_UNITS);
 
       // Transfer 1000 units to para a baltathar
-      await createBlockWithExtrinsicParachain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
+      await createBlockWithExtrinsicAllychain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
 
       // Wait for allychain block to have been emited
       await waitOneBlock(allychainOne, 2);
@@ -371,7 +371,7 @@ describeParachain(
     it("should be able to receive a non-reserve asset in para b from para a", async function () {
       // ALLYCHAIN A
       // transfer 100 units to allychain B
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
         allychainOne,
         baltathar,
         allychainOne.tx.xTokens.transfer(
@@ -382,7 +382,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -411,9 +411,9 @@ describeParachain(
   }
 );
 
-describeParachain(
+describeAllychain(
   "XCM - send_para_a_asset_to_para_b - aka allychainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
@@ -430,11 +430,11 @@ describeParachain(
       // Setup Relaychain
       relayOne = context._axiaApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
       allychainOne = context.axiaApiParaone;
-      allychainTwo = context._axiaApiParachains[1].apis[0];
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -454,13 +454,13 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: 1,
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
       // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
+      ({ assetId } = await registerAssetToAllychain(
         allychainTwo,
         alith,
         sourceLocationParaA,
@@ -470,7 +470,7 @@ describeParachain(
     it("should be able to receive an asset in para b from para a", async function () {
       // ALLYCHAIN A
       // transfer 100 units to allychain B
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
         allychainOne,
         baltathar,
         allychainOne.tx.xTokens.transfer(
@@ -481,7 +481,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -512,9 +512,9 @@ describeParachain(
   }
 );
 
-describeParachain(
+describeAllychain(
   "XCM - send_para_a_asset_to_para_b_and_back_to_para_a - aka allychainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
@@ -531,11 +531,11 @@ describeParachain(
       // Setup Relaychain
       relayOne = context._axiaApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
       allychainOne = context.axiaApiParaone;
-      allychainTwo = context._axiaApiParachains[1].apis[0];
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -555,13 +555,13 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: new BN(1),
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
       // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
+      ({ assetId } = await registerAssetToAllychain(
         allychainTwo,
         alith,
         sourceLocationParaA,
@@ -570,7 +570,7 @@ describeParachain(
 
       // ALLYCHAIN A
       // transfer 100 units to allychain B
-      await createBlockWithExtrinsicParachain(
+      await createBlockWithExtrinsicAllychain(
         allychainOne,
         baltathar,
         allychainOne.tx.xTokens.transfer(
@@ -581,7 +581,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -596,7 +596,7 @@ describeParachain(
     it("should be able to receive an asset in para b from para a", async function () {
       // ALLYCHAIN B
       // transfer back 100 units to allychain A
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
         allychainTwo,
         baltathar,
         allychainTwo.tx.xTokens.transfer(
@@ -607,7 +607,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(1000) },
+                  { Allychain: new BN(1000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -637,9 +637,9 @@ describeParachain(
   }
 );
 
-describeParachain(
+describeAllychain(
   "XCM - send_para_a_asset_from_para_b_to_para_c",
-  { chain: "moonbase-local", numberOfParachains: 3 },
+  { chain: "moonbase-local", numberOfAllychains: 3 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
@@ -657,12 +657,12 @@ describeParachain(
       // Setup Relaychain
       relayOne = context._axiaApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
       allychainOne = context.axiaApiParaone;
-      allychainTwo = context._axiaApiParachains[1].apis[0];
-      allychainThree = context._axiaApiParachains[2].apis[0];
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
+      allychainThree = context._axiaApiAllychains[2].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -683,13 +683,13 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: new BN(1),
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
       // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
+      ({ assetId } = await registerAssetToAllychain(
         allychainTwo,
         alith,
         sourceLocationParaA,
@@ -698,12 +698,12 @@ describeParachain(
 
       // ALLYCHAIN C
       // registerAsset
-      await registerAssetToParachain(allychainThree, alith, sourceLocationParaA, paraAssetMetadata);
+      await registerAssetToAllychain(allychainThree, alith, sourceLocationParaA, paraAssetMetadata);
     });
     it("should be able to receive an asset back in para a from para b", async function () {
       // ALLYCHAIN A
       // transfer 100 units to allychain B
-      await createBlockWithExtrinsicParachain(
+      await createBlockWithExtrinsicAllychain(
         allychainOne,
         baltathar,
         allychainOne.tx.xTokens.transfer(
@@ -714,7 +714,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -728,7 +728,7 @@ describeParachain(
 
       // ALLYCHAIN B
       // transfer 100 units to allychain C
-      const { events: eventsTransfer2 } = await createBlockWithExtrinsicParachain(
+      const { events: eventsTransfer2 } = await createBlockWithExtrinsicAllychain(
         allychainTwo,
         baltathar,
         allychainTwo.tx.xTokens.transfer(
@@ -739,7 +739,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(3000) },
+                  { Allychain: new BN(3000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },

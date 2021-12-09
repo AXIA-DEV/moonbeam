@@ -116,7 +116,7 @@ pub fn relay_ext() -> sp_io::TestExternalities {
 }
 
 pub type RelayChainPalletXcm = pallet_xcm::Pallet<relay_chain::Runtime>;
-pub type ParachainPalletXcm = pallet_xcm::Pallet<allychain::Runtime>;
+pub type AllychainPalletXcm = pallet_xcm::Pallet<allychain::Runtime>;
 pub type Assets = pallet_assets::Pallet<allychain::Runtime>;
 pub type AssetManager = pallet_asset_manager::Pallet<allychain::Runtime>;
 pub type XTokens = orml_xtokens::Pallet<allychain::Runtime>;

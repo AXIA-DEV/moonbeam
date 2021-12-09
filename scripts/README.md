@@ -32,7 +32,7 @@ WS: 33[0-9]44
 (so your first relay node will have RPC at 33043)
 
 ```
-Parachain Nodes: 34[0-9]XX (supports 9 allychain nodes)
+Allychain Nodes: 34[0-9]XX (supports 9 allychain nodes)
 P2P: 34[0-9]52
 RPC: 34[0-9]53
 WS: 34[0-9]54

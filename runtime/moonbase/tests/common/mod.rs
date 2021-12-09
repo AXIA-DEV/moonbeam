@@ -16,7 +16,7 @@
 
 #![allow(dead_code)]
 
-use cumulus_primitives_allychain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::AllychainInherentData;
 use frame_support::{
 	assert_ok,
 	dispatch::Dispatchable,
@@ -25,7 +25,7 @@ use frame_support::{
 pub use moonbase_runtime::{
 	currency::{UNIT, WEI},
 	AccountId, AssetId, AssetManager, Assets, AuthorInherent, Balance, Balances, Call,
-	CrowdloanRewards, Ethereum, Event, Executive, FixedGasPrice, InflationInfo, ParachainStaking,
+	CrowdloanRewards, Ethereum, Event, Executive, FixedGasPrice, InflationInfo, AllychainStaking,
 	Range, Runtime, System, TransactionConverter, UncheckedExtrinsic, WEEKS,
 };
 use moonbase_runtime::{AssetRegistrarMetadata, AssetType};
@@ -56,7 +56,7 @@ pub fn run_to_block(n: u32) {
 		AuthorInherent::on_finalize(System::block_number());
 		System::set_block_number(System::block_number() + 1);
 		AuthorInherent::on_initialize(System::block_number());
-		ParachainStaking::on_initialize(System::block_number());
+		AllychainStaking::on_initialize(System::block_number());
 		Ethereum::on_initialize(System::block_number());
 	}
 }
@@ -311,7 +311,7 @@ pub fn set_author(a: NimbusId) {
 	);
 }
 
-/// Mock the inherent that sets validation data in ParachainSystem, which
+/// Mock the inherent that sets validation data in AllychainSystem, which
 /// contains the `relay_chain_block_number`, which is used in `author-filter` as a
 /// source of randomness to filter valid authors at each block.
 pub fn set_allychain_inherent_data() {
@@ -324,13 +324,13 @@ pub fn set_allychain_inherent_data() {
 		relay_parent_storage_root,
 		..Default::default()
 	};
-	let allychain_inherent_data = ParachainInherentData {
+	let allychain_inherent_data = AllychainInherentData {
 		validation_data: vfp,
 		relay_chain_state: relay_chain_state,
 		downward_messages: Default::default(),
 		horizontal_messages: Default::default(),
 	};
-	assert_ok!(Call::ParachainSystem(
+	assert_ok!(Call::AllychainSystem(
 		cumulus_pallet_allychain_system::Call::<Runtime>::set_validation_data {
 			data: allychain_inherent_data
 		}

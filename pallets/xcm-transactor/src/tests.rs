@@ -69,7 +69,7 @@ fn test_transact_through_derivative_errors() {
 				Origin::root(),
 				xcm::VersionedMultiLocation::V1(MultiLocation::new(
 					1,
-					Junctions::X1(Junction::Parachain(1000))
+					Junctions::X1(Junction::Allychain(1000))
 				)),
 				0,
 				0,
@@ -86,7 +86,7 @@ fn test_transact_through_derivative_errors() {
 					1,
 					xcm::VersionedMultiLocation::V1(MultiLocation::new(
 						1,
-						Junctions::X1(Junction::Parachain(1000))
+						Junctions::X1(Junction::Allychain(1000))
 					)),
 					100u64,
 					vec![0u8]

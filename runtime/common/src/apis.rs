@@ -383,7 +383,7 @@ macro_rules! impl_runtime_apis_plus_common {
 
 			impl cumulus_primitives_core::CollectCollationInfo<Block> for Runtime {
 				fn collect_collation_info() -> cumulus_primitives_core::CollationInfo {
-					ParachainSystem::collect_collation_info()
+					AllychainSystem::collect_collation_info()
 				}
 			}
 
@@ -398,7 +398,7 @@ macro_rules! impl_runtime_apis_plus_common {
 					use frame_support::traits::StorageInfoTrait;
 					use frame_system_benchmarking::Pallet as SystemBench;
 					use pallet_crowdloan_rewards::Pallet as PalletCrowdloanRewardsBench;
-					use allychain_staking::Pallet as ParachainStakingBench;
+					use allychain_staking::Pallet as AllychainStakingBench;
 					use pallet_author_mapping::Pallet as PalletAuthorMappingBench;
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
 					use pallet_asset_manager::Pallet as PalletAssetManagerBench;
@@ -406,7 +406,7 @@ macro_rules! impl_runtime_apis_plus_common {
 					let mut list = Vec::<BenchmarkList>::new();
 
 					list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
-					list_benchmark!(list, extra, allychain_staking, ParachainStakingBench::<Runtime>);
+					list_benchmark!(list, extra, allychain_staking, AllychainStakingBench::<Runtime>);
 					list_benchmark!(list, extra, pallet_crowdloan_rewards, PalletCrowdloanRewardsBench::<Runtime>);
 					list_benchmark!(list, extra, pallet_author_mapping, PalletAuthorMappingBench::<Runtime>);
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
@@ -428,7 +428,7 @@ macro_rules! impl_runtime_apis_plus_common {
 					impl frame_system_benchmarking::Config for Runtime {}
 
 					use pallet_crowdloan_rewards::Pallet as PalletCrowdloanRewardsBench;
-					use allychain_staking::Pallet as ParachainStakingBench;
+					use allychain_staking::Pallet as AllychainStakingBench;
 					use pallet_author_mapping::Pallet as PalletAuthorMappingBench;
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
 					use pallet_asset_manager::Pallet as PalletAssetManagerBench;
@@ -443,7 +443,7 @@ macro_rules! impl_runtime_apis_plus_common {
 						params,
 						batches,
 						allychain_staking,
-						ParachainStakingBench::<Runtime>
+						AllychainStakingBench::<Runtime>
 					);
 					add_benchmark!(
 					params,

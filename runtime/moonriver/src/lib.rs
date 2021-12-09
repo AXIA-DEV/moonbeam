@@ -211,7 +211,7 @@ impl frame_system::Config for Runtime {
 	type SystemWeightInfo = ();
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_parachain_system::AllychainSetCode<Self>;
 }
 
 impl pallet_utility::Config for Runtime {
@@ -633,7 +633,7 @@ parameter_types! {
 impl cumulus_pallet_parachain_system::Config for Runtime {
 	type Event = Event;
 	type OnValidationData = ();
-	type SelfParaId = ParachainInfo;
+	type SelfParaId = AllychainInfo;
 	type DmpMessageHandler = ();
 	type ReservedDmpWeight = ();
 	type OutboundXcmpMessageSource = ();
@@ -669,7 +669,7 @@ parameter_types! {
 	/// Default fixed percent a collator takes off the top of due rewards
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
 	/// Default percent of inflation set aside for allychain bond every round
-	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
+	pub const DefaultAllychainBondReservePercent: Percent = Percent::from_percent(30);
 	/// Minimum stake required to become a collator
 	pub const MinCollatorStk: u128 = 1 * currency::KILOMOVR * currency::SUPPLY_FACTOR;
 	/// Minimum stake required to be reserved to be a candidate
@@ -693,7 +693,7 @@ impl allychain_staking::Config for Runtime {
 	type MaxDelegatorsPerCandidate = MaxDelegatorsPerCandidate;
 	type MaxDelegationsPerDelegator = MaxDelegationsPerDelegator;
 	type DefaultCollatorCommission = DefaultCollatorCommission;
-	type DefaultParachainBondReservePercent = DefaultParachainBondReservePercent;
+	type DefaultAllychainBondReservePercent = DefaultAllychainBondReservePercent;
 	type MinCollatorStk = MinCollatorStk;
 	type MinCandidateStk = MinCandidateStk;
 	type MinDelegation = MinDelegatorStk;
@@ -705,14 +705,14 @@ impl pallet_author_inherent::Config for Runtime {
 	type AuthorId = NimbusId;
 	type SlotBeacon = RelaychainBlockNumberProvider<Self>;
 	type AccountLookup = AuthorMapping;
-	type EventHandler = ParachainStaking;
+	type EventHandler = AllychainStaking;
 	type CanAuthor = AuthorFilter;
 }
 
 impl pallet_author_slot_filter::Config for Runtime {
 	type Event = Event;
 	type RandomnessSource = RandomnessCollectiveFlip;
-	type PotentialAuthors = ParachainStaking;
+	type PotentialAuthors = AllychainStaking;
 }
 
 parameter_types! {
@@ -803,7 +803,7 @@ impl InstanceFilter<Call> for ProxyType {
 				matches!(
 					c,
 					Call::System(..)
-						| Call::Timestamp(..) | Call::ParachainStaking(..)
+						| Call::Timestamp(..) | Call::AllychainStaking(..)
 						| Call::Democracy(..) | Call::CouncilCollective(..)
 						| Call::TechCommitteeCollective(..)
 						| Call::Utility(..) | Call::Proxy(..)
@@ -819,7 +819,7 @@ impl InstanceFilter<Call> for ProxyType {
 			),
 			ProxyType::Staking => matches!(
 				c,
-				Call::ParachainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
+				Call::AllychainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
 			),
 			ProxyType::CancelProxy => {
 				matches!(
@@ -904,17 +904,17 @@ construct_runtime! {
 	{
 		// System support stuff.
 		System: frame_system::{Pallet, Call, Storage, Config, Event<T>} = 0,
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 1,
+		AllychainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 1,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 2,
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent} = 3,
-		ParachainInfo: parachain_info::{Pallet, Storage, Config} = 4,
+		AllychainInfo: parachain_info::{Pallet, Storage, Config} = 4,
 
 		// Monetary stuff.
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>} = 10,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage} = 11,
 
 		// Consensus support.
-		ParachainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 20,
+		AllychainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 20,
 		AuthorInherent: pallet_author_inherent::{Pallet, Call, Storage, Inherent} = 21,
 		AuthorFilter: pallet_author_slot_filter::{Pallet, Call, Storage, Event, Config} = 22,
 		AuthorMapping: pallet_author_mapping::{Pallet, Call, Config<T>, Storage, Event<T>} = 23,

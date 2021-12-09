@@ -180,7 +180,7 @@ For the default configuration, you can access through axiajs:
 🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
      Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
      build/moonriver-genesis-fast/moonbeam downloaded !
-🚀 Parachain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
+🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
      Missing build/kusama-9030-fast/axia locally, downloading it...
      build/kusama-9030-fast/axia downloaded !
 
@@ -190,9 +190,9 @@ For the default configuration, you can access through axiajs:
   👤 Added Genesis Authority alice
   👤 Added Genesis Authority bob
 
-⚙ Updating Parachains Genesis Configuration
+⚙ Updating Allychains Genesis Configuration
 
-⛓ Adding Genesis Parachains
+⛓ Adding Genesis Allychains
 ⛓ Adding Genesis HRMP Channels
 
 2021-06-06 04:28:52  Building chain spec

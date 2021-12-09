@@ -34,7 +34,7 @@ use sp_runtime::{
 };
 use xcm::latest::{
 	Error as XcmError,
-	Junction::{AccountKey20, GeneralIndex, PalletInstance, Parachain},
+	Junction::{AccountKey20, GeneralIndex, PalletInstance, Allychain},
 	Junctions, MultiAsset, MultiLocation, NetworkId, Result as XcmResult, SendResult, SendXcm, Xcm,
 };
 
@@ -155,7 +155,7 @@ impl From<TestAccount> for H160 {
 pub type AssetId = u128;
 
 parameter_types! {
-	pub ParachainId: cumulus_primitives_core::ParaId = 100.into();
+	pub AllychainId: cumulus_primitives_core::ParaId = 100.into();
 }
 
 parameter_types! {
@@ -406,7 +406,7 @@ impl sp_runtime::traits::Convert<CurrencyId, Option<MultiLocation>> for Currency
 				} else {
 					Some(MultiLocation::new(
 						1,
-						Junctions::X2(Parachain(2), GeneralIndex(asset)),
+						Junctions::X2(Allychain(2), GeneralIndex(asset)),
 					))
 				}
 			}
@@ -429,17 +429,17 @@ impl sp_runtime::traits::Convert<TestAccount, MultiLocation> for AccountIdToMult
 }
 
 parameter_types! {
-	pub Ancestry: MultiLocation = Parachain(ParachainId::get().into()).into();
+	pub Ancestry: MultiLocation = Allychain(AllychainId::get().into()).into();
 
 	pub const BaseXcmWeight: Weight = 1000;
 	pub const RelayNetwork: NetworkId = NetworkId::AXIA;
 
-	pub SelfLocation: MultiLocation = (1, Junctions::X1(Parachain(ParachainId::get().into()))).into();
+	pub SelfLocation: MultiLocation = (1, Junctions::X1(Allychain(AllychainId::get().into()))).into();
 
 	pub SelfReserve: MultiLocation = (
 		1,
 		Junctions::X2(
-			Parachain(ParachainId::get().into()),
+			Allychain(AllychainId::get().into()),
 			PalletInstance(<Test as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)).into();
 	pub MaxInstructions: u32 = 100;

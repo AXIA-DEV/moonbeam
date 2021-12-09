@@ -109,7 +109,7 @@ parameter_types! {
 	pub const MaxDelegatorsPerCandidate: u32 = 4;
 	pub const MaxDelegationsPerDelegator: u32 = 4;
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
-	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
+	pub const DefaultAllychainBondReservePercent: Percent = Percent::from_percent(30);
 	pub const MinCollatorStk: u128 = 10;
 	pub const MinDelegatorStk: u128 = 5;
 	pub const MinDelegation: u128 = 3;
@@ -130,7 +130,7 @@ impl Config for Test {
 	type MaxDelegatorsPerCandidate = MaxDelegatorsPerCandidate;
 	type MaxDelegationsPerDelegator = MaxDelegationsPerDelegator;
 	type DefaultCollatorCommission = DefaultCollatorCommission;
-	type DefaultParachainBondReservePercent = DefaultParachainBondReservePercent;
+	type DefaultAllychainBondReservePercent = DefaultAllychainBondReservePercent;
 	type MinCollatorStk = MinCollatorStk;
 	type MinCandidateStk = MinCollatorStk;
 	type MinDelegatorStk = MinDelegatorStk;
@@ -219,7 +219,7 @@ impl ExtBuilder {
 			inflation_config: self.inflation,
 		}
 		.assimilate_storage(&mut t)
-		.expect("Parachain Staking's storage can be assimilated");
+		.expect("Allychain Staking's storage can be assimilated");
 
 		let mut ext = sp_io::TestExternalities::new(t);
 		ext.execute_with(|| System::set_block_number(1));

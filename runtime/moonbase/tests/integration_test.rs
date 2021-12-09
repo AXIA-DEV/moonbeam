@@ -31,7 +31,7 @@ use frame_support::{
 };
 use moonbase_runtime::{
 	currency::UNIT, AccountId, AssetId, AssetManager, AssetRegistrarMetadata, AssetType, Assets,
-	Balances, BlockWeights, Call, CrowdloanRewards, Event, ParachainStaking, AXIAXcm,
+	Balances, BlockWeights, Call, CrowdloanRewards, Event, AllychainStaking, AXIAXcm,
 	Precompiles, Runtime, System, XTokens,
 };
 use nimbus_primitives::NimbusId;
@@ -76,13 +76,13 @@ fn verify_pallet_prefixes() {
 	is_pallet_prefix::<moonbase_runtime::System>("System");
 	is_pallet_prefix::<moonbase_runtime::Utility>("Utility");
 	is_pallet_prefix::<moonbase_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
-	is_pallet_prefix::<moonbase_runtime::ParachainSystem>("ParachainSystem");
+	is_pallet_prefix::<moonbase_runtime::AllychainSystem>("AllychainSystem");
 	is_pallet_prefix::<moonbase_runtime::TransactionPayment>("TransactionPayment");
-	is_pallet_prefix::<moonbase_runtime::ParachainInfo>("ParachainInfo");
+	is_pallet_prefix::<moonbase_runtime::AllychainInfo>("AllychainInfo");
 	is_pallet_prefix::<moonbase_runtime::EthereumChainId>("EthereumChainId");
 	is_pallet_prefix::<moonbase_runtime::EVM>("EVM");
 	is_pallet_prefix::<moonbase_runtime::Ethereum>("Ethereum");
-	is_pallet_prefix::<moonbase_runtime::ParachainStaking>("ParachainStaking");
+	is_pallet_prefix::<moonbase_runtime::AllychainStaking>("AllychainStaking");
 	is_pallet_prefix::<moonbase_runtime::Scheduler>("Scheduler");
 	is_pallet_prefix::<moonbase_runtime::Democracy>("Democracy");
 	is_pallet_prefix::<moonbase_runtime::CouncilCollective>("CouncilCollective");
@@ -228,13 +228,13 @@ fn verify_pallet_indices() {
 	is_pallet_index::<moonbase_runtime::Balances>(3);
 	is_pallet_index::<moonbase_runtime::Sudo>(4);
 	is_pallet_index::<moonbase_runtime::RandomnessCollectiveFlip>(5);
-	is_pallet_index::<moonbase_runtime::ParachainSystem>(6);
+	is_pallet_index::<moonbase_runtime::AllychainSystem>(6);
 	is_pallet_index::<moonbase_runtime::TransactionPayment>(7);
-	is_pallet_index::<moonbase_runtime::ParachainInfo>(8);
+	is_pallet_index::<moonbase_runtime::AllychainInfo>(8);
 	is_pallet_index::<moonbase_runtime::EthereumChainId>(9);
 	is_pallet_index::<moonbase_runtime::EVM>(10);
 	is_pallet_index::<moonbase_runtime::Ethereum>(11);
-	is_pallet_index::<moonbase_runtime::ParachainStaking>(12);
+	is_pallet_index::<moonbase_runtime::AllychainStaking>(12);
 	is_pallet_index::<moonbase_runtime::Scheduler>(13);
 	is_pallet_index::<moonbase_runtime::Democracy>(14);
 	is_pallet_index::<moonbase_runtime::CouncilCollective>(15);
@@ -279,7 +279,7 @@ fn join_collator_candidates() {
 		.build()
 		.execute_with(|| {
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(ALICE)),
 					1_000 * UNIT,
 					2u32
@@ -287,7 +287,7 @@ fn join_collator_candidates() {
 				allychain_staking::Error::<Runtime>::CandidateExists
 			);
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * UNIT,
 					2u32
@@ -295,20 +295,20 @@ fn join_collator_candidates() {
 				allychain_staking::Error::<Runtime>::DelegatorExists
 			);
 			assert!(System::events().is_empty());
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(DAVE)),
 				1_000 * UNIT,
 				2u32
 			));
 			assert_eq!(
 				last_event(),
-				Event::ParachainStaking(allychain_staking::Event::JoinedCollatorCandidates(
+				Event::AllychainStaking(allychain_staking::Event::JoinedCollatorCandidates(
 					AccountId::from(DAVE),
 					1_000 * UNIT,
 					3_100 * UNIT
 				))
 			);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(
 				candidates.0[0],
 				Bond {
@@ -341,7 +341,7 @@ fn transfer_through_evm_to_stake() {
 		.execute_with(|| {
 			// Charlie has no balance => fails to stake
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * UNIT,
 					0u32
@@ -380,12 +380,12 @@ fn transfer_through_evm_to_stake() {
 			);
 
 			// Charlie can stake now
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(CHARLIE)),
 				1_000 * UNIT,
 				0u32,
 			),);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(
 				candidates.0[0],
 				Bond {
@@ -460,7 +460,7 @@ fn reward_block_authors_with_allychain_bond_reserved() {
 		.build()
 		.execute_with(|| {
 			set_allychain_inherent_data();
-			assert_ok!(ParachainStaking::set_allychain_bond_account(
+			assert_ok!(AllychainStaking::set_allychain_bond_account(
 				root_origin(),
 				AccountId::from(CHARLIE),
 			),);

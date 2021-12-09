@@ -346,7 +346,7 @@ fn transfer_multi_asset_non_reserve_to_non_reserve() {
 
 			let asset_location = MultiLocation::new(
 				1,
-				Junctions::X2(Junction::Parachain(2), Junction::GeneralIndex(5u128)),
+				Junctions::X2(Junction::Allychain(2), Junction::GeneralIndex(5u128)),
 			);
 
 			assert_eq!(

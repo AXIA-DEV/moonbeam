@@ -441,7 +441,7 @@ fn cannot_set_same_inflation() {
 fn set_allychain_bond_account_event_emits_correctly() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(Stake::set_allychain_bond_account(Origin::root(), 11));
-		assert_last_event!(MetaEvent::Stake(Event::ParachainBondAccountSet(0, 11)));
+		assert_last_event!(MetaEvent::Stake(Event::AllychainBondAccountSet(0, 11)));
 	});
 }
 
@@ -463,7 +463,7 @@ fn set_allychain_bond_reserve_percent_event_emits_correctly() {
 			Origin::root(),
 			Percent::from_percent(50)
 		));
-		assert_last_event!(MetaEvent::Stake(Event::ParachainBondReservePercentSet(
+		assert_last_event!(MetaEvent::Stake(Event::AllychainBondReservePercentSet(
 			Percent::from_percent(30),
 			Percent::from_percent(50),
 		)));
@@ -3293,13 +3293,13 @@ fn allychain_bond_inflation_reserve_matches_config() {
 		.build()
 		.execute_with(|| {
 			assert_eq!(Balances::free_balance(&11), 1);
-			// set allychain bond account so DefaultParachainBondReservePercent = 30% of inflation
+			// set allychain bond account so DefaultAllychainBondReservePercent = 30% of inflation
 			// is allocated to this account hereafter
 			assert_ok!(Stake::set_allychain_bond_account(Origin::root(), 11));
 			roll_to(8);
 			// chooses top TotalSelectedCandidates (5), in order
 			let mut expected = vec![
-				Event::ParachainBondAccountSet(0, 11),
+				Event::AllychainBondAccountSet(0, 11),
 				Event::CollatorChosen(2, 1, 50),
 				Event::CollatorChosen(2, 2, 40),
 				Event::CollatorChosen(2, 3, 20),
@@ -3320,7 +3320,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 				Event::CollatorChosen(3, 4, 20),
 				Event::CollatorChosen(3, 5, 10),
 				Event::NewRound(10, 3, 5, 140),
-				Event::ReservedForParachainBond(11, 15),
+				Event::ReservedForAllychainBond(11, 15),
 				Event::Rewarded(1, 20),
 				Event::DelegatorDueReward(7, 1, 5),
 				Event::DelegatorDueReward(10, 1, 5),
@@ -3354,7 +3354,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			roll_to(30);
 			let mut new2 = vec![
 				Event::DelegatorExitScheduled(4, 6, 6),
-				Event::ReservedForParachainBond(11, 16),
+				Event::ReservedForAllychainBond(11, 16),
 				Event::Rewarded(1, 21),
 				Event::DelegatorDueReward(7, 1, 5),
 				Event::DelegatorDueReward(10, 1, 5),
@@ -3368,7 +3368,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 				Event::CollatorChosen(5, 4, 20),
 				Event::CollatorChosen(5, 5, 10),
 				Event::NewRound(20, 5, 5, 140),
-				Event::ReservedForParachainBond(11, 16),
+				Event::ReservedForAllychainBond(11, 16),
 				Event::Rewarded(1, 22),
 				Event::DelegatorDueReward(7, 1, 6),
 				Event::DelegatorDueReward(10, 1, 6),
@@ -3384,7 +3384,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 				Event::NewRound(25, 6, 5, 140),
 				Event::DelegatorLeftCandidate(6, 1, 10, 40),
 				Event::DelegatorLeft(6, 10),
-				Event::ReservedForParachainBond(11, 17),
+				Event::ReservedForAllychainBond(11, 17),
 				Event::Rewarded(1, 24),
 				Event::DelegatorDueReward(7, 1, 6),
 				Event::DelegatorDueReward(10, 1, 6),
@@ -3411,11 +3411,11 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			roll_to(35);
 			// keep paying 6
 			let mut new3 = vec![
-				Event::ParachainBondReservePercentSet(
+				Event::AllychainBondReservePercentSet(
 					Percent::from_percent(30),
 					Percent::from_percent(50),
 				),
-				Event::ReservedForParachainBond(11, 30),
+				Event::ReservedForAllychainBond(11, 30),
 				Event::Rewarded(1, 20),
 				Event::DelegatorDueReward(7, 1, 4),
 				Event::DelegatorDueReward(10, 1, 4),
@@ -3437,7 +3437,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			roll_to(40);
 			// no more paying 6
 			let mut new4 = vec![
-				Event::ReservedForParachainBond(11, 32),
+				Event::ReservedForAllychainBond(11, 32),
 				Event::Rewarded(1, 22),
 				Event::DelegatorDueReward(7, 1, 5),
 				Event::DelegatorDueReward(10, 1, 5),
@@ -3459,7 +3459,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			// new delegation is not rewarded yet
 			let mut new5 = vec![
 				Event::Delegation(8, 10, 1, DelegatorAdded::AddedToTop { new_total: 50 }),
-				Event::ReservedForParachainBond(11, 33),
+				Event::ReservedForAllychainBond(11, 33),
 				Event::Rewarded(1, 23),
 				Event::DelegatorDueReward(7, 1, 5),
 				Event::DelegatorDueReward(10, 1, 5),
@@ -3480,7 +3480,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			roll_to(50);
 			// new delegation is still not rewarded yet
 			let mut new6 = vec![
-				Event::ReservedForParachainBond(11, 35),
+				Event::ReservedForAllychainBond(11, 35),
 				Event::Rewarded(1, 24),
 				Event::DelegatorDueReward(7, 1, 5),
 				Event::DelegatorDueReward(10, 1, 5),
@@ -3499,7 +3499,7 @@ fn allychain_bond_inflation_reserve_matches_config() {
 			roll_to(55);
 			// new delegation is rewarded, 2 rounds after joining (`RewardPaymentDelay` is 2)
 			let mut new7 = vec![
-				Event::ReservedForParachainBond(11, 37),
+				Event::ReservedForAllychainBond(11, 37),
 				Event::Rewarded(1, 24),
 				Event::DelegatorDueReward(7, 1, 4),
 				Event::DelegatorDueReward(8, 1, 4),

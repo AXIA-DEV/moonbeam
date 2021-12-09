@@ -15,7 +15,7 @@ import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
+describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
   let alith: KeyringPair;
   before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -26,7 +26,7 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
       context,
       alith,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
     //check allychainBondInfo
@@ -35,7 +35,7 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
     expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length).to.eq(5);
-    expect(context.axiaApi.events.allychainStaking.ParachainBondAccountSet.is(events[1])).to.be
+    expect(context.axiaApi.events.allychainStaking.AllychainBondAccountSet.is(events[1])).to.be
       .true;
     expect(context.axiaApi.events.balances.Deposit.is(events[3])).to.be.true;
     expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[4])).to.be.true;
@@ -75,7 +75,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
         context,
         alith,
         context.axiaApi.tx.sudo.sudo(
-          context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+          context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
         )
       );
     } catch (e) {
@@ -100,7 +100,7 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
       context,
       genesisAccount,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
     //check allychainBondInfo
@@ -131,7 +131,7 @@ describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
       context,
       alith,
       context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
 

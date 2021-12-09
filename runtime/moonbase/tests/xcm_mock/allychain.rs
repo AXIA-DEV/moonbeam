@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with AXIA.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain runtime mock.
+//! Allychain runtime mock.
 
 use frame_support::{
 	construct_runtime, parameter_types,
@@ -35,7 +35,7 @@ use axia_core_primitives::BlockNumber as RelayBlockNumber;
 use polkadot_allychain::primitives::{Id as ParaId, Sibling};
 use xcm::latest::{
 	AssetId as XcmAssetId, Error as XcmError, ExecuteXcm,
-	Junction::{PalletInstance, Parachain},
+	Junction::{PalletInstance, Allychain},
 	Junctions, MultiLocation, NetworkId, Outcome, Xcm,
 };
 use xcm_builder::{
@@ -43,7 +43,7 @@ use xcm_builder::{
 	AllowTopLevelPaidExecutionFrom, ConvertedConcreteAssetId,
 	CurrencyAdapter as XcmCurrencyAdapter, EnsureXcmOrigin, FixedRateOfFungible, FixedWeightBounds,
 	FungiblesAdapter, IsConcrete, LocationInverter, ParentAsSuperuser, ParentIsDefault,
-	RelayChainAsNative, SiblingParachainAsNative, SiblingParachainConvertsVia,
+	RelayChainAsNative, SiblingAllychainAsNative, SiblingAllychainConvertsVia,
 	SignedAccountKey20AsNative, SovereignSignedViaLocation, TakeWeightCredit,
 };
 use xcm_executor::{traits::JustTry, Config, XcmExecutor};
@@ -138,7 +138,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsDefault<AccountId>,
 	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<Sibling, AccountId>,
+	SiblingAllychainConvertsVia<Sibling, AccountId>,
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
 
@@ -153,9 +153,9 @@ pub type XcmOriginToTransactDispatchOrigin = (
 	// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when
 	// recognised.
 	RelayChainAsNative<RelayChainOrigin, Origin>,
-	// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when
+	// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when
 	// recognised.
-	SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
+	SiblingAllychainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 	// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a
 	// transaction from the Root origin.
 	ParentAsSuperuser<Origin>,
@@ -208,7 +208,7 @@ pub type LocalAssetTransactor = XcmCurrencyAdapter<
 
 // These will be our transactors
 pub type AssetTransactors = (LocalAssetTransactor, FungiblesTransactor);
-pub type XcmRouter = super::ParachainXcmRouter<MsgQueue>;
+pub type XcmRouter = super::AllychainXcmRouter<MsgQueue>;
 
 pub type Barrier = (
 	TakeWeightCredit,
@@ -227,11 +227,11 @@ parameter_types! {
 parameter_types! {
 	pub const RelayNetwork: NetworkId = NetworkId::AXIA;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
-	pub Ancestry: MultiLocation = Parachain(MsgQueue::allychain_id().into()).into();
+	pub Ancestry: MultiLocation = Allychain(MsgQueue::allychain_id().into()).into();
 		pub SelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Parachain(MsgQueue::allychain_id().into()),
+			Allychain(MsgQueue::allychain_id().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)
 	};
@@ -293,7 +293,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Parachain(MsgQueue::allychain_id().into())
+			Allychain(MsgQueue::allychain_id().into())
 		)
 	};
 }
@@ -333,7 +333,7 @@ pub mod mock_msg_queue {
 
 	#[pallet::storage]
 	#[pallet::getter(fn allychain_id)]
-	pub(super) type ParachainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
+	pub(super) type AllychainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
 
 	impl<T: Config> Get<ParaId> for Pallet<T> {
 		fn get() -> ParaId {
@@ -367,7 +367,7 @@ pub mod mock_msg_queue {
 
 	impl<T: Config> Pallet<T> {
 		pub fn set_para_id(para_id: ParaId) {
-			ParachainId::<T>::put(para_id);
+			AllychainId::<T>::put(para_id);
 		}
 
 		fn handle_xcmp_message(
@@ -379,7 +379,7 @@ pub mod mock_msg_queue {
 			let hash = Encode::using_encoded(&xcm, T::Hashing::hash);
 			let (result, event) = match Xcm::<T::Call>::try_from(xcm) {
 				Ok(xcm) => {
-					let location = MultiLocation::new(1, Junctions::X1(Parachain(sender.into())));
+					let location = MultiLocation::new(1, Junctions::X1(Allychain(sender.into())));
 					match T::XcmExecutor::execute_xcm(location, xcm, max_weight) {
 						Outcome::Error(e) => (Err(e.clone()), Event::Fail(Some(hash), e)),
 						Outcome::Complete(w) => (Ok(w), Event::Success(Some(hash))),

@@ -50,7 +50,7 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Evm: pallet_evm::{Pallet, Call, Storage, Event<T>},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		ParachainStaking: allychain_staking::{Pallet, Call, Storage, Config<T>, Event<T>},
+		AllychainStaking: allychain_staking::{Pallet, Call, Storage, Config<T>, Event<T>},
 	}
 );
 
@@ -182,7 +182,7 @@ where
 		context: &Context,
 	) -> Option<Result<PrecompileOutput, ExitError>> {
 		match address {
-			a if a == precompile_address() => Some(ParachainStakingWrapper::<R>::execute(
+			a if a == precompile_address() => Some(AllychainStakingWrapper::<R>::execute(
 				input, target_gas, context,
 			)),
 			_ => None,
@@ -232,7 +232,7 @@ parameter_types! {
 	pub const MaxDelegatorsPerCandidate: u32 = 4;
 	pub const MaxDelegationsPerDelegator: u32 = 4;
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
-	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
+	pub const DefaultAllychainBondReservePercent: Percent = Percent::from_percent(30);
 	pub const MinCollatorStk: u128 = 10;
 	pub const MinDelegatorStk: u128 = 5;
 	pub const MinDelegation: u128 = 3;
@@ -253,7 +253,7 @@ impl allychain_staking::Config for Runtime {
 	type MaxDelegatorsPerCandidate = MaxDelegatorsPerCandidate;
 	type MaxDelegationsPerDelegator = MaxDelegationsPerDelegator;
 	type DefaultCollatorCommission = DefaultCollatorCommission;
-	type DefaultParachainBondReservePercent = DefaultParachainBondReservePercent;
+	type DefaultAllychainBondReservePercent = DefaultAllychainBondReservePercent;
 	type MinCollatorStk = MinCollatorStk;
 	type MinCandidateStk = MinCollatorStk;
 	type MinDelegatorStk = MinDelegatorStk;
@@ -342,7 +342,7 @@ impl ExtBuilder {
 			inflation_config: self.inflation,
 		}
 		.assimilate_storage(&mut t)
-		.expect("Parachain Staking's storage can be assimilated");
+		.expect("Allychain Staking's storage can be assimilated");
 
 		let mut ext = sp_io::TestExternalities::new(t);
 		ext.execute_with(|| System::set_block_number(1));
@@ -358,13 +358,13 @@ pub(crate) fn set_points(round: u32, acc: TestAccount, pts: u32) {
 
 pub(crate) fn roll_to(n: u64) {
 	while System::block_number() < n {
-		ParachainStaking::on_finalize(System::block_number());
+		AllychainStaking::on_finalize(System::block_number());
 		Balances::on_finalize(System::block_number());
 		System::on_finalize(System::block_number());
 		System::set_block_number(System::block_number() + 1);
 		System::on_initialize(System::block_number());
 		Balances::on_initialize(System::block_number());
-		ParachainStaking::on_initialize(System::block_number());
+		AllychainStaking::on_initialize(System::block_number());
 	}
 }
 

@@ -794,14 +794,14 @@ fn junctions_decoder_works() {
 
 #[test]
 fn junction_decoder_works() {
-	let writer_output = EvmDataWriter::new().write(Junction::Parachain(0)).build();
+	let writer_output = EvmDataWriter::new().write(Junction::Allychain(0)).build();
 
 	let mut reader = EvmDataReader::new(&writer_output);
 	let parsed: Junction = reader
 		.read::<Junction>()
 		.expect("to correctly parse Junctions");
 
-	assert_eq!(parsed, Junction::Parachain(0));
+	assert_eq!(parsed, Junction::Allychain(0));
 
 	let writer_output = EvmDataWriter::new()
 		.write(Junction::AccountId32 {

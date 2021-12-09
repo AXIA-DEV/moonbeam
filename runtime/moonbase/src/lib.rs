@@ -54,7 +54,7 @@ use xcm_builder::{
 	AllowTopLevelPaidExecutionFrom, ConvertedConcreteAssetId,
 	CurrencyAdapter as XcmCurrencyAdapter, EnsureXcmOrigin, FixedWeightBounds, FungiblesAdapter,
 	IsConcrete, LocationInverter, ParentAsSuperuser, ParentIsDefault, RelayChainAsNative,
-	SiblingParachainAsNative, SiblingParachainConvertsVia, SignedAccountKey20AsNative,
+	SiblingAllychainAsNative, SiblingAllychainConvertsVia, SignedAccountKey20AsNative,
 	SovereignSignedViaLocation, TakeWeightCredit, UsingComponents,
 };
 
@@ -99,7 +99,7 @@ use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 use xcm::v1::{
 	BodyId,
-	Junction::{PalletInstance, Parachain},
+	Junction::{PalletInstance, Allychain},
 	Junctions, MultiLocation, NetworkId,
 };
 
@@ -239,7 +239,7 @@ impl frame_system::Config for Runtime {
 	type SystemWeightInfo = ();
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_parachain_system::AllychainSetCode<Self>;
 }
 
 impl pallet_utility::Config for Runtime {
@@ -690,7 +690,7 @@ parameter_types! {
 impl cumulus_pallet_parachain_system::Config for Runtime {
 	type Event = Event;
 	type OnValidationData = ();
-	type SelfParaId = ParachainInfo;
+	type SelfParaId = AllychainInfo;
 	type DmpMessageHandler = DmpQueue;
 	type ReservedDmpWeight = ReservedDmpWeight;
 	type OutboundXcmpMessageSource = XcmpQueue;
@@ -726,7 +726,7 @@ parameter_types! {
 	/// Default fixed percent a collator takes off the top of due rewards
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
 	/// Default percent of inflation set aside for allychain bond every round
-	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
+	pub const DefaultAllychainBondReservePercent: Percent = Percent::from_percent(30);
 	/// Minimum stake required to become a collator
 	pub const MinCollatorStk: u128 = 1 * currency::KILOUNIT * currency::SUPPLY_FACTOR;
 	/// Minimum stake required to be reserved to be a candidate
@@ -751,7 +751,7 @@ impl allychain_staking::Config for Runtime {
 	type MaxDelegatorsPerCandidate = MaxDelegatorsPerCandidate;
 	type MaxDelegationsPerDelegator = MaxDelegationsPerDelegator;
 	type DefaultCollatorCommission = DefaultCollatorCommission;
-	type DefaultParachainBondReservePercent = DefaultParachainBondReservePercent;
+	type DefaultAllychainBondReservePercent = DefaultAllychainBondReservePercent;
 	type MinCollatorStk = MinCollatorStk;
 	type MinCandidateStk = MinCandidateStk;
 	type MinDelegation = MinDelegatorStk;
@@ -763,14 +763,14 @@ impl pallet_author_inherent::Config for Runtime {
 	type AuthorId = NimbusId;
 	type SlotBeacon = RelaychainBlockNumberProvider<Self>;
 	type AccountLookup = AuthorMapping;
-	type EventHandler = ParachainStaking;
+	type EventHandler = AllychainStaking;
 	type CanAuthor = AuthorFilter;
 }
 
 impl pallet_author_slot_filter::Config for Runtime {
 	type Event = Event;
 	type RandomnessSource = RandomnessCollectiveFlip;
-	type PotentialAuthors = ParachainStaking;
+	type PotentialAuthors = AllychainStaking;
 }
 
 parameter_types! {
@@ -862,7 +862,7 @@ impl InstanceFilter<Call> for ProxyType {
 				matches!(
 					c,
 					Call::System(..)
-						| Call::Timestamp(..) | Call::ParachainStaking(..)
+						| Call::Timestamp(..) | Call::AllychainStaking(..)
 						| Call::Democracy(..) | Call::CouncilCollective(..)
 						| Call::TechCommitteeCollective(..)
 						| Call::Utility(..) | Call::Proxy(..)
@@ -878,7 +878,7 @@ impl InstanceFilter<Call> for ProxyType {
 			),
 			ProxyType::Staking => matches!(
 				c,
-				Call::ParachainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
+				Call::AllychainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
 			),
 			ProxyType::CancelProxy => {
 				matches!(
@@ -936,14 +936,14 @@ parameter_types! {
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
-	pub Ancestry: MultiLocation = Parachain(ParachainInfo::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Allychain(AllychainInfo::parachain_id().into()).into();
 	// Self Reserve location, defines the multilocation identifiying the self-reserve currency
 	// This is used to match it against our Balances pallet when we receive such a MultiLocation
 	// (Parent, Self Para Id, Self Balances pallet index)
 	pub SelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Parachain(ParachainInfo::parachain_id().into()),
+			Allychain(AllychainInfo::parachain_id().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)
 	};
@@ -956,7 +956,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsDefault<AccountId>,
 	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
+	SiblingAllychainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1013,9 +1013,9 @@ pub type XcmOriginToTransactDispatchOrigin = (
 	// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when
 	// recognised.
 	RelayChainAsNative<RelayChainOrigin, Origin>,
-	// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when
+	// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when
 	// recognised.
-	SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
+	SiblingAllychainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 	// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a
 	// transaction from the Root origin.
 	ParentAsSuperuser<Origin>,
@@ -1097,7 +1097,7 @@ pub type LocalOriginToLocation =
 /// queues.
 pub type XcmRouter = (
 	// Two routers - use UMP to communicate with the relay chain:
-	cumulus_primitives_utility::ParentAsUmp<ParachainSystem, AXIAXcm>,
+	cumulus_primitives_utility::ParentAsUmp<AllychainSystem, AXIAXcm>,
 	// ..and XCMP to communicate with the sibling chains.
 	XcmpQueue,
 );
@@ -1127,7 +1127,7 @@ impl cumulus_pallet_xcm::Config for Runtime {
 impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type Event = Event;
 	type XcmExecutor = XcmExecutor;
-	type ChannelInfo = ParachainSystem;
+	type ChannelInfo = AllychainSystem;
 	type VersionWrapper = AXIAXcm;
 }
 
@@ -1315,7 +1315,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Parachain(ParachainInfo::parachain_id().into())
+			Allychain(AllychainInfo::parachain_id().into())
 		)
 	};
 }
@@ -1455,13 +1455,13 @@ construct_runtime! {
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>} = 3,
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>} = 4,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 5,
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 6,
+		AllychainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 6,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage} = 7,
-		ParachainInfo: parachain_info::{Pallet, Storage, Config} = 8,
+		AllychainInfo: parachain_info::{Pallet, Storage, Config} = 8,
 		EthereumChainId: pallet_ethereum_chain_id::{Pallet, Storage, Config} = 9,
 		EVM: pallet_evm::{Pallet, Config, Call, Storage, Event<T>} = 10,
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Origin, Config} = 11,
-		ParachainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 12,
+		AllychainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 12,
 		Scheduler: pallet_scheduler::{Pallet, Storage, Config, Event<T>, Call} = 13,
 		Democracy: pallet_democracy::{Pallet, Storage, Config<T>, Event<T>, Call} = 14,
 		CouncilCollective:

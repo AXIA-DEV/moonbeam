@@ -53,7 +53,7 @@ export async function findAvailablePorts(allychainCount: number = 1) {
 // at the same time.
 let nodeStarted = false;
 
-export type ParachainOptions = {
+export type AllychainOptions = {
   chain:
     | "moonbase-local"
     | "moonriver-local"
@@ -62,10 +62,10 @@ export type ParachainOptions = {
     | "moonriver"
     | "moonbeam";
   relaychain?: "betanet-local" | "westend-local" | "kusama-local" | "axia-local";
-  numberOfParachains?: number;
+  numberOfAllychains?: number;
 };
 
-export interface ParachainPorts {
+export interface AllychainPorts {
   allychainId: number;
   ports: NodePorts[];
 }
@@ -79,9 +79,9 @@ export interface NodePorts {
 // This will start a allychain node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
 // Returns ports for the 3rd allychain node
-export async function startParachainNodes(options: ParachainOptions): Promise<{
+export async function startAllychainNodes(options: AllychainOptions): Promise<{
   relayPorts: NodePorts[];
-  paraPorts: ParachainPorts[];
+  paraPorts: AllychainPorts[];
 }> {
   while (nodeStarted) {
     // Wait 100ms to see if the node is free
@@ -91,20 +91,20 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
   }
   const relaychain = options.relaychain || "betanet-local";
   // For now we only support one, two or three allychains
-  const numberOfParachains =
-    (options.numberOfParachains < 4 &&
-      options.numberOfParachains > 0 &&
-      options.numberOfParachains) ||
+  const numberOfAllychains =
+    (options.numberOfAllychains < 4 &&
+      options.numberOfAllychains > 0 &&
+      options.numberOfAllychains) ||
     1;
-  const allychainArray = new Array(numberOfParachains).fill(0);
+  const allychainArray = new Array(numberOfAllychains).fill(0);
   nodeStarted = true;
   // Each node will have 3 ports. There are 2 nodes per allychain, and as many relaychain nodes.
   // So numberOfPorts =  3 * 2 * allychainCount
-  const ports = await findAvailablePorts(numberOfParachains);
+  const ports = await findAvailablePorts(numberOfAllychains);
 
   //Build hrmpChannels, all connected to first allychain
   const hrmpChannels = [];
-  new Array(numberOfParachains - 1).fill(0).forEach((_, i) => {
+  new Array(numberOfAllychains - 1).fill(0).forEach((_, i) => {
     hrmpChannels.push({
       sender: 1000,
       recipient: 1000 * (i + 2),
@@ -124,7 +124,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
     relaychain: {
       bin: RELAY_BINARY_PATH,
       chain: relaychain,
-      nodes: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+      nodes: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
         return {
           name: RELAY_CHAIN_NODE_NAMES[i],
           port: ports[i].p2pPort,
@@ -153,9 +153,9 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
         chain: options.chain,
         nodes: [
           {
-            port: ports[i * 2 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
+            port: ports[i * 2 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 2 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 2 + numberOfAllychains + 1].wsPort,
             name: "alice",
             flags: [
               "--log=info,rpc=trace,evm=trace,ethereum=trace",
@@ -166,9 +166,9 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
             ],
           },
           {
-            port: ports[i * 2 + numberOfParachains + 2].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
+            port: ports[i * 2 + numberOfAllychains + 2].p2pPort,
+            rpcPort: ports[i * 2 + numberOfAllychains + 2].rpcPort,
+            wsPort: ports[i * 2 + numberOfAllychains + 2].wsPort,
             name: "bob",
             flags: [
               "--log=info,rpc=trace,evm=trace,ethereum=trace",
@@ -181,7 +181,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
         ],
       };
     }),
-    simpleParachains: [],
+    simpleAllychains: [],
     hrmpChannels: hrmpChannels,
     finalization: true,
   };
@@ -199,7 +199,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
   await run(path.join(__dirname, "../"), launchConfig);
 
   return {
-    relayPorts: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+    relayPorts: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
       return {
         p2pPort: ports[i].p2pPort,
         rpcPort: ports[i].rpcPort,
@@ -212,14 +212,14 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
         allychainId: 1000 * (i + 1),
         ports: [
           {
-            p2pPort: ports[i * 2 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
+            p2pPort: ports[i * 2 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 2 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 2 + numberOfAllychains + 1].wsPort,
           },
           {
-            p2pPort: ports[i * 2 + numberOfParachains + 2].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
+            p2pPort: ports[i * 2 + numberOfAllychains + 2].p2pPort,
+            rpcPort: ports[i * 2 + numberOfAllychains + 2].rpcPort,
+            wsPort: ports[i * 2 + numberOfAllychains + 2].wsPort,
           },
         ],
       };
@@ -227,7 +227,7 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
   };
 }
 
-export async function stopParachainNodes() {
+export async function stopAllychainNodes() {
   killAll();
   await new Promise((resolve) => {
     // TODO: improve, make killAll async https://github.com/axiatech/axia-launch/issues/139

@@ -68,9 +68,9 @@ pub type RawChainSpec = sc_service::GenericChainSpec<(), Extensions>;
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension, ChainSpecGroup)]
 #[serde(rename_all = "camelCase")]
 pub struct Extensions {
-	/// The relay chain of the Parachain.
+	/// The relay chain of the Allychain.
 	pub relay_chain: String,
-	/// The id of the Parachain.
+	/// The id of the Allychain.
 	pub para_id: u32,
 }
 

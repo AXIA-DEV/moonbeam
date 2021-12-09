@@ -23,7 +23,7 @@ use pallet_evm_precompile_dispatch::Dispatch;
 use pallet_evm_precompile_modexp::Modexp;
 use pallet_evm_precompile_sha3fips::Sha3FIPS256;
 use pallet_evm_precompile_simple::{ECRecover, ECRecoverPublicKey, Identity, Ripemd160, Sha256};
-use allychain_staking_precompiles::ParachainStakingWrapper;
+use allychain_staking_precompiles::AllychainStakingWrapper;
 use sp_core::H160;
 use sp_std::fmt::Debug;
 use sp_std::marker::PhantomData;
@@ -55,7 +55,7 @@ where
 impl<R> PrecompileSet for MoonbeamPrecompiles<R>
 where
 	Dispatch<R>: Precompile,
-	ParachainStakingWrapper<R>: Precompile,
+	AllychainStakingWrapper<R>: Precompile,
 	CrowdloanRewardsWrapper<R>: Precompile,
 {
 	fn execute(
@@ -80,7 +80,7 @@ where
 			a if a == hash(1025) => Some(Dispatch::<R>::execute(input, target_gas, context)),
 			a if a == hash(1026) => Some(ECRecoverPublicKey::execute(input, target_gas, context)),
 			// Moonbeam specific precompiles :
-			a if a == hash(2048) => Some(ParachainStakingWrapper::<R>::execute(
+			a if a == hash(2048) => Some(AllychainStakingWrapper::<R>::execute(
 				input, target_gas, context,
 			)),
 			a if a == hash(2049) => Some(CrowdloanRewardsWrapper::<R>::execute(

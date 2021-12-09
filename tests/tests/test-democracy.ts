@@ -29,7 +29,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
     const referendumCount = await context.axiaApi.query.democracy.referendumCount();
     expect(referendumCount.toHuman()).to.equal("0");
   });
-  it("should check initial state - 0x0 ParachainBondAccount", async function () {
+  it("should check initial state - 0x0 AllychainBondAccount", async function () {
     // referendumCount
     const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
     expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
@@ -39,7 +39,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
     // notePreimage
     const encodedHash = await notePreimage(
       context,
-      context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT),
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT),
       genesisAccount
     );
 
@@ -63,7 +63,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
     // notePreimage
     encodedHash = await notePreimage(
       context,
-      context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT),
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT),
       genesisAccount
     );
   });
@@ -111,7 +111,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
     // notePreimage
     encodedHash = await notePreimage(
       context,
-      context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT),
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT),
       genesisAccount
     );
 
@@ -184,7 +184,7 @@ describeDevMoonbeam("Democracy - vote yes on referendum", (context) => {
     // notePreimage
     encodedHash = await notePreimage(
       context,
-      context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT),
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT),
       genesisAccount
     );
     // propose
@@ -259,7 +259,7 @@ describeDevMoonbeam("Democracy - vote no on referendum", (context) => {
     // notePreimage
     encodedHash = await notePreimage(
       context,
-      context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT),
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT),
       genesisAccount
     );
     // propose
@@ -326,7 +326,7 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
     // compute proposal hash but don't submit it
     const encodedProposal =
       context.axiaApi.tx.allychainStaking
-        .setParachainBondAccount(GENESIS_ACCOUNT)
+        .setAllychainBondAccount(GENESIS_ACCOUNT)
         .method.toHex() || "";
     encodedHash = blake2AsHex(encodedProposal);
   });

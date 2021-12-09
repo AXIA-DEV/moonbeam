@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 /// @author The Moonbeam Team
-/// @title The interface through which solidity contracts will interact with Parachain Staking
+/// @title The interface through which solidity contracts will interact with Allychain Staking
 /// We follow this same interface including four-byte function selectors, in the precompile that
 /// wraps the pallet
-interface ParachainStaking {
+interface AllychainStaking {
     /// DEPRECATED, replaced by is_delegator
     /// @dev Check whether the specified address is currently a staking nominator
     /// Selector: 8e5080e7

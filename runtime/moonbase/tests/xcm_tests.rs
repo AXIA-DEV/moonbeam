@@ -26,7 +26,7 @@ use xcm_primitives::UtilityEncodeCall;
 
 use xcm::latest::prelude::QueryResponse;
 use xcm::latest::{
-	Junction::{self, AccountId32, AccountKey20, PalletInstance, Parachain},
+	Junction::{self, AccountId32, AccountKey20, PalletInstance, Allychain},
 	Junctions::*,
 	MultiLocation, NetworkId, Response, Xcm,
 };
@@ -68,7 +68,7 @@ fn receive_relay_asset_from_relay() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 123).into()),
 			0,
@@ -82,7 +82,7 @@ fn receive_relay_asset_from_relay() {
 	});
 }
 
-// Send relay asset (like AXC) back from Parachain A to relaychain
+// Send relay asset (like AXC) back from Allychain A to relaychain
 #[test]
 fn send_relay_asset_to_relay() {
 	MockNet::reset();
@@ -96,7 +96,7 @@ fn send_relay_asset_to_relay() {
 		decimals: 12,
 	};
 
-	// First send relay chain asset to Parachain like in previous test
+	// First send relay chain asset to Allychain like in previous test
 	ParaA::execute_with(|| {
 		assert_ok!(AssetManager::register_asset(
 			allychain::Origin::root(),
@@ -119,7 +119,7 @@ fn send_relay_asset_to_relay() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 123).into()),
 			0,
@@ -215,7 +215,7 @@ fn send_relay_asset_to_para_b() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 123).into()),
 			0,
@@ -230,7 +230,7 @@ fn send_relay_asset_to_para_b() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(2),
+			Allychain(2),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -264,7 +264,7 @@ fn send_relay_asset_to_para_b() {
 fn send_para_a_asset_to_para_b() {
 	MockNet::reset();
 
-	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
+	let para_a_balances = MultiLocation::new(1, X2(Allychain(1), PalletInstance(1u8)));
 	let source_location = allychain::AssetType::Xcm(para_a_balances);
 	let source_id: allychain::AssetId = source_location.clone().into();
 
@@ -291,7 +291,7 @@ fn send_para_a_asset_to_para_b() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(2),
+			Allychain(2),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -327,7 +327,7 @@ fn send_para_a_asset_to_para_b() {
 fn send_para_a_asset_from_para_b_to_para_c() {
 	MockNet::reset();
 
-	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
+	let para_a_balances = MultiLocation::new(1, X2(Allychain(1), PalletInstance(1u8)));
 	let source_location = allychain::AssetType::Xcm(para_a_balances);
 	let source_id: allychain::AssetId = source_location.clone().into();
 
@@ -368,7 +368,7 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(2),
+			Allychain(2),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -402,7 +402,7 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(3),
+			Allychain(3),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -432,7 +432,7 @@ fn send_para_a_asset_from_para_b_to_para_c() {
 fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	MockNet::reset();
 
-	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
+	let para_a_balances = MultiLocation::new(1, X2(Allychain(1), PalletInstance(1u8)));
 	let source_location = allychain::AssetType::Xcm(para_a_balances);
 	let source_id: allychain::AssetId = source_location.clone().into();
 
@@ -459,7 +459,7 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(2),
+			Allychain(2),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -493,7 +493,7 @@ fn send_para_a_asset_to_para_b_and_back_to_para_a() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(1),
+			Allychain(1),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -565,7 +565,7 @@ fn receive_relay_asset_with_trader() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 100).into()),
 			0,
@@ -619,7 +619,7 @@ fn error_when_not_paying_enough() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 5).into()),
 			0,
@@ -682,7 +682,7 @@ fn transact_through_derivative_multilocation() {
 		// 4000000000 transact + 3000 correspond to 4000003000 tokens. 100 more for the transfer call
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 4000003100).into()),
 			0,
@@ -821,7 +821,7 @@ fn transact_through_sovereign() {
 	Relay::execute_with(|| {
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 4000003100).into()),
 			0,
@@ -960,7 +960,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 		response,
 		max_weight: 0,
 	}]);
-	// The router is mocked, and we cannot use WrapVersion in ChildParachainRouter. So we will force
+	// The router is mocked, and we cannot use WrapVersion in ChildAllychainRouter. So we will force
 	// it directly here
 	// Actually send relay asset to allychain
 	let dest: MultiLocation = AccountKey20 {
@@ -980,14 +980,14 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 		// This is necessary because the mock router does not use wrap_version, but
 		// this is not necessary in prod
 		assert_ok!(<RelayChainPalletXcm as WrapVersion>::wrap_version(
-			&Parachain(1).into(),
+			&Allychain(1).into(),
 			mock_message
 		));
 
 		// Transfer assets. Since it is an unknown destination, it will query for version
 		assert_ok!(RelayChainPalletXcm::reserve_transfer_assets(
 			relay_chain::Origin::signed(RELAYALICE),
-			Box::new(Parachain(1).into().into()),
+			Box::new(Allychain(1).into().into()),
 			Box::new(VersionedMultiLocation::V1(dest).clone().into()),
 			Box::new((Here, 123).into()),
 			0,
@@ -1004,7 +1004,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 		pallet_xcm::Event::SupportedVersionChanged(
 			MultiLocation {
 				parents: 0,
-				interior: X1(Parachain(1)),
+				interior: X1(Allychain(1)),
 			},
 			1,
 		)
@@ -1042,7 +1042,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 		pallet_xcm::Event::SupportedVersionChanged(
 			MultiLocation {
 				parents: 0,
-				interior: X1(Parachain(1)),
+				interior: X1(Allychain(1)),
 			},
 			2,
 		)
@@ -1058,7 +1058,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_relay() {
 fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	MockNet::reset();
 
-	let para_a_balances = MultiLocation::new(1, X2(Parachain(1), PalletInstance(1u8)));
+	let para_a_balances = MultiLocation::new(1, X2(Allychain(1), PalletInstance(1u8)));
 	let source_location = allychain::AssetType::Xcm(para_a_balances);
 	let source_id: allychain::AssetId = source_location.clone().into();
 
@@ -1101,26 +1101,26 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 
 	ParaA::execute_with(|| {
 		// This sets the default version, for not known destinations
-		assert_ok!(ParachainPalletXcm::force_default_xcm_version(
+		assert_ok!(AllychainPalletXcm::force_default_xcm_version(
 			allychain::Origin::root(),
 			Some(2)
 		));
 		// Wrap version, which sets VersionedStorage
-		assert_ok!(<ParachainPalletXcm as WrapVersion>::wrap_version(
-			&MultiLocation::new(1, X1(Parachain(2))).into(),
+		assert_ok!(<AllychainPalletXcm as WrapVersion>::wrap_version(
+			&MultiLocation::new(1, X1(Allychain(2))).into(),
 			mock_message
 		));
 
 		allychain::para_roll_to(2);
 
 		// queries should have been updated
-		assert!(ParachainPalletXcm::query(0).is_some());
+		assert!(AllychainPalletXcm::query(0).is_some());
 	});
 
 	let expected_supported_version: allychain::Event = pallet_xcm::Event::SupportedVersionChanged(
 		MultiLocation {
 			parents: 1,
-			interior: X1(Parachain(2)),
+			interior: X1(Allychain(2)),
 		},
 		0,
 	)
@@ -1135,7 +1135,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	let dest = MultiLocation {
 		parents: 1,
 		interior: X2(
-			Parachain(2),
+			Allychain(2),
 			AccountKey20 {
 				network: NetworkId::Any,
 				key: PARAALICE.into(),
@@ -1166,7 +1166,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 	let expected_version_notified: allychain::Event = pallet_xcm::Event::VersionChangeNotified(
 		MultiLocation {
 			parents: 1,
-			interior: X1(Parachain(1)),
+			interior: X1(Allychain(1)),
 		},
 		2,
 	)
@@ -1190,7 +1190,7 @@ fn test_automatic_versioning_on_runtime_upgrade_with_para_b() {
 		pallet_xcm::Event::SupportedVersionChanged(
 			MultiLocation {
 				parents: 1,
-				interior: X1(Parachain(2)),
+				interior: X1(Allychain(2)),
 			},
 			2,
 		)

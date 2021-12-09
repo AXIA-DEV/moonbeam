@@ -13,7 +13,7 @@ import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 const TWENTY_PERCENT = 20;
 const TWENTY_PERCENT_STRING = "20.00%";
 
-describeDevMoonbeam("Staking - Parachain Bond - genesis and setParachainBondAccount", (context) => {
+describeDevMoonbeam("Staking - Allychain Bond - genesis and setAllychainBondAccount", (context) => {
   let sudoAccount: KeyringPair;
   before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -28,7 +28,7 @@ describeDevMoonbeam("Staking - Parachain Bond - genesis and setParachainBondAcco
   it("should be able set the allychain bond with sudo", async function () {
     // should be able to register the genesis account for reward
     await context.axiaApi.tx.sudo
-      .sudo(context.axiaApi.tx.allychainStaking.setParachainBondAccount(GENESIS_ACCOUNT))
+      .sudo(context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT))
       .signAndSend(sudoAccount);
     await context.createBlock();
     const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
@@ -37,7 +37,7 @@ describeDevMoonbeam("Staking - Parachain Bond - genesis and setParachainBondAcco
   });
 });
 
-describeDevMoonbeam("Staking - Parachain Bond - no sudo on setParachainBondAccount", (context) => {
+describeDevMoonbeam("Staking - Allychain Bond - no sudo on setAllychainBondAccount", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -52,19 +52,19 @@ describeDevMoonbeam("Staking - Parachain Bond - no sudo on setParachainBondAccou
       await createBlockWithExtrinsic(
         context,
         genesisAccount,
-        context.axiaApi.tx.authorMapping.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.authorMapping.setAllychainBondAccount(GENESIS_ACCOUNT)
       );
     } catch (e) {
       // NB: This test used to check events for ExtrinsicFailed,
       // but now the api prevents the call from happening
       expect(e.toString().substring(0, 90)).to.eq(
-        "TypeError: context.axiaApi.tx.authorMapping.setParachainBondAccount is not a function"
+        "TypeError: context.axiaApi.tx.authorMapping.setAllychainBondAccount is not a function"
       );
     }
   });
 });
 
-describeDevMoonbeam("Staking - Parachain Bond - setParachainBondReservePercent", (context) => {
+describeDevMoonbeam("Staking - Allychain Bond - setAllychainBondReservePercent", (context) => {
   let sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -75,7 +75,7 @@ describeDevMoonbeam("Staking - Parachain Bond - setParachainBondReservePercent",
   it("should be able set the allychain bond reserve percent with sudo", async function () {
     // should be able to register the genesis account
     await context.axiaApi.tx.sudo
-      .sudo(context.axiaApi.tx.allychainStaking.setParachainBondReservePercent(TWENTY_PERCENT))
+      .sudo(context.axiaApi.tx.allychainStaking.setAllychainBondReservePercent(TWENTY_PERCENT))
       .signAndSend(sudoAccount);
     await context.createBlock();
     const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
@@ -85,7 +85,7 @@ describeDevMoonbeam("Staking - Parachain Bond - setParachainBondReservePercent",
 });
 
 describeDevMoonbeam(
-  "Staking - Parachain Bond - no sudo on setParachainBondReservePercent",
+  "Staking - Allychain Bond - no sudo on setAllychainBondReservePercent",
   (context) => {
     let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
     before("Setup genesis account for substrate", async () => {
@@ -99,13 +99,13 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           genesisAccount,
-          context.axiaApi.tx.authorMapping.setParachainBondReservePercent(TWENTY_PERCENT)
+          context.axiaApi.tx.authorMapping.setAllychainBondReservePercent(TWENTY_PERCENT)
         );
       } catch (e) {
         // NB: This test used to check events for ExtrinsicFailed,
         // but now the api prevents the call from happening
         expect(e.toString().substring(0, 88)).to.eq(
-          "TypeError: context.axiaApi.tx.authorMapping.setParachainBondReservePercent is not a "
+          "TypeError: context.axiaApi.tx.authorMapping.setAllychainBondReservePercent is not a "
         );
       }
     });

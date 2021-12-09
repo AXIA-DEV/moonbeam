@@ -27,7 +27,7 @@ use moonriver_runtime::{
 	currency::MOVR, AccountId, AuthorFilterConfig, AuthorMappingConfig, Balance, BalancesConfig,
 	CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig, EVMConfig,
 	EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
-	MaintenanceModeConfig, ParachainInfoConfig, ParachainStakingConfig, Precompiles, Range,
+	MaintenanceModeConfig, AllychainInfoConfig, AllychainStakingConfig, Precompiles, Range,
 	SchedulerConfig, SystemConfig, TechCommitteeCollectiveConfig, WASM_BINARY,
 };
 use nimbus_primitives::NimbusId;
@@ -191,7 +191,7 @@ pub fn testnet_genesis(
 		crowdloan_rewards: CrowdloanRewardsConfig {
 			funded_amount: crowdloan_fund_pot,
 		},
-		parachain_info: ParachainInfoConfig {
+		parachain_info: AllychainInfoConfig {
 			parachain_id: para_id,
 		},
 		ethereum_chain_id: EthereumChainIdConfig { chain_id },
@@ -215,7 +215,7 @@ pub fn testnet_genesis(
 		ethereum: EthereumConfig {},
 		democracy: DemocracyConfig::default(),
 		scheduler: SchedulerConfig {},
-		parachain_staking: ParachainStakingConfig {
+		parachain_staking: AllychainStakingConfig {
 			candidates: candidates
 				.iter()
 				.cloned()

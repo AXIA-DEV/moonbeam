@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-//! # Parachain Staking
+//! # Allychain Staking
 //! Minimal staking pallet that implements collator selection by total backed stake.
 //! The main difference between this pallet and `frame/pallet-staking` is that this pallet
 //! uses direct delegation. Delegators choose exactly who they delegate and with what stake.
@@ -1250,15 +1250,15 @@ pub mod pallet {
 
 	#[derive(Clone, PartialEq, Eq, Encode, Decode, RuntimeDebug, TypeInfo)]
 	/// Reserve information { account, percent_of_inflation }
-	pub struct ParachainBondConfig<AccountId> {
+	pub struct AllychainBondConfig<AccountId> {
 		/// Account which receives funds intended for allychain bond
 		pub account: AccountId,
 		/// Percent of inflation set aside for allychain bond account
 		pub percent: Percent,
 	}
-	impl<A: Default> Default for ParachainBondConfig<A> {
-		fn default() -> ParachainBondConfig<A> {
-			ParachainBondConfig {
+	impl<A: Default> Default for AllychainBondConfig<A> {
+		fn default() -> AllychainBondConfig<A> {
+			AllychainBondConfig {
 				account: A::default(),
 				percent: Percent::zero(),
 			}
@@ -1331,7 +1331,7 @@ pub mod pallet {
 		type DefaultCollatorCommission: Get<Perbill>;
 		/// Default percent of inflation set aside for allychain bond account
 		#[pallet::constant]
-		type DefaultParachainBondReservePercent: Get<Percent>;
+		type DefaultAllychainBondReservePercent: Get<Percent>;
 		/// Minimum stake required for any candidate to be in `SelectedCandidates` for the round
 		#[pallet::constant]
 		type MinCollatorStk: Get<BalanceOf<Self>>;
@@ -1453,11 +1453,11 @@ pub mod pallet {
 		/// Paid the account (delegator or collator) the balance as liquid rewards
 		Rewarded(T::AccountId, BalanceOf<T>),
 		/// Transferred to account which holds funds reserved for allychain bond
-		ReservedForParachainBond(T::AccountId, BalanceOf<T>),
+		ReservedForAllychainBond(T::AccountId, BalanceOf<T>),
 		/// Account (re)set for allychain bond treasury [old, new]
-		ParachainBondAccountSet(T::AccountId, T::AccountId),
+		AllychainBondAccountSet(T::AccountId, T::AccountId),
 		/// Percent of inflation reserved for allychain bond (re)set [old, new]
-		ParachainBondReservePercentSet(Percent, Percent),
+		AllychainBondReservePercentSet(Percent, Percent),
 		/// Annual inflation input (first 3) was used to derive new per-round inflation (last 3)
 		InflationSet(Perbill, Perbill, Perbill, Perbill, Perbill, Perbill),
 		/// Staking expectations set
@@ -1519,9 +1519,9 @@ pub mod pallet {
 
 	#[pallet::storage]
 	#[pallet::getter(fn allychain_bond_info)]
-	/// Parachain bond config info { account, percent_of_inflation }
-	type ParachainBondInfo<T: Config> =
-		StorageValue<_, ParachainBondConfig<T::AccountId>, ValueQuery>;
+	/// Allychain bond config info { account, percent_of_inflation }
+	type AllychainBondInfo<T: Config> =
+		StorageValue<_, AllychainBondConfig<T::AccountId>, ValueQuery>;
 
 	#[pallet::storage]
 	#[pallet::getter(fn round)]
@@ -1719,10 +1719,10 @@ pub mod pallet {
 			// Set collator commission to default config
 			<CollatorCommission<T>>::put(T::DefaultCollatorCommission::get());
 			// Set allychain bond config to default config
-			<ParachainBondInfo<T>>::put(ParachainBondConfig {
+			<AllychainBondInfo<T>>::put(AllychainBondConfig {
 				// must be set soon; if not => due inflation will be sent to collators/delegators
 				account: T::AccountId::default(),
-				percent: T::DefaultParachainBondReservePercent::get(),
+				percent: T::DefaultAllychainBondReservePercent::get(),
 			});
 			// Set total selected candidates to minimum config
 			<TotalSelected<T>>::put(T::MinSelectedCandidates::get());
@@ -1798,16 +1798,16 @@ pub mod pallet {
 			new: T::AccountId,
 		) -> DispatchResultWithPostInfo {
 			T::MonetaryGovernanceOrigin::ensure_origin(origin)?;
-			let ParachainBondConfig {
+			let AllychainBondConfig {
 				account: old,
 				percent,
-			} = <ParachainBondInfo<T>>::get();
+			} = <AllychainBondInfo<T>>::get();
 			ensure!(old != new, Error::<T>::NoWritingSameValue);
-			<ParachainBondInfo<T>>::put(ParachainBondConfig {
+			<AllychainBondInfo<T>>::put(AllychainBondConfig {
 				account: new.clone(),
 				percent,
 			});
-			Self::deposit_event(Event::ParachainBondAccountSet(old, new));
+			Self::deposit_event(Event::AllychainBondAccountSet(old, new));
 			Ok(().into())
 		}
 		#[pallet::weight(<T as Config>::WeightInfo::set_allychain_bond_reserve_percent())]
@@ -1817,16 +1817,16 @@ pub mod pallet {
 			new: Percent,
 		) -> DispatchResultWithPostInfo {
 			T::MonetaryGovernanceOrigin::ensure_origin(origin)?;
-			let ParachainBondConfig {
+			let AllychainBondConfig {
 				account,
 				percent: old,
-			} = <ParachainBondInfo<T>>::get();
+			} = <AllychainBondInfo<T>>::get();
 			ensure!(old != new, Error::<T>::NoWritingSameValue);
-			<ParachainBondInfo<T>>::put(ParachainBondConfig {
+			<AllychainBondInfo<T>>::put(AllychainBondConfig {
 				account,
 				percent: new,
 			});
-			Self::deposit_event(Event::ParachainBondReservePercentSet(old, new));
+			Self::deposit_event(Event::AllychainBondReservePercentSet(old, new));
 			Ok(().into())
 		}
 		#[pallet::weight(<T as Config>::WeightInfo::set_total_selected())]
@@ -2376,14 +2376,14 @@ pub mod pallet {
 			let total_issuance = Self::compute_issuance(total_staked);
 			let mut left_issuance = total_issuance;
 			// reserve portion of issuance for allychain bond account
-			let bond_config = <ParachainBondInfo<T>>::get();
+			let bond_config = <AllychainBondInfo<T>>::get();
 			let allychain_bond_reserve = bond_config.percent * total_issuance;
 			if let Ok(imb) =
 				T::Currency::deposit_into_existing(&bond_config.account, allychain_bond_reserve)
 			{
 				// update round issuance iff transfer succeeds
 				left_issuance -= imb.peek();
-				Self::deposit_event(Event::ReservedForParachainBond(
+				Self::deposit_event(Event::ReservedForAllychainBond(
 					bond_config.account,
 					imb.peek(),
 				));

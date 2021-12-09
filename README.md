@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/PureStake/moonbeam/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Parachain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
+**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
 
 👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
 👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
@@ -146,7 +146,7 @@ Moonbeam nodes support multiple public chains and testnets, with the following C
 
 | Network Description                | Chain ID    |
 | ---------------------------------- | ----------- |
-| Local Parachain TestNet            | 1280        |
+| Local Allychain TestNet            | 1280        |
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
 | Moonbeam (AXIA)                | 1284        |
@@ -177,14 +177,14 @@ From frontier:
 
 From cumulus:
 
-- _ParachainUpgrade_: A helper to perform runtime upgrades on allychains
-- _ParachainInfo_: A place to store allychain-relevant constants like allychain id
+- _AllychainUpgrade_: A helper to perform runtime upgrades on allychains
+- _AllychainInfo_: A place to store allychain-relevant constants like allychain id
 
 The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
 
 - _Ethereum Chain Id_: A place to store the chain id for each Moonbeam network
 - _Author Inherent_: Allows block authors to include their identity in a block via an inherent
-- _Parachain Staking_: Minimal staking pallet that selects collators by total amount at stake
+- _Allychain Staking_: Minimal staking pallet that selects collators by total amount at stake
 
 ## Contribute
 

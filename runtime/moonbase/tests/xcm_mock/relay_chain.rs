@@ -29,8 +29,8 @@ use axia_runtime_allychains::{configuration, origin, shared, ump};
 use xcm::latest::prelude::*;
 use xcm_builder::{
 	AccountId32Aliases, AllowKnownQueryResponses, AllowSubscriptionsFrom,
-	AllowTopLevelPaidExecutionFrom, ChildParachainAsNative, ChildParachainConvertsVia,
-	ChildSystemParachainAsSuperuser, CurrencyAdapter as XcmCurrencyAdapter, FixedRateOfFungible,
+	AllowTopLevelPaidExecutionFrom, ChildAllychainAsNative, ChildAllychainConvertsVia,
+	ChildSystemAllychainAsSuperuser, CurrencyAdapter as XcmCurrencyAdapter, FixedRateOfFungible,
 	FixedWeightBounds, IsConcrete, LocationInverter, SignedAccountId32AsNative,
 	SignedToAccountId32, SovereignSignedViaLocation, TakeWeightCredit,
 };
@@ -107,7 +107,7 @@ parameter_types! {
 }
 
 pub type SovereignAccountOf = (
-	ChildParachainConvertsVia<ParaId, AccountId>,
+	ChildAllychainConvertsVia<ParaId, AccountId>,
 	AccountId32Aliases<KusamaNetwork, AccountId>,
 );
 
@@ -116,9 +116,9 @@ pub type LocalAssetTransactor =
 
 type LocalOriginConverter = (
 	SovereignSignedViaLocation<SovereignAccountOf, Origin>,
-	ChildParachainAsNative<origin::Origin, Origin>,
+	ChildAllychainAsNative<origin::Origin, Origin>,
 	SignedAccountId32AsNative<KusamaNetwork, Origin>,
-	ChildSystemParachainAsSuperuser<ParaId, Origin>,
+	ChildSystemAllychainAsSuperuser<ParaId, Origin>,
 );
 
 parameter_types! {

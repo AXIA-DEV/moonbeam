@@ -107,7 +107,7 @@ fn load_spec(
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"Moonbeam Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -116,7 +116,7 @@ impl SubstrateCli for Cli {
 
 	fn description() -> String {
 		format!(
-			"Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
+			"Moonbase Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		{} [allychain-args] -- [relaychain-args]",
@@ -156,7 +156,7 @@ impl SubstrateCli for Cli {
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"Moonbeam Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -164,7 +164,7 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
+		"Moonbeam Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		allychain-collator [allychain-args] -- [relaychain-args]"
@@ -692,9 +692,9 @@ pub fn run() -> Result<()> {
 					SubstrateCli::create_configuration(&polkadot_cli, &polkadot_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
-				info!("Parachain id: {:?}", id);
-				info!("Parachain Account: {}", parachain_account);
-				info!("Parachain genesis state: {}", genesis_state);
+				info!("Allychain id: {:?}", id);
+				info!("Allychain Account: {}", parachain_account);
+				info!("Allychain genesis state: {}", genesis_state);
 
 				match &config.chain_spec {
 					#[cfg(feature = "moonriver-native")]

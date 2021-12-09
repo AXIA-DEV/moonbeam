@@ -246,7 +246,7 @@ where
 			params.client.clone(),
 			params.substrate_backend.clone(),
 			params.frontier_backend.clone(),
-			SyncStrategy::Parachain,
+			SyncStrategy::Allychain,
 		)
 		.for_each(|()| futures::future::ready(())),
 	);

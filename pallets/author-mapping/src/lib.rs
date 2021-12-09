@@ -60,7 +60,7 @@ pub mod pallet {
 	#[pallet::pallet]
 	pub struct Pallet<T>(PhantomData<T>);
 
-	/// Configuration trait of this pallet. We tightly couple to Parachain Staking in order to
+	/// Configuration trait of this pallet. We tightly couple to Allychain Staking in order to
 	/// ensure that only staked accounts can create registrations in the first place. This could be
 	/// generalized.
 	#[pallet::config]

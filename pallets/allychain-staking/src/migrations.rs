@@ -85,7 +85,7 @@ impl<T: Config> OnRuntimeUpgrade for RemoveExitQueue<T> {
 	fn pre_upgrade() -> Result<(), &'static str> {
 		use frame_support::{storage::migration::storage_iter, traits::OnRuntimeUpgradeHelpersExt};
 
-		let pallet_prefix: &[u8] = b"ParachainStaking";
+		let pallet_prefix: &[u8] = b"AllychainStaking";
 		let collator_state_prefix: &[u8] = b"CollatorState2";
 		let nominator_state_prefix: &[u8] = b"NominatorState2";
 

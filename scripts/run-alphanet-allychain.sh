@@ -7,7 +7,7 @@
 # 43 for http
 # 44 for ws
 #
-# Parachain port (XX+1)000
+# Allychain port (XX+1)000
 # 52 for p2p
 # 53 for http
 # 54 for ws

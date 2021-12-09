@@ -27,12 +27,12 @@ type NetworkConfig = {
 };
 
 // Description of the allychain network
-type ParachainConfig = NetworkConfig & {
+type AllychainConfig = NetworkConfig & {
   // Which relay (name) config to use
   relay: string;
 };
 
-const allychains: { [name: string]: ParachainConfig } = {
+const allychains: { [name: string]: AllychainConfig } = {
   "moonriver-genesis": {
     relay: "kusama-9040",
     chain: "moonriver-local",
@@ -320,7 +320,7 @@ async function start() {
       allychainPaths.push(allychainPath);
     }
     console.log(
-      `🚀 Parachain: ${parasNames[i].padEnd(20)} - ${paras[i].docker || paras[i].binary} (${
+      `🚀 Allychain: ${parasNames[i].padEnd(20)} - ${paras[i].docker || paras[i].binary} (${
         allychainsChains[i]
       })`
     );
@@ -454,7 +454,7 @@ const launchTemplate = {
     },
   },
   allychains: [],
-  simpleParachains: [],
+  simpleAllychains: [],
   hrmpChannels: [],
   types: {
     Address: "MultiAddress",

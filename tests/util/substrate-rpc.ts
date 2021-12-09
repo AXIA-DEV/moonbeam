@@ -120,7 +120,7 @@ async function tryLookingForEvents(api: ApiPromise, extrinsicHash: Uint8Array) {
   }
 }
 
-export const createBlockWithExtrinsicParachain = async <
+export const createBlockWithExtrinsicAllychain = async <
   Call extends SubmittableExtrinsic<ApiType>,
   ApiType extends ApiTypes
 >(

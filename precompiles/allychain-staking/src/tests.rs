@@ -16,7 +16,7 @@
 
 use crate::mock::{
 	events, evm_test_context, precompile_address, roll_to, set_points, Call, ExtBuilder, Origin,
-	ParachainStaking, Precompiles, Runtime, TestAccount,
+	AllychainStaking, Precompiles, Runtime, TestAccount,
 };
 use crate::PrecompileOutput;
 use frame_support::{assert_ok, dispatch::Dispatchable};
@@ -664,7 +664,7 @@ fn execute_leave_candidates_works() {
 		.with_candidates(vec![(TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_leave_candidates(
+			assert_ok!(AllychainStaking::schedule_leave_candidates(
 				Origin::signed(TestAccount::Alice),
 				1
 			));
@@ -693,7 +693,7 @@ fn cancel_leave_candidates_works() {
 		.with_candidates(vec![(TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_leave_candidates(
+			assert_ok!(AllychainStaking::schedule_leave_candidates(
 				Origin::signed(TestAccount::Alice),
 				1
 			));
@@ -722,7 +722,7 @@ fn go_online_works() {
 		.with_candidates(vec![(TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::go_offline(Origin::signed(
+			assert_ok!(AllychainStaking::go_offline(Origin::signed(
 				TestAccount::Alice
 			)));
 			let selector = &Keccak256::digest(b"go_online()")[0..4];
@@ -875,7 +875,7 @@ fn execute_candidate_bond_more_works() {
 		.with_candidates(vec![(TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_candidate_bond_more(
+			assert_ok!(AllychainStaking::schedule_candidate_bond_more(
 				Origin::signed(TestAccount::Alice),
 				500
 			));
@@ -911,7 +911,7 @@ fn execute_candidate_bond_less_works() {
 			input_data[0..4].copy_from_slice(&selector);
 			input_data[16..36].copy_from_slice(&TestAccount::Alice.to_h160().0);
 
-			assert_ok!(ParachainStaking::schedule_candidate_bond_less(
+			assert_ok!(AllychainStaking::schedule_candidate_bond_less(
 				Origin::signed(TestAccount::Alice),
 				500
 			));
@@ -934,7 +934,7 @@ fn cancel_candidate_bond_more_works() {
 		.with_candidates(vec![(TestAccount::Alice, 1_200)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_candidate_bond_more(
+			assert_ok!(AllychainStaking::schedule_candidate_bond_more(
 				Origin::signed(TestAccount::Alice),
 				500
 			));
@@ -974,7 +974,7 @@ fn cancel_candidate_bond_less_works() {
 			let mut input_data = Vec::<u8>::from([0u8; 36]);
 			input_data[0..4].copy_from_slice(&selector);
 
-			assert_ok!(ParachainStaking::schedule_candidate_bond_less(
+			assert_ok!(AllychainStaking::schedule_candidate_bond_less(
 				Origin::signed(TestAccount::Alice),
 				200
 			));
@@ -1020,7 +1020,7 @@ fn nominate_works() {
 			// Make sure the call goes through successfully
 			assert_ok!(Call::Evm(evm_call(TestAccount::Bob, input_data)).dispatch(Origin::root()));
 
-			assert!(ParachainStaking::is_delegator(&TestAccount::Bob));
+			assert!(AllychainStaking::is_delegator(&TestAccount::Bob));
 
 			let expected: crate::mock::Event = StakingEvent::Delegation(
 				TestAccount::Bob,
@@ -1057,7 +1057,7 @@ fn delegate_works() {
 			// Make sure the call goes through successfully
 			assert_ok!(Call::Evm(evm_call(TestAccount::Bob, input_data)).dispatch(Origin::root()));
 
-			assert!(ParachainStaking::is_delegator(&TestAccount::Bob));
+			assert!(AllychainStaking::is_delegator(&TestAccount::Bob));
 
 			let expected: crate::mock::Event = StakingEvent::Delegation(
 				TestAccount::Bob,
@@ -1130,7 +1130,7 @@ fn execute_leave_delegators_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 500)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_leave_delegators(Origin::signed(
+			assert_ok!(AllychainStaking::schedule_leave_delegators(Origin::signed(
 				TestAccount::Bob
 			)));
 			roll_to(10);
@@ -1161,7 +1161,7 @@ fn cancel_leave_delegators_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 500)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_leave_delegators(Origin::signed(
+			assert_ok!(AllychainStaking::schedule_leave_delegators(Origin::signed(
 				TestAccount::Bob
 			)));
 			let selector = &Keccak256::digest(b"cancel_leave_delegators()")[0..4];
@@ -1377,7 +1377,7 @@ fn execute_revoke_delegation_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_revoke_delegation(
+			assert_ok!(AllychainStaking::schedule_revoke_delegation(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice
 			));
@@ -1408,7 +1408,7 @@ fn execute_delegator_bond_more_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 500)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_delegator_bond_more(
+			assert_ok!(AllychainStaking::schedule_delegator_bond_more(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice,
 				500
@@ -1441,7 +1441,7 @@ fn execute_delegator_bond_less_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_delegator_bond_less(
+			assert_ok!(AllychainStaking::schedule_delegator_bond_less(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice,
 				500
@@ -1474,7 +1474,7 @@ fn cancel_revoke_delegation_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_revoke_delegation(
+			assert_ok!(AllychainStaking::schedule_revoke_delegation(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice
 			));
@@ -1511,7 +1511,7 @@ fn cancel_delegator_bonded_more_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 500)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_delegator_bond_more(
+			assert_ok!(AllychainStaking::schedule_delegator_bond_more(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice,
 				500
@@ -1549,7 +1549,7 @@ fn cancel_delegator_bonded_less_works() {
 		.with_delegations(vec![(TestAccount::Bob, TestAccount::Alice, 1_000)])
 		.build()
 		.execute_with(|| {
-			assert_ok!(ParachainStaking::schedule_delegator_bond_less(
+			assert_ok!(AllychainStaking::schedule_delegator_bond_less(
 				Origin::signed(TestAccount::Bob),
 				TestAccount::Alice,
 				500

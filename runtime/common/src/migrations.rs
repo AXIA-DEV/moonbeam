@@ -26,7 +26,7 @@ use pallet_author_mapping::{migrations::TwoXToBlake, Config as AuthorMappingConf
 use pallet_migrations::Migration;
 use allychain_staking::{
 	migrations::{PurgeStaleStorage, RemoveExitQueue},
-	Config as ParachainStakingConfig,
+	Config as AllychainStakingConfig,
 };
 use sp_std::{marker::PhantomData, prelude::*};
 
@@ -34,10 +34,10 @@ use sp_std::{marker::PhantomData, prelude::*};
 /// the "Migration" trait declared in the pallet-migrations crate.
 
 /// Staking transition from automatic to manual exits, delay bond_{more, less} requests
-pub struct ParachainStakingManualExits<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration for ParachainStakingManualExits<T> {
+pub struct AllychainStakingManualExits<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration for AllychainStakingManualExits<T> {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_ManualExits"
+		"MM_Allychain_Staking_ManualExits"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -58,10 +58,10 @@ impl<T: ParachainStakingConfig> Migration for ParachainStakingManualExits<T> {
 }
 
 /// A moonbeam migration wrapping the similarly named migration in allychain-staking
-pub struct ParachainStakingPurgeStaleStorage<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration for ParachainStakingPurgeStaleStorage<T> {
+pub struct AllychainStakingPurgeStaleStorage<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration for AllychainStakingPurgeStaleStorage<T> {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_PurgeStaleStorage"
+		"MM_Allychain_Staking_PurgeStaleStorage"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -159,9 +159,9 @@ where
 		//	MigrateCollectivePallets::<Runtime, Council, Tech>(Default::default());
 
 		let migration_allychain_staking_purge_stale_storage =
-			ParachainStakingPurgeStaleStorage::<Runtime>(Default::default());
+			AllychainStakingPurgeStaleStorage::<Runtime>(Default::default());
 		let migration_allychain_staking_manual_exits =
-			ParachainStakingManualExits::<Runtime>(Default::default());
+			AllychainStakingManualExits::<Runtime>(Default::default());
 
 		// TODO: this is a lot of allocation to do upon every get() call. this *should* be avoided
 		// except when pallet_migrations undergoes a runtime upgrade -- but TODO: review

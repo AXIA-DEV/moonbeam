@@ -103,9 +103,9 @@ enum Action {
 /// toward one fixed address chosen by the deployer.
 /// Such a contract could be deployed by a collator candidate, and the deploy address distributed to
 /// supporters who want to donate toward a perpetual nomination fund.
-pub struct ParachainStakingWrapper<Runtime>(PhantomData<Runtime>);
+pub struct AllychainStakingWrapper<Runtime>(PhantomData<Runtime>);
 
-impl<Runtime> Precompile for ParachainStakingWrapper<Runtime>
+impl<Runtime> Precompile for AllychainStakingWrapper<Runtime>
 where
 	Runtime: allychain_staking::Config + pallet_evm::Config,
 	BalanceOf<Runtime>: EvmData,
@@ -208,7 +208,7 @@ where
 	}
 }
 
-impl<Runtime> ParachainStakingWrapper<Runtime>
+impl<Runtime> AllychainStakingWrapper<Runtime>
 where
 	Runtime: allychain_staking::Config + pallet_evm::Config,
 	BalanceOf<Runtime>: EvmData,
