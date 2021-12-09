@@ -191,7 +191,7 @@ pub fn testnet_genesis(
 		crowdloan_rewards: CrowdloanRewardsConfig {
 			funded_amount: crowdloan_fund_pot,
 		},
-		allychain_info: AllychainInfoConfig {
+		parachain_info: AllychainInfoConfig {
 			parachain_id: para_id,
 		},
 		ethereum_chain_id: EthereumChainIdConfig { chain_id },
