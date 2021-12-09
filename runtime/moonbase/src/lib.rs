@@ -54,7 +54,7 @@ use xcm_builder::{
 	AllowTopLevelPaidExecutionFrom, ConvertedConcreteAssetId,
 	CurrencyAdapter as XcmCurrencyAdapter, EnsureXcmOrigin, FixedWeightBounds, FungiblesAdapter,
 	IsConcrete, LocationInverter, ParentAsSuperuser, ParentIsDefault, RelayChainAsNative,
-	SiblingAllychainAsNative, SiblingAllychainConvertsVia, SignedAccountKey20AsNative,
+	SiblingParachainAsNative, SiblingParachainConvertsVia, SignedAccountKey20AsNative,
 	SovereignSignedViaLocation, TakeWeightCredit, UsingComponents,
 };
 
@@ -99,7 +99,7 @@ use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 use xcm::v1::{
 	BodyId,
-	Junction::{PalletInstance, Allychain},
+	Junction::{PalletInstance, Parachain},
 	Junctions, MultiLocation, NetworkId,
 };
 
@@ -239,7 +239,7 @@ impl frame_system::Config for Runtime {
 	type SystemWeightInfo = ();
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::AllychainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
 }
 
 impl pallet_utility::Config for Runtime {
@@ -936,14 +936,14 @@ parameter_types! {
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
-	pub Ancestry: MultiLocation = Allychain(AllychainInfo::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Parachain(AllychainInfo::parachain_id().into()).into();
 	// Self Reserve location, defines the multilocation identifiying the self-reserve currency
 	// This is used to match it against our Balances pallet when we receive such a MultiLocation
 	// (Parent, Self Para Id, Self Balances pallet index)
 	pub SelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Allychain(AllychainInfo::parachain_id().into()),
+			Parachain(AllychainInfo::parachain_id().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)
 	};
@@ -956,7 +956,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsDefault<AccountId>,
 	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
-	SiblingAllychainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
+	SiblingParachainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1015,7 +1015,7 @@ pub type XcmOriginToTransactDispatchOrigin = (
 	RelayChainAsNative<RelayChainOrigin, Origin>,
 	// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when
 	// recognised.
-	SiblingAllychainAsNative<cumulus_pallet_xcm::Origin, Origin>,
+	SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 	// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a
 	// transaction from the Root origin.
 	ParentAsSuperuser<Origin>,
@@ -1315,7 +1315,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Allychain(AllychainInfo::parachain_id().into())
+			Parachain(AllychainInfo::parachain_id().into())
 		)
 	};
 }

@@ -40,7 +40,7 @@ use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
 use cumulus_primitives_parachain_inherent::{
-	MockValidationDataInherentDataProvider, AllychainInherentData,
+	MockValidationDataInherentDataProvider, ParachainInherentData,
 };
 use nimbus_consensus::{build_nimbus_consensus, BuildNimbusConsensusParams};
 use nimbus_primitives::NimbusId;
@@ -660,7 +660,7 @@ where
 			keystore: params.keystore_container.sync_keystore(),
 			skip_prediction,
 			create_inherent_data_providers: move |_, (relay_parent, validation_data, author_id)| {
-				let allychain_inherent = AllychainInherentData::create_at_with_client(
+				let allychain_inherent = ParachainInherentData::create_at_with_client(
 					relay_parent,
 					&relay_chain_client,
 					&*relay_chain_backend,

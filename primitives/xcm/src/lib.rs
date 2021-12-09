@@ -24,7 +24,7 @@ use frame_support::{
 };
 use xcm::latest::{
 	AssetId as xcmAssetId, Error as XcmError, Fungibility,
-	Junction::{AccountKey20, Allychain},
+	Junction::{AccountKey20, Parachain},
 	Junctions::*,
 	MultiAsset, MultiLocation, NetworkId,
 };
@@ -227,8 +227,8 @@ impl Reserve for MultiAsset {
 			let first_interior = location.first_interior();
 			let parents = location.parent_count();
 			match (parents, first_interior.clone()) {
-				(0, Some(Allychain(id))) => Some(MultiLocation::new(0, X1(Allychain(id.clone())))),
-				(1, Some(Allychain(id))) => Some(MultiLocation::new(1, X1(Allychain(id.clone())))),
+				(0, Some(Parachain(id))) => Some(MultiLocation::new(0, X1(Parachain(id.clone())))),
+				(1, Some(Parachain(id))) => Some(MultiLocation::new(1, X1(Parachain(id.clone())))),
 				(1, _) => Some(MultiLocation::parent()),
 				_ => None,
 			}

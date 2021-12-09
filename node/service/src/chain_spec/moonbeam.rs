@@ -221,7 +221,7 @@ pub fn testnet_genesis(
 		ethereum: EthereumConfig {},
 		democracy: DemocracyConfig::default(),
 		scheduler: SchedulerConfig {},
-		parachain_staking: AllychainStakingConfig {
+		parachain_staking: ParachainStakingConfig {
 			candidates: candidates
 				.iter()
 				.cloned()
