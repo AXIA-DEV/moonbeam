@@ -698,7 +698,7 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type ReservedXcmpWeight = ReservedXcmpWeight;
 }
 
-impl parachain_info::Config for Runtime {}
+impl allychain_info::Config for Runtime {}
 
 parameter_types! {
 	/// Minimum round length is 2 minutes (10 * 12 second block times)
@@ -1457,7 +1457,7 @@ construct_runtime! {
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 5,
 		AllychainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 6,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage} = 7,
-		AllychainInfo: parachain_info::{Pallet, Storage, Config} = 8,
+		AllychainInfo: allychain_info::{Pallet, Storage, Config} = 8,
 		EthereumChainId: pallet_ethereum_chain_id::{Pallet, Storage, Config} = 9,
 		EVM: pallet_evm::{Pallet, Config, Call, Storage, Event<T>} = 10,
 		Ethereum: pallet_ethereum::{Pallet, Call, Storage, Event, Origin, Config} = 11,
