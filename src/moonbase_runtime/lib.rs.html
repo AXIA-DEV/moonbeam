@@ -2392,7 +2392,7 @@
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_parachain_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">OnValidationData</span> <span class="op">=</span> ();
-	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">ParachainInfo</span>;
+	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">AllychainInfo</span>;
 	<span class="kw">type</span> <span class="ident">DmpMessageHandler</span> <span class="op">=</span> <span class="ident">DmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedDmpWeight</span> <span class="op">=</span> <span class="ident">ReservedDmpWeight</span>;
 	<span class="kw">type</span> <span class="ident">OutboundXcmpMessageSource</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
@@ -2428,7 +2428,7 @@
 	<span class="doccomment">/// Default fixed percent a collator takes off the top of due rewards</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultCollatorCommission</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">20</span>);
 	<span class="doccomment">/// Default percent of inflation set aside for allychain bond every round</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultParachainBondReservePercent</span>: <span class="ident">Percent</span> <span class="op">=</span> <span class="ident">Percent::from_percent</span>(<span class="number">30</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultAllychainBondReservePercent</span>: <span class="ident">Percent</span> <span class="op">=</span> <span class="ident">Percent::from_percent</span>(<span class="number">30</span>);
 	<span class="doccomment">/// Minimum stake required to become a collator</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MinCollatorStk</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1</span> <span class="op">*</span> <span class="ident">currency::KILOUNIT</span> <span class="op">*</span> <span class="ident">currency::SUPPLY_FACTOR</span>;
 	<span class="doccomment">/// Minimum stake required to be reserved to be a candidate</span>
@@ -2453,7 +2453,7 @@
 	<span class="kw">type</span> <span class="ident">MaxDelegatorsPerCandidate</span> <span class="op">=</span> <span class="ident">MaxDelegatorsPerCandidate</span>;
 	<span class="kw">type</span> <span class="ident">MaxDelegationsPerDelegator</span> <span class="op">=</span> <span class="ident">MaxDelegationsPerDelegator</span>;
 	<span class="kw">type</span> <span class="ident">DefaultCollatorCommission</span> <span class="op">=</span> <span class="ident">DefaultCollatorCommission</span>;
-	<span class="kw">type</span> <span class="ident">DefaultParachainBondReservePercent</span> <span class="op">=</span> <span class="ident">DefaultParachainBondReservePercent</span>;
+	<span class="kw">type</span> <span class="ident">DefaultAllychainBondReservePercent</span> <span class="op">=</span> <span class="ident">DefaultAllychainBondReservePercent</span>;
 	<span class="kw">type</span> <span class="ident">MinCollatorStk</span> <span class="op">=</span> <span class="ident">MinCollatorStk</span>;
 	<span class="kw">type</span> <span class="ident">MinCandidateStk</span> <span class="op">=</span> <span class="ident">MinCandidateStk</span>;
 	<span class="kw">type</span> <span class="ident">MinDelegation</span> <span class="op">=</span> <span class="ident">MinDelegatorStk</span>;
@@ -2465,14 +2465,14 @@
 	<span class="kw">type</span> <span class="ident">AuthorId</span> <span class="op">=</span> <span class="ident">NimbusId</span>;
 	<span class="kw">type</span> <span class="ident">SlotBeacon</span> <span class="op">=</span> <span class="ident">RelaychainBlockNumberProvider</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AccountLookup</span> <span class="op">=</span> <span class="ident">AuthorMapping</span>;
-	<span class="kw">type</span> <span class="ident">EventHandler</span> <span class="op">=</span> <span class="ident">ParachainStaking</span>;
+	<span class="kw">type</span> <span class="ident">EventHandler</span> <span class="op">=</span> <span class="ident">AllychainStaking</span>;
 	<span class="kw">type</span> <span class="ident">CanAuthor</span> <span class="op">=</span> <span class="ident">AuthorFilter</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_author_slot_filter::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">RandomnessSource</span> <span class="op">=</span> <span class="ident">RandomnessCollectiveFlip</span>;
-	<span class="kw">type</span> <span class="ident">PotentialAuthors</span> <span class="op">=</span> <span class="ident">ParachainStaking</span>;
+	<span class="kw">type</span> <span class="ident">PotentialAuthors</span> <span class="op">=</span> <span class="ident">AllychainStaking</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -2564,7 +2564,7 @@
 				<span class="macro">matches!</span>(
 					<span class="ident">c</span>,
 					<span class="ident">Call::System</span>(..)
-						<span class="op">|</span> <span class="ident">Call::Timestamp</span>(..) <span class="op">|</span> <span class="ident">Call::ParachainStaking</span>(..)
+						<span class="op">|</span> <span class="ident">Call::Timestamp</span>(..) <span class="op">|</span> <span class="ident">Call::AllychainStaking</span>(..)
 						<span class="op">|</span> <span class="ident">Call::Democracy</span>(..) <span class="op">|</span> <span class="ident">Call::CouncilCollective</span>(..)
 						<span class="op">|</span> <span class="ident">Call::TechCommitteeCollective</span>(..)
 						<span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::Proxy</span>(..)
@@ -2580,7 +2580,7 @@
 			),
 			<span class="ident">ProxyType::Staking</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::ParachainStaking</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::AuthorMapping</span>(..)
+				<span class="ident">Call::AllychainStaking</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::AuthorMapping</span>(..)
 			),
 			<span class="ident">ProxyType::CancelProxy</span> <span class="op">=</span><span class="op">&gt;</span> {
 				<span class="macro">matches!</span>(
@@ -2638,14 +2638,14 @@
 	<span class="comment">// The relay chain Origin type</span>
 	<span class="kw">pub</span> <span class="ident">RelayChainOrigin</span>: <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">cumulus_pallet_xcm::Origin::Relay</span>.<span class="ident">into</span>();
 	<span class="comment">// The ancestry, defines the multilocation describing this consensus system</span>
-	<span class="kw">pub</span> <span class="ident">Ancestry</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>()).<span class="ident">into</span>();
+	<span class="kw">pub</span> <span class="ident">Ancestry</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Parachain</span>(<span class="ident">AllychainInfo::parachain_id</span>().<span class="ident">into</span>()).<span class="ident">into</span>();
 	<span class="comment">// Self Reserve location, defines the multilocation identifiying the self-reserve currency</span>
 	<span class="comment">// This is used to match it against our Balances pallet when we receive such a MultiLocation</span>
 	<span class="comment">// (Parent, Self Para Id, Self Balances pallet index)</span>
 	<span class="kw">pub</span> <span class="ident">SelfReserve</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation</span> {
 		<span class="ident">parents</span>:<span class="number">1</span>,
 		<span class="ident">interior</span>: <span class="ident">Junctions::X2</span>(
-			<span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>()),
+			<span class="ident">Parachain</span>(<span class="ident">AllychainInfo::parachain_id</span>().<span class="ident">into</span>()),
 			<span class="ident">PalletInstance</span>(<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::PalletInfo::index</span>::<span class="op">&lt;</span><span class="ident">Balances</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">u8</span>)
 		)
 	};
@@ -2715,7 +2715,7 @@
 	<span class="comment">// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when</span>
 	<span class="comment">// recognised.</span>
 	<span class="ident">RelayChainAsNative</span><span class="op">&lt;</span><span class="ident">RelayChainOrigin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when</span>
+	<span class="comment">// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when</span>
 	<span class="comment">// recognised.</span>
 	<span class="ident">SiblingParachainAsNative</span><span class="op">&lt;</span><span class="ident">cumulus_pallet_xcm::Origin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
 	<span class="comment">// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a</span>
@@ -2799,7 +2799,7 @@
 <span class="doccomment">/// queues.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">XcmRouter</span> <span class="op">=</span> (
 	<span class="comment">// Two routers - use UMP to communicate with the relay chain:</span>
-	<span class="ident">cumulus_primitives_utility::ParentAsUmp</span><span class="op">&lt;</span><span class="ident">ParachainSystem</span>, <span class="ident">AXIAXcm</span><span class="op">&gt;</span>,
+	<span class="ident">cumulus_primitives_utility::ParentAsUmp</span><span class="op">&lt;</span><span class="ident">AllychainSystem</span>, <span class="ident">AXIAXcm</span><span class="op">&gt;</span>,
 	<span class="comment">// ..and XCMP to communicate with the sibling chains.</span>
 	<span class="ident">XcmpQueue</span>,
 );
@@ -2829,7 +2829,7 @@
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_xcmp_queue::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span>;
-	<span class="kw">type</span> <span class="ident">ChannelInfo</span> <span class="op">=</span> <span class="ident">ParachainSystem</span>;
+	<span class="kw">type</span> <span class="ident">ChannelInfo</span> <span class="op">=</span> <span class="ident">AllychainSystem</span>;
 	<span class="kw">type</span> <span class="ident">VersionWrapper</span> <span class="op">=</span> <span class="ident">AXIAXcm</span>;
 }
 
@@ -3017,7 +3017,7 @@
 	<span class="kw">pub</span> <span class="ident">SelfLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation</span> {
 		<span class="ident">parents</span>:<span class="number">1</span>,
 		<span class="ident">interior</span>: <span class="ident">Junctions::X1</span>(
-			<span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>())
+			<span class="ident">Parachain</span>(<span class="ident">AllychainInfo::parachain_id</span>().<span class="ident">into</span>())
 		)
 	};
 }
@@ -3157,13 +3157,13 @@
 		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">3</span>,
 		<span class="ident">Sudo</span>: <span class="ident">pallet_sudo</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">4</span>,
 		<span class="ident">RandomnessCollectiveFlip</span>: <span class="ident">pallet_randomness_collective_flip</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">5</span>,
-		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">6</span>,
+		<span class="ident">AllychainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">6</span>,
 		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">7</span>,
-		<span class="ident">ParachainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">8</span>,
+		<span class="ident">AllychainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">8</span>,
 		<span class="ident">EthereumChainId</span>: <span class="ident">pallet_ethereum_chain_id</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">9</span>,
 		<span class="ident">EVM</span>: <span class="ident">pallet_evm</span>::{<span class="ident">Pallet</span>, <span class="ident">Config</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">10</span>,
 		<span class="ident">Ethereum</span>: <span class="ident">pallet_ethereum</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span>, <span class="ident">Origin</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">11</span>,
-		<span class="ident">ParachainStaking</span>: <span class="ident">allychain_staking</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">12</span>,
+		<span class="ident">AllychainStaking</span>: <span class="ident">allychain_staking</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">12</span>,
 		<span class="ident">Scheduler</span>: <span class="ident">pallet_scheduler</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Call</span>} <span class="op">=</span> <span class="number">13</span>,
 		<span class="ident">Democracy</span>: <span class="ident">pallet_democracy</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Call</span>} <span class="op">=</span> <span class="number">14</span>,
 		<span class="ident">CouncilCollective</span>:

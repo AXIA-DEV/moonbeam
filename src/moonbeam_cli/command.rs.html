@@ -958,7 +958,7 @@
 
 <span class="kw">impl</span> <span class="ident">SubstrateCli</span> <span class="kw">for</span> <span class="ident">Cli</span> {
 	<span class="kw">fn</span> <span class="ident">impl_name</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-		<span class="string">&quot;Moonbeam Parachain Collator&quot;</span>.<span class="ident">into</span>()
+		<span class="string">&quot;Moonbeam Allychain Collator&quot;</span>.<span class="ident">into</span>()
 	}
 
 	<span class="kw">fn</span> <span class="ident">impl_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -967,7 +967,7 @@
 
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
 		<span class="macro">format!</span>(
-			<span class="string">&quot;Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
+			<span class="string">&quot;Moonbase Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		{} [allychain-args] -- [relaychain-args]&quot;</span>,
@@ -1007,7 +1007,7 @@
 
 <span class="kw">impl</span> <span class="ident">SubstrateCli</span> <span class="kw">for</span> <span class="ident">RelayChainCli</span> {
 	<span class="kw">fn</span> <span class="ident">impl_name</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-		<span class="string">&quot;Moonbeam Parachain Collator&quot;</span>.<span class="ident">into</span>()
+		<span class="string">&quot;Moonbeam Allychain Collator&quot;</span>.<span class="ident">into</span>()
 	}
 
 	<span class="kw">fn</span> <span class="ident">impl_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -1015,7 +1015,7 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">description</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-		<span class="string">&quot;Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
+		<span class="string">&quot;Moonbeam Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		allychain-collator [allychain-args] -- [relaychain-args]&quot;</span>
@@ -1543,9 +1543,9 @@
 					<span class="ident">SubstrateCli::create_configuration</span>(<span class="kw-2">&amp;</span><span class="ident">polkadot_cli</span>, <span class="kw-2">&amp;</span><span class="ident">polkadot_cli</span>, <span class="ident">tokio_handle</span>)
 						.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Relay chain argument error: {}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
-				<span class="macro">info!</span>(<span class="string">&quot;Parachain id: {:?}&quot;</span>, <span class="ident">id</span>);
-				<span class="macro">info!</span>(<span class="string">&quot;Parachain Account: {}&quot;</span>, <span class="ident">parachain_account</span>);
-				<span class="macro">info!</span>(<span class="string">&quot;Parachain genesis state: {}&quot;</span>, <span class="ident">genesis_state</span>);
+				<span class="macro">info!</span>(<span class="string">&quot;Allychain id: {:?}&quot;</span>, <span class="ident">id</span>);
+				<span class="macro">info!</span>(<span class="string">&quot;Allychain Account: {}&quot;</span>, <span class="ident">parachain_account</span>);
+				<span class="macro">info!</span>(<span class="string">&quot;Allychain genesis state: {}&quot;</span>, <span class="ident">genesis_state</span>);
 
 				<span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">chain_spec</span> {
 					<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;moonriver-native&quot;</span>)]</span>

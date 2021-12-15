@@ -2519,7 +2519,7 @@
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Moonbeam.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
-<span class="doccomment">//! # Parachain Staking</span>
+<span class="doccomment">//! # Allychain Staking</span>
 <span class="doccomment">//! Minimal staking pallet that implements collator selection by total backed stake.</span>
 <span class="doccomment">//! The main difference between this pallet and `frame/pallet-staking` is that this pallet</span>
 <span class="doccomment">//! uses direct delegation. Delegators choose exactly who they delegate and with what stake.</span>
@@ -3755,15 +3755,15 @@
 
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
 	<span class="doccomment">/// Reserve information { account, percent_of_inflation }</span>
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParachainBondConfig</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AllychainBondConfig</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// Account which receives funds intended for allychain bond</span>
 		<span class="kw">pub</span> <span class="ident">account</span>: <span class="ident">AccountId</span>,
 		<span class="doccomment">/// Percent of inflation set aside for allychain bond account</span>
 		<span class="kw">pub</span> <span class="ident">percent</span>: <span class="ident">Percent</span>,
 	}
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ParachainBondConfig</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParachainBondConfig</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
-			<span class="ident">ParachainBondConfig</span> {
+	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AllychainBondConfig</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AllychainBondConfig</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+			<span class="ident">AllychainBondConfig</span> {
 				<span class="ident">account</span>: <span class="ident">A::default</span>(),
 				<span class="ident">percent</span>: <span class="ident">Percent::zero</span>(),
 			}
@@ -3836,7 +3836,7 @@
 		<span class="kw">type</span> <span class="ident">DefaultCollatorCommission</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">Perbill</span><span class="op">&gt;</span>;
 		<span class="doccomment">/// Default percent of inflation set aside for allychain bond account</span>
 		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">DefaultParachainBondReservePercent</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">Percent</span><span class="op">&gt;</span>;
+		<span class="kw">type</span> <span class="ident">DefaultAllychainBondReservePercent</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">Percent</span><span class="op">&gt;</span>;
 		<span class="doccomment">/// Minimum stake required for any candidate to be in `SelectedCandidates` for the round</span>
 		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
 		<span class="kw">type</span> <span class="ident">MinCollatorStk</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
@@ -3958,11 +3958,11 @@
 		<span class="doccomment">/// Paid the account (delegator or collator) the balance as liquid rewards</span>
 		<span class="ident">Rewarded</span>(<span class="ident">T::AccountId</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
 		<span class="doccomment">/// Transferred to account which holds funds reserved for allychain bond</span>
-		<span class="ident">ReservedForParachainBond</span>(<span class="ident">T::AccountId</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
+		<span class="ident">ReservedForAllychainBond</span>(<span class="ident">T::AccountId</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
 		<span class="doccomment">/// Account (re)set for allychain bond treasury [old, new]</span>
-		<span class="ident">ParachainBondAccountSet</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AccountId</span>),
+		<span class="ident">AllychainBondAccountSet</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AccountId</span>),
 		<span class="doccomment">/// Percent of inflation reserved for allychain bond (re)set [old, new]</span>
-		<span class="ident">ParachainBondReservePercentSet</span>(<span class="ident">Percent</span>, <span class="ident">Percent</span>),
+		<span class="ident">AllychainBondReservePercentSet</span>(<span class="ident">Percent</span>, <span class="ident">Percent</span>),
 		<span class="doccomment">/// Annual inflation input (first 3) was used to derive new per-round inflation (last 3)</span>
 		<span class="ident">InflationSet</span>(<span class="ident">Perbill</span>, <span class="ident">Perbill</span>, <span class="ident">Perbill</span>, <span class="ident">Perbill</span>, <span class="ident">Perbill</span>, <span class="ident">Perbill</span>),
 		<span class="doccomment">/// Staking expectations set</span>
@@ -4024,9 +4024,9 @@
 
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">allychain_bond_info</span>)]</span>
-	<span class="doccomment">/// Parachain bond config info { account, percent_of_inflation }</span>
-	<span class="kw">type</span> <span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
-		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ParachainBondConfig</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
+	<span class="doccomment">/// Allychain bond config info { account, percent_of_inflation }</span>
+	<span class="kw">type</span> <span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
+		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">AllychainBondConfig</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">round</span>)]</span>
@@ -4224,10 +4224,10 @@
 			<span class="comment">// Set collator commission to default config</span>
 			<span class="op">&lt;</span><span class="ident">CollatorCommission</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">T::DefaultCollatorCommission::get</span>());
 			<span class="comment">// Set allychain bond config to default config</span>
-			<span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">ParachainBondConfig</span> {
+			<span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">AllychainBondConfig</span> {
 				<span class="comment">// must be set soon; if not =&gt; due inflation will be sent to collators/delegators</span>
 				<span class="ident">account</span>: <span class="ident">T::AccountId::default</span>(),
-				<span class="ident">percent</span>: <span class="ident">T::DefaultParachainBondReservePercent::get</span>(),
+				<span class="ident">percent</span>: <span class="ident">T::DefaultAllychainBondReservePercent::get</span>(),
 			});
 			<span class="comment">// Set total selected candidates to minimum config</span>
 			<span class="op">&lt;</span><span class="ident">TotalSelected</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">T::MinSelectedCandidates::get</span>());
@@ -4303,16 +4303,16 @@
 			<span class="ident">new</span>: <span class="ident">T::AccountId</span>,
 		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">T::MonetaryGovernanceOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="kw">let</span> <span class="ident">ParachainBondConfig</span> {
+			<span class="kw">let</span> <span class="ident">AllychainBondConfig</span> {
 				<span class="ident">account</span>: <span class="ident">old</span>,
 				<span class="ident">percent</span>,
-			} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
+			} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 			<span class="macro">ensure!</span>(<span class="ident">old</span> <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NoWritingSameValue</span>);
-			<span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">ParachainBondConfig</span> {
+			<span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">AllychainBondConfig</span> {
 				<span class="ident">account</span>: <span class="ident">new</span>.<span class="ident">clone</span>(),
 				<span class="ident">percent</span>,
 			});
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ParachainBondAccountSet</span>(<span class="ident">old</span>, <span class="ident">new</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::AllychainBondAccountSet</span>(<span class="ident">old</span>, <span class="ident">new</span>));
 			<span class="prelude-val">Ok</span>(().<span class="ident">into</span>())
 		}
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::set_allychain_bond_reserve_percent</span>())]</span>
@@ -4322,16 +4322,16 @@
 			<span class="ident">new</span>: <span class="ident">Percent</span>,
 		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">T::MonetaryGovernanceOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="kw">let</span> <span class="ident">ParachainBondConfig</span> {
+			<span class="kw">let</span> <span class="ident">AllychainBondConfig</span> {
 				<span class="ident">account</span>,
 				<span class="ident">percent</span>: <span class="ident">old</span>,
-			} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
+			} <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 			<span class="macro">ensure!</span>(<span class="ident">old</span> <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NoWritingSameValue</span>);
-			<span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">ParachainBondConfig</span> {
+			<span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">AllychainBondConfig</span> {
 				<span class="ident">account</span>,
 				<span class="ident">percent</span>: <span class="ident">new</span>,
 			});
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ParachainBondReservePercentSet</span>(<span class="ident">old</span>, <span class="ident">new</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::AllychainBondReservePercentSet</span>(<span class="ident">old</span>, <span class="ident">new</span>));
 			<span class="prelude-val">Ok</span>(().<span class="ident">into</span>())
 		}
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::set_total_selected</span>())]</span>
@@ -4881,14 +4881,14 @@
 			<span class="kw">let</span> <span class="ident">total_issuance</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::compute_issuance</span>(<span class="ident">total_staked</span>);
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">left_issuance</span> <span class="op">=</span> <span class="ident">total_issuance</span>;
 			<span class="comment">// reserve portion of issuance for allychain bond account</span>
-			<span class="kw">let</span> <span class="ident">bond_config</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">ParachainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
+			<span class="kw">let</span> <span class="ident">bond_config</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllychainBondInfo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 			<span class="kw">let</span> <span class="ident">allychain_bond_reserve</span> <span class="op">=</span> <span class="ident">bond_config</span>.<span class="ident">percent</span> <span class="op">*</span> <span class="ident">total_issuance</span>;
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">imb</span>) <span class="op">=</span>
 				<span class="ident">T::Currency::deposit_into_existing</span>(<span class="kw-2">&amp;</span><span class="ident">bond_config</span>.<span class="ident">account</span>, <span class="ident">allychain_bond_reserve</span>)
 			{
 				<span class="comment">// update round issuance iff transfer succeeds</span>
 				<span class="ident">left_issuance</span> <span class="op">-</span><span class="op">=</span> <span class="ident">imb</span>.<span class="ident">peek</span>();
-				<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ReservedForParachainBond</span>(
+				<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ReservedForAllychainBond</span>(
 					<span class="ident">bond_config</span>.<span class="ident">account</span>,
 					<span class="ident">imb</span>.<span class="ident">peek</span>(),
 				));

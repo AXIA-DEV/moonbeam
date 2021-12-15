@@ -1851,7 +1851,7 @@
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_parachain_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">OnValidationData</span> <span class="op">=</span> ();
-	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">ParachainInfo</span>;
+	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">AllychainInfo</span>;
 	<span class="kw">type</span> <span class="ident">DmpMessageHandler</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">ReservedDmpWeight</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">OutboundXcmpMessageSource</span> <span class="op">=</span> ();
@@ -1887,7 +1887,7 @@
 	<span class="doccomment">/// Default fixed percent a collator takes off the top of due rewards</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultCollatorCommission</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">20</span>);
 	<span class="doccomment">/// Default percent of inflation set aside for allychain bond every round</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultParachainBondReservePercent</span>: <span class="ident">Percent</span> <span class="op">=</span> <span class="ident">Percent::from_percent</span>(<span class="number">30</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DefaultAllychainBondReservePercent</span>: <span class="ident">Percent</span> <span class="op">=</span> <span class="ident">Percent::from_percent</span>(<span class="number">30</span>);
 	<span class="doccomment">/// Minimum stake required to become a collator</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MinCollatorStk</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1</span> <span class="op">*</span> <span class="ident">currency::KILOGLMR</span> <span class="op">*</span> <span class="ident">currency::SUPPLY_FACTOR</span>;
 	<span class="comment">// TODO: Restore to 100_000 for Phase 2 (remove the division by 10)</span>
@@ -1912,7 +1912,7 @@
 	<span class="kw">type</span> <span class="ident">MaxDelegatorsPerCandidate</span> <span class="op">=</span> <span class="ident">MaxDelegatorsPerCandidate</span>;
 	<span class="kw">type</span> <span class="ident">MaxDelegationsPerDelegator</span> <span class="op">=</span> <span class="ident">MaxDelegationsPerDelegator</span>;
 	<span class="kw">type</span> <span class="ident">DefaultCollatorCommission</span> <span class="op">=</span> <span class="ident">DefaultCollatorCommission</span>;
-	<span class="kw">type</span> <span class="ident">DefaultParachainBondReservePercent</span> <span class="op">=</span> <span class="ident">DefaultParachainBondReservePercent</span>;
+	<span class="kw">type</span> <span class="ident">DefaultAllychainBondReservePercent</span> <span class="op">=</span> <span class="ident">DefaultAllychainBondReservePercent</span>;
 	<span class="kw">type</span> <span class="ident">MinCollatorStk</span> <span class="op">=</span> <span class="ident">MinCollatorStk</span>;
 	<span class="kw">type</span> <span class="ident">MinCandidateStk</span> <span class="op">=</span> <span class="ident">MinCandidateStk</span>;
 	<span class="kw">type</span> <span class="ident">MinDelegation</span> <span class="op">=</span> <span class="ident">MinDelegatorStk</span>;
@@ -1924,14 +1924,14 @@
 	<span class="kw">type</span> <span class="ident">AuthorId</span> <span class="op">=</span> <span class="ident">NimbusId</span>;
 	<span class="kw">type</span> <span class="ident">SlotBeacon</span> <span class="op">=</span> <span class="ident">RelaychainBlockNumberProvider</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">AccountLookup</span> <span class="op">=</span> <span class="ident">AuthorMapping</span>;
-	<span class="kw">type</span> <span class="ident">EventHandler</span> <span class="op">=</span> <span class="ident">ParachainStaking</span>;
+	<span class="kw">type</span> <span class="ident">EventHandler</span> <span class="op">=</span> <span class="ident">AllychainStaking</span>;
 	<span class="kw">type</span> <span class="ident">CanAuthor</span> <span class="op">=</span> <span class="ident">AuthorFilter</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_author_slot_filter::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">RandomnessSource</span> <span class="op">=</span> <span class="ident">RandomnessCollectiveFlip</span>;
-	<span class="kw">type</span> <span class="ident">PotentialAuthors</span> <span class="op">=</span> <span class="ident">ParachainStaking</span>;
+	<span class="kw">type</span> <span class="ident">PotentialAuthors</span> <span class="op">=</span> <span class="ident">AllychainStaking</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -2026,7 +2026,7 @@
 				<span class="macro">matches!</span>(
 					<span class="ident">c</span>,
 					<span class="ident">Call::System</span>(..)
-						<span class="op">|</span> <span class="ident">Call::Timestamp</span>(..) <span class="op">|</span> <span class="ident">Call::ParachainStaking</span>(..)
+						<span class="op">|</span> <span class="ident">Call::Timestamp</span>(..) <span class="op">|</span> <span class="ident">Call::AllychainStaking</span>(..)
 						<span class="op">|</span> <span class="ident">Call::Democracy</span>(..) <span class="op">|</span> <span class="ident">Call::CouncilCollective</span>(..)
 						<span class="op">|</span> <span class="ident">Call::TechCommitteeCollective</span>(..)
 						<span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::Proxy</span>(..)
@@ -2042,7 +2042,7 @@
 			),
 			<span class="ident">ProxyType::Staking</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::ParachainStaking</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::AuthorMapping</span>(..)
+				<span class="ident">Call::AllychainStaking</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span> <span class="ident">Call::AuthorMapping</span>(..)
 			),
 			<span class="ident">ProxyType::CancelProxy</span> <span class="op">=</span><span class="op">&gt;</span> {
 				<span class="macro">matches!</span>(
@@ -2127,17 +2127,17 @@
 	{
 		<span class="comment">// System support stuff.</span>
 		<span class="ident">System</span>: <span class="ident">frame_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">0</span>,
-		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">1</span>,
+		<span class="ident">AllychainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">1</span>,
 		<span class="ident">RandomnessCollectiveFlip</span>: <span class="ident">pallet_randomness_collective_flip</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">2</span>,
 		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>} <span class="op">=</span> <span class="number">3</span>,
-		<span class="ident">ParachainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">4</span>,
+		<span class="ident">AllychainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">4</span>,
 
 		<span class="comment">// Monetary stuff.</span>
 		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">10</span>,
 		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">11</span>,
 
 		<span class="comment">// Consensus support.</span>
-		<span class="ident">ParachainStaking</span>: <span class="ident">allychain_staking</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">20</span>,
+		<span class="ident">AllychainStaking</span>: <span class="ident">allychain_staking</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">20</span>,
 		<span class="ident">AuthorInherent</span>: <span class="ident">pallet_author_inherent</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>} <span class="op">=</span> <span class="number">21</span>,
 		<span class="ident">AuthorFilter</span>: <span class="ident">pallet_author_slot_filter</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">22</span>,
 		<span class="ident">AuthorMapping</span>: <span class="ident">pallet_author_mapping</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">23</span>,

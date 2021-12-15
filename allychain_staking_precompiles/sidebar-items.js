@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ParachainStakingWrapper","A precompile to wrap the functionality from allychain_staking."]]});
+initSidebarItems({"struct":[["AllychainStakingWrapper","A precompile to wrap the functionality from allychain_staking."]]});
