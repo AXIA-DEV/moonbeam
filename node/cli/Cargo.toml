@@ -1,12 +1,12 @@
 [package]
 name = "moonbeam-cli"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 version = "0.15.1"
 
 [dependencies]
 log = "0.4.8"
-parity-scale-codec = "2.2"
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1" }
 structopt = "0.3.8"
 
 # Moonbeam
@@ -15,14 +15,14 @@ perf-test = { path = "../perf-test" }
 service = { package = "moonbeam-service", path = "../service", default-features = false }
 
 # Substrate
-frame-benchmarking-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-service = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-telemetry = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-tracing = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-try-runtime-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", optional = true }
+frame-benchmarking-cli = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-cli = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-service = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-telemetry = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-tracing = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-core = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+try-runtime-cli = { git = "https://github.com/axia-tech/axia-core", branch = "dev", optional = true }
 
 # Cumulus / Nimbus
 cumulus-client-cli = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12" }
@@ -31,27 +31,30 @@ cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch
 nimbus-primitives = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12" }
 
 # AXIA
-polkadot-cli = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-parachain = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-primitives = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-service = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
+axia-cli = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-allychain = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-primitives = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-service = { git = "https://github.com/axia-tech/axia", branch = "dev" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+substrate-build-script-utils = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [features]
-default = [ "moonbase-native", "moonbeam-native", "moonriver-native", "wasmtime", "westend-native" ]
-
-westend-native = [ "polkadot-service/westend-native" ]
-
-moonbase-native = [ "service/moonbase-native", "westend-native" ]
-moonbeam-native = [ "service/moonbeam-native" ]
-moonriver-native = [ "service/moonriver-native" ]
-
-moonbase-runtime-benchmarks = [ "service/moonbase-runtime-benchmarks" ]
-runtime-benchmarks = [ "service/runtime-benchmarks" ]
-try-runtime = [
-	"service/try-runtime",
-	"try-runtime-cli",
+default = [
+	"moonbase-native",
+	"moonbeam-native",
+	"moonriver-native",
+	"wasmtime",
+	"alphanet-native",
 ]
-wasmtime = [ "sc-cli/wasmtime" ]
+
+alphanet-native = ["axia-service/alphanet-native"]
+
+moonbase-native = ["service/moonbase-native", "alphanet-native"]
+moonbeam-native = ["service/moonbeam-native"]
+moonriver-native = ["service/moonriver-native"]
+
+moonbase-runtime-benchmarks = ["service/moonbase-runtime-benchmarks"]
+runtime-benchmarks = ["service/runtime-benchmarks"]
+try-runtime = ["service/try-runtime", "try-runtime-cli"]
+wasmtime = ["sc-cli/wasmtime"]

@@ -1,25 +1,29 @@
 [package]
 name = "pallet-ethereum-chain-id"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 version = "1.0.0"
 
 [dependencies]
-serde = { version = "1.0.101", optional = true, features = [ "derive" ] }
+serde = { version = "1.0.101", optional = true, features = ["derive"] }
 
 # Substrate
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parity-scale-codec = { version = "2.2", default-features = false, features = [ "derive" ] }
-scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
+frame-support = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+frame-system = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1", default-features = false, features = [
+	"derive",
+] }
+scale-info = { version = "1.0", default-features = false, features = [
+	"derive",
+] }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"frame-support/std",
 	"frame-system/std",
-	"parity-scale-codec/std",
+	"axia-scale-codec/std",
 	"scale-info/std",
 	"serde",
 ]
-try-runtime = [ "frame-support/try-runtime" ]
+try-runtime = ["frame-support/try-runtime"]

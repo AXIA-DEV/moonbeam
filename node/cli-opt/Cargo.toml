@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-cli-opt"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -18,4 +18,4 @@ tiny-hderive = "0.3.0"
 account = { path = "../../primitives/account" }
 
 # Substrate
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }

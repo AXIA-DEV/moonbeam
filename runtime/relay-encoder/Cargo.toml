@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-relay-encoder"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -14,33 +14,35 @@ relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 
 # Substrate
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-pallet-staking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+frame-system = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+pallet-staking = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1", default-features = false, features = [
+	"derive",
+] }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-std = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
 
 # Cumulus
 cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 [dev-dependencies]
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-proxy = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-utility = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+frame-support = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-proxy = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-utility = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
-kusama-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-rococo-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-westend-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
+axiatest-runtime = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-runtime = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+betanet-runtime = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+alphanet-runtime = { git = "https://github.com/axia-tech/axia", branch = "dev" }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"cumulus-primitives-core/std",
 	"frame-system/std",
 	"pallet-staking/std",
-	"parity-scale-codec/std",
-	"parity-scale-codec/std",
+	"axia-scale-codec/std",
+	"axia-scale-codec/std",
 	"relay-encoder-precompiles/std",
 	"sp-runtime/std",
 	"sp-std/std",

@@ -1,6 +1,6 @@
 [package]
 name = "pallet-democracy-precompiles"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 description = "A Precompile to make Substrate's pallet-democracy accessible to pallet-evm"
 edition = "2018"
 version = "0.2.0"
@@ -15,12 +15,12 @@ precompile-utils = { path = "../utils", default-features = false }
 # Substrate
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false }
 fp-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-pallet-democracy = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+frame-support = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+frame-system = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+pallet-democracy = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-core = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-io = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-std = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
 
 
 # Frontier
@@ -31,14 +31,16 @@ derive_more = "0.99"
 serde = "1.0.100"
 
 # Substrate
-pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-scheduler = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+pallet-balances = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-scheduler = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-timestamp = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+scale-info = { version = "1.0", default-features = false, features = [
+	"derive",
+] }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"codec/std",
 	"fp-evm/std",

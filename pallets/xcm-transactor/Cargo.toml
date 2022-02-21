@@ -1,6 +1,6 @@
 [package]
 name = "xcm-transactor"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 version = "0.1.0"
 
@@ -11,39 +11,43 @@ serde = { version = "1.0.124", optional = true }
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 
 # Substrate
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
-scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+frame-support = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+frame-system = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1", default-features = false, features = [
+	"derive",
+] }
+scale-info = { version = "1.0", default-features = false, features = [
+	"derive",
+] }
+sp-io = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
+sp-std = { git = "https://github.com/axia-tech/axia-core", branch = "dev", default-features = false }
 
 # Cumulus
 cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
 
 # AXIA / XCM
 orml-traits = { git = "https://github.com/purestake/open-runtime-module-library", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-polkadot-runtime-common = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-xcm = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-xcm-builder = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
-xcm-executor = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12", default-features = false }
+axia-runtime-common = { git = "https://github.com/axia-tech/axia", branch = "dev", default-features = false }
+xcm = { git = "https://github.com/axia-tech/axia", branch = "dev", default-features = false }
+xcm-builder = { git = "https://github.com/axia-tech/axia", branch = "dev", default-features = false }
+xcm-executor = { git = "https://github.com/axia-tech/axia", branch = "dev", default-features = false }
 
 [dev-dependencies]
-pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-xcm = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-parity-scale-codec = { version = "2.1.1" }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+pallet-balances = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-timestamp = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-xcm = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1" }
+sp-core = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"cumulus-primitives-core/std",
 	"frame-support/std",
 	"frame-system/std",
-	"parity-scale-codec/std",
-	"polkadot-runtime-common/std",
+	"axia-scale-codec/std",
+	"axia-runtime-common/std",
 	"serde",
 	"sp-io/std",
 	"sp-runtime/std",

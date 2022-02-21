@@ -15,7 +15,7 @@
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
 // We want to avoid including the betanet-runtime here.
-// TODO: whenever a conclusion is taken from https://github.com/axiatech/substrate/issues/8158
+// TODO: whenever a conclusion is taken from https://github.com/axia-tech/substrate/issues/8158
 
 use parity_scale_codec::{Decode, Encode};
 use sp_runtime::traits::{AccountIdLookup, StaticLookup};
@@ -153,9 +153,9 @@ mod tests {
 
 		let mut expected = pallet_utility::Call::<axia_runtime::Runtime>::as_derivative {
 			index: 1,
-			call: axia_runtime::Call::Staking(pallet_staking::Call::<
-				axia_runtime::Runtime,
-			>::chill {})
+			call: axia_runtime::Call::Staking(
+				pallet_staking::Call::<axia_runtime::Runtime>::chill {},
+			)
 			.into(),
 		}
 		.encode();

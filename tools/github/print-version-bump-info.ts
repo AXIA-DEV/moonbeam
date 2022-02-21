@@ -4,9 +4,9 @@ import { getCommitAndLabels } from "./github-utils";
 
 async function printInfo(octokit: Octokit, previousVersion: string, nextVersion: string) {
   const owners = {
-    substrate: "axiatech",
-    axia: "axiatech",
-    cumulus: "axiatech",
+    substrate: "axia-tech",
+    axia: "axia-tech",
+    cumulus: "axia-tech",
     nimbus: "purestake",
   };
   const prefixes = {

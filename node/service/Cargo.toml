@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-service"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -12,19 +12,19 @@ async-io = "1.3"
 async-trait = "0.1.42"
 derive_more = "0.99"
 exit-future = "0.1.4"
-futures = { version = "0.3.1", features = [ "compat" ] }
+futures = { version = "0.3.1", features = ["compat"] }
 jsonrpc-core = "18.0.0"
 jsonrpc-pubsub = "18.0.0"
-libsecp256k1 = { version = "0.6", features = [ "hmac" ] }
+libsecp256k1 = { version = "0.6", features = ["hmac"] }
 log = "0.4"
 parking_lot = "0.9.0"
-serde = { version = "1.0.101", features = [ "derive" ] }
+serde = { version = "1.0.101", features = ["derive"] }
 serde_json = "1.0"
 sha3 = { version = "0.9", default-features = false }
 structopt = "0.3"
 tiny-bip39 = { version = "0.8", default-features = false }
 tiny-hderive = { version = "0.3.0", default-features = false }
-tokio = { version = "1.12.0", features = [ "macros", "sync" ] }
+tokio = { version = "1.12.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
 # Moonbeam
@@ -43,50 +43,60 @@ moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
 # Substrate
-frame-system-rpc-runtime-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-transaction-payment-rpc = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-parity-scale-codec = "2.2"
-sc-basic-authorship = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-chain-spec = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", features = [ "wasmtime" ] }
-sc-client-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-client-db = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-consensus = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-consensus-manual-seal = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-executor = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", features = [ "wasmtime" ] }
-sc-finality-grandpa = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-informant = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-network = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-rpc = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-rpc-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-service = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-telemetry = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-tracing = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sc-transaction-pool = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12", features = [ "test-helpers" ] }
-sc-transaction-pool-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-block-builder = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-blockchain = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-consensus = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-inherents = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-offchain = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-session = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-storage = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-transaction-pool = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-sp-trie = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-substrate-frame-rpc-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+frame-system-rpc-runtime-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-transaction-payment-rpc = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+axia-scale-codec = { git = "https://github.com/axia-tech/axia-scale-codec", branch = "v2.3.1", version = "2.3.1" }
+sc-basic-authorship = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-chain-spec = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-cli = { git = "https://github.com/axia-tech/axia-core", branch = "dev", features = [
+	"wasmtime",
+] }
+sc-client-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-client-db = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-consensus = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-consensus-manual-seal = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-executor = { git = "https://github.com/axia-tech/axia-core", branch = "dev", features = [
+	"wasmtime",
+] }
+sc-finality-grandpa = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-informant = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-network = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-rpc = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-rpc-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-service = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-telemetry = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-tracing = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sc-transaction-pool = { git = "https://github.com/axia-tech/axia-core", branch = "dev", features = [
+	"test-helpers",
+] }
+sc-transaction-pool-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-api = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-block-builder = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-blockchain = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-consensus = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-core = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-inherents = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-io = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-offchain = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-runtime = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-session = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-storage = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-timestamp = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-transaction-pool = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+sp-trie = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+substrate-frame-rpc-system = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 # Frontier
-ethereum-primitives = { package = "ethereum", version = "0.9.0", default-features = false, features = [ "with-codec" ] }
+ethereum-primitives = { package = "ethereum", version = "0.9.0", default-features = false, features = [
+	"with-codec",
+] }
 fc-consensus = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
 fc-db = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
 fc-mapping-sync = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
-fc-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12", features = [ "rpc_binary_search_estimate" ] }
+fc-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12", features = [
+	"rpc_binary_search_estimate",
+] }
 fc-rpc-core = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
 fp-consensus = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
 fp-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.12" }
@@ -107,14 +117,14 @@ nimbus-primitives = { git = "https://github.com/purestake/nimbus", branch = "moo
 pallet-author-inherent = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-polkadot-v0.9.12" }
 
 # AXIA
-polkadot-cli = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-parachain = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-primitives = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
-polkadot-service = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
+axia-cli = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-allychain = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-primitives = { git = "https://github.com/axia-tech/axia", branch = "dev" }
+axia-service = { git = "https://github.com/axia-tech/axia", branch = "dev" }
 
 # Benchmarking
-frame-benchmarking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-frame-benchmarking-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+frame-benchmarking = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+frame-benchmarking-cli = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [dev-dependencies]
 assert_cmd = "0.12"
@@ -122,35 +132,35 @@ nix = "0.17"
 rand = "0.7.3"
 
 # AXIA dev-dependencies
-polkadot-runtime-common = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.12" }
+axia-runtime-common = { git = "https://github.com/axia-tech/axia", branch = "dev" }
 
 # Substrate dev-dependencies
-pallet-sudo = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-substrate-test-client = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
-substrate-test-runtime-client = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+pallet-sudo = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+substrate-test-client = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
+substrate-test-runtime-client = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.12" }
+substrate-build-script-utils = { git = "https://github.com/axia-tech/axia-core", branch = "dev" }
 
 [features]
 default = [
-	"kusama-native",
+	"axiatest-native",
 	"moonbase-native",
 	"moonbeam-native",
 	"moonriver-native",
 	"betanet-native",
-	"westend-native",
+	"alphanet-native",
 ]
 
-kusama-native = [ "polkadot-cli/kusama-native", "polkadot-service/kusama-native" ]
-betanet-native = [ "polkadot-cli/rococo-native", "polkadot-service/rococo-native" ]
-westend-native = [ "polkadot-cli/westend-native", "polkadot-service/westend-native" ]
+axiatest-native = ["axia-cli/axiatest-native", "axia-service/axiatest-native"]
+betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
+alphanet-native = ["axia-cli/alphanet-native", "axia-service/alphanet-native"]
 
-moonbase-native = [ "moonbase-runtime", "westend-native" ]
-moonbeam-native = [ "moonbeam-runtime" ]
-moonriver-native = [ "moonriver-runtime" ]
+moonbase-native = ["moonbase-runtime", "alphanet-native"]
+moonbeam-native = ["moonbeam-runtime"]
+moonriver-native = ["moonriver-runtime"]
 
-moonbase-native-tracing = [ "moonbase-native", "moonbase-runtime/evm-tracing" ]
+moonbase-native-tracing = ["moonbase-native", "moonbase-runtime/evm-tracing"]
 
 test-spec = []
 
@@ -172,7 +182,4 @@ moonbase-runtime-benchmarks = [
 	"pallet-ethereum/runtime-benchmarks",
 ]
 
-try-runtime = [
-	"moonbase-runtime",
-	"moonbase-runtime/try-runtime",
-]
+try-runtime = ["moonbase-runtime", "moonbase-runtime/try-runtime"]

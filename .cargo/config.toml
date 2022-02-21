@@ -5,6 +5,6 @@ moonbase-betanet = " build --release -p moonbeam --no-default-features --feature
 moonbase-tracing = " build --release -p moonbeam --features moonbase-native-tracing"
 moonriver = " build --release -p moonbeam --no-default-features --features moonriver-native"
 moonriver-betanet = " build --release -p moonbeam --no-default-features --features moonriver-native,betanet-native"
-moonriver-kusama = " build --release -p moonbeam --no-default-features --features moonriver-native,kusama-native"
+moonriver-kusama = " build --release -p moonbeam --no-default-features --features moonriver-native,axiatest-native"
 moonbeam = " build --release -p moonbeam --no-default-features --features moonbeam-native"
 moonbeam-betanet = " build --release -p moonbeam --no-default-features --features moonbeam-native,betanet-native"

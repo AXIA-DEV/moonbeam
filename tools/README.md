@@ -2,7 +2,7 @@
 
 ## Launching complete network
 
-Based on [axia-launch](https://github.com/axiatech/axia-launch), the tool to launch
+Based on [axia-launch](https://github.com/axia-tech/axia-launch), the tool to launch
 multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
@@ -132,18 +132,18 @@ axia side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
 
-| command | native runtimes |
-|-|-|
-| `cargo moonbase`  | `moonbase, westend, axia`  |
+| command                   | native runtimes                    |
+| ------------------------- | ---------------------------------- |
+| `cargo moonbase`          | `moonbase, westend, axia`          |
 | `cargo moonbase-betanet`  | `moonbase, betanet, westend, axia` |
-| `cargo moonriver` | `moonriver, axia` |
-| `cargo moonriver-betanet` | `moonriver, betanet, axia` |
-| `cargo moonriver-kusama` | `moonriver, kusama, axia` |
-| `cargo moonbeam` | `moonbeam, axia` |
-| `cargo moonbeam-betanet` | `moonbeam, betanet, axia` |
+| `cargo moonriver`         | `moonriver, axia`                  |
+| `cargo moonriver-betanet` | `moonriver, betanet, axia`         |
+| `cargo moonriver-kusama`  | `moonriver, kusama, axia`          |
+| `cargo moonbeam`          | `moonbeam, axia`                   |
+| `cargo moonbeam-betanet`  | `moonbeam, betanet, axia`          |
 
-* The `moonbase` native runtime require `westend` native runtime to compile.
-* The `axia` native runtime is always included (This is requirement from axia repo).
+- The `moonbase` native runtime require `westend` native runtime to compile.
+- The `axia` native runtime is always included (This is requirement from axia repo).
 
 ### Port assignments
 
@@ -203,7 +203,7 @@ For the default configuration, you can access through axiajs:
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo axiatech/substrate
+npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo axia-tech/substrate
 ```
 
 ### Parameters
@@ -214,7 +214,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "axiatech/substrate", "axiatech/axia"]
+                [choices: "axia-tech/substrate", "axia-tech/axia"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -222,16 +222,16 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo axiatech/substrate --only-label runtime
+> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo axia-tech/substrate --only-label runtime
 
-found 55 total commits in https://github.com/axiatech/substrate/compare/axia-v0.9.4...axia-v0.9.5
+found 55 total commits in https://github.com/axia-tech/substrate/compare/axia-v0.9.4...axia-v0.9.5
 ===== E1-runtimemigration
-  (axiatech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
+  (axia-tech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy
-  (axiatech/substrate#7778) Named reserve
-  (axiatech/substrate#8955) update ss58 type to u16
-  (axiatech/substrate#8909) contracts: Add new `seal_call` that offers new features
-  (axiatech/substrate#9083) Migrate pallet-staking to pallet attribute macro
-  (axiatech/substrate#9085) Enforce pub calls in pallets
-  (axiatech/substrate#8912) staking/election: prolonged era and emergency mode for governance submission.
+  (axia-tech/substrate#7778) Named reserve
+  (axia-tech/substrate#8955) update ss58 type to u16
+  (axia-tech/substrate#8909) contracts: Add new `seal_call` that offers new features
+  (axia-tech/substrate#9083) Migrate pallet-staking to pallet attribute macro
+  (axia-tech/substrate#9085) Enforce pub calls in pallets
+  (axia-tech/substrate#8912) staking/election: prolonged era and emergency mode for governance submission.
 ```

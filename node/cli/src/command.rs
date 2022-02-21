@@ -23,7 +23,7 @@ use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
 use polkadot_parachain::primitives::AccountIdConversion;
-#[cfg(feature = "westend-native")]
+#[cfg(feature = "alphanet-native")]
 use polkadot_service::WestendChainSpec;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
@@ -185,7 +185,7 @@ impl SubstrateCli for RelayChainCli {
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		match id {
-			#[cfg(feature = "westend-native")]
+			#[cfg(feature = "alphanet-native")]
 			"westend_moonbase_relay_testnet" => Ok(Box::new(WestendChainSpec::from_json_bytes(
 				&include_bytes!("../../../specs/alphanet/betanet-embedded-specs-v8.json")[..],
 			)?)),
